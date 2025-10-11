@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using System.Drawing;
+using static UnityEngine.Rendering.DebugUI;
 
 public class DamGenerator : MonoBehaviour
 {
@@ -11,12 +12,14 @@ public class DamGenerator : MonoBehaviour
     private DamGroup dam;
     private Point hqCoordinate;
 
+    public Vector2 DamSize;
+
     //Methods
     private void Awake()
     {
         stack = new Stack<DamCell>();
-        
-        damSize = new Point(10, 10);
+
+        damSize = new Point((int)DamSize.x, (int)DamSize.y);
 
         //Array min 3x3
         if (damSize.X < 3)
