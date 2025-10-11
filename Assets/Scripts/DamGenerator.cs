@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using System.Drawing;
-using static UnityEngine.Rendering.DebugUI;
 
 public class DamGenerator : MonoBehaviour
 {
@@ -11,24 +10,39 @@ public class DamGenerator : MonoBehaviour
     private Point damSize;
     private DamGroup dam;
     private Point hqCoordinate;
+    [SerializeField] private int connectionDensityPercentage;
 
+    //Properties
+    /// <summary>
+    /// The dimensions of the dam
+    /// </summary>
+    /// Points don't show up in the editor
     public Vector2 DamSize;
+    
+    /// <summary>
+    /// The percentage of extra connections made (max 22)
+    /// </summary>
+    public int ConnectionDensityPercentage { get => connectionDensityPercentage; set => connectionDensityPercentage = value; }
 
     //Methods
     private void Awake()
     {
         stack = new Stack<DamCell>();
 
+        //Converts damSize from Vector2 --> Point
         damSize = new Point((int)DamSize.x, (int)DamSize.y);
 
-        //Array min 3x3
-        if (damSize.X < 3)
+        /* Prevents issues with the algorithm
+         * 5x5 min grid
+         * Grid has odd numbered dimensions
+         */
+        if (damSize.X < 5)
         {
-            damSize.X = 3;
+            damSize.X = 5;
         }
-        if (damSize.Y < 3)
+        if (damSize.Y < 5)
         {
-            damSize.Y = 3;
+            damSize.Y = 5;
         }
         if (damSize.X % 2 == 0)
         {
@@ -67,8 +81,7 @@ public class DamGenerator : MonoBehaviour
         //Make Initial Connections
         int totalConnections = 3;
         DamCell current = dam.Cells[start.X, start.Y];
-        bool abort = false;
-        while ((totalConnections < damSize.X * damSize.Y) || abort)
+        while (totalConnections < damSize.X * damSize.Y)
         {
             List<Point> validDirections = new List<Point>();
             //North
@@ -98,10 +111,6 @@ public class DamGenerator : MonoBehaviour
                 {
                     current = stack.Pop();
                 }
-                else
-                {
-                    abort = true;
-                }
             }
             else
             {
@@ -113,12 +122,25 @@ public class DamGenerator : MonoBehaviour
             }
         }
 
-        
+
         //Make extra connections
-        int extraConnections = (int)Math.Round(damSize.X * damSize.Y * .1);
+
+        /* 3x3 grids can only have 2 extra connections be made 
+         * with how the algorithm works, the amount of extra connections allowed is cellCount * cDP
+         * so 2/9 is the max that cDP can be so as an int it goes to 22
+         */
+        if (connectionDensityPercentage > 22)
+        {
+            connectionDensityPercentage = 22;
+        }
+        if (connectionDensityPercentage < 5)
+        {
+            connectionDensityPercentage = 5;
+        }
+        int extraConnections = (int)Math.Round(damSize.X * damSize.Y * (connectionDensityPercentage / 100.0));
         int connectionsMade = 0;
         
-        /*
+        
         //start with cell right of hq
         current = dam.Cells[startExtraC.X, startExtraC.Y];
         switch (UnityEngine.Random.Range(1, 4))
@@ -135,83 +157,77 @@ public class DamGenerator : MonoBehaviour
         }
         connectionsMade++;
 
-        //continue on with other cells
+        //connect other cells
         while (connectionsMade < extraConnections)
         {
             current = dam.Cells[UnityEngine.Random.Range(0, damSize.X), UnityEngine.Random.Range(0, damSize.Y)];
             if (current.CellArrayPosition != hqCoordinate)
             {
-                int direction = UnityEngine.Random.Range(1, 5);
-                if (direction == 1)
-                { //North
-                    if (current.CellArrayPosition.Y - 1 >= 0 && !dam.Cells[current.CellArrayPosition.X, current.CellArrayPosition.Y - 1].Connections.Contains(current))
-                    {
-                        ConnectCells(current, new Point(0, -1));
-                        connectionsMade++;
-                    }
-                    else
-                    {
-                        direction = 2;
-                    }
+                List<Point> validDirections = new List<Point>();
+                //North
+                if (current.CellArrayPosition.Y - 1 >= 0 && !dam.Cells[current.CellArrayPosition.X, current.CellArrayPosition.Y - 1].Connections.Contains(current))
+                {
+                    validDirections.Add(new Point(0, -1));
                 }
-                if (direction == 2)
-                { //East
-                    if (current.CellArrayPosition.X + 1 <= damSize.X - 1 && !dam.Cells[current.CellArrayPosition.X + 1, current.CellArrayPosition.Y].Connections.Contains(current))
-                    {
-                        ConnectCells(current, new Point(1, 0));
-                        connectionsMade++;
-                    }
-                    else
-                    {
-                        direction = 3;
-                    }
+                //East
+                if (current.CellArrayPosition.X + 1 <= damSize.X - 1 && !dam.Cells[current.CellArrayPosition.X + 1, current.CellArrayPosition.Y].Connections.Contains(current))
+                {
+                    validDirections.Add(new Point(1, 0));
                 }
-                if (direction == 3)
-                { //South
-                    if (current.CellArrayPosition.Y + 1 <= damSize.Y - 1 && !dam.Cells[current.CellArrayPosition.X, current.CellArrayPosition.Y + 1].Connections.Contains(current))
-                    {
-                        ConnectCells(current, new Point(0, 1));
-                        connectionsMade++;
-                    }
-                    else
-                    {
-                        direction = 4;
-                    }
+                //South
+                if (current.CellArrayPosition.Y + 1 <= damSize.Y - 1 && !dam.Cells[current.CellArrayPosition.X, current.CellArrayPosition.Y + 1].Connections.Contains(current))
+                {
+                    validDirections.Add(new Point(0, 1));
                 }
-                if (direction == 4)
-                { //West
-                    if (current.CellArrayPosition.X - 1 >= 0 && !dam.Cells[current.CellArrayPosition.X - 1, current.CellArrayPosition.Y].Connections.Contains(current))
-                    {
-                        ConnectCells(current, new Point(-1, 0));
-                        connectionsMade++;
-                    }
+                //West
+                if (current.CellArrayPosition.X - 1 >= 0 && !dam.Cells[current.CellArrayPosition.X - 1, current.CellArrayPosition.Y].Connections.Contains(current))
+                {
+                    validDirections.Add(new Point(-1, 0));
+                }
+                
+                if (validDirections.Count != 0)
+                {
+                    Point nextPoint = validDirections[UnityEngine.Random.Range(0, validDirections.Count)];
+                    ConnectCells(current, nextPoint);
+                    connectionsMade++;
                 }
             }
         }
-        */
+        
     }
 
-    //Visualize Cells
+    //Visualizes the dam, drawn position is based off parent transform
     private void OnDrawGizmosSelected()
     {
+        /* Cells are red circles
+        * Connections are yellow lines
+        * HQ is a blue circle
+        */
         if (dam != null)
         {
+            float xOffset = transform.position.x - hqCoordinate.X;
+            float yOffset = transform.position.y - hqCoordinate.Y;
             foreach (DamCell gCell in dam.Cells)
             {
                 Gizmos.color = UnityEngine.Color.red;
-                Gizmos.DrawWireSphere(new Vector3(gCell.CellArrayPosition.X, gCell.CellArrayPosition.Y, 0), .25f);
+                Gizmos.DrawWireSphere(new Vector3(gCell.CellArrayPosition.X + xOffset, gCell.CellArrayPosition.Y + yOffset, 0), .25f);
                 Gizmos.color = UnityEngine.Color.yellow;
                 foreach (DamCell cell in gCell.Connections)
                 {
-                    Gizmos.DrawLine(new Vector3(gCell.CellArrayPosition.X, gCell.CellArrayPosition.Y, 0), new Vector3(cell.CellArrayPosition.X, cell.CellArrayPosition.Y, 0));
+                    Gizmos.DrawLine(new Vector3(gCell.CellArrayPosition.X + xOffset, gCell.CellArrayPosition.Y + yOffset, 0), new Vector3(cell.CellArrayPosition.X + xOffset, cell.CellArrayPosition.Y + yOffset, 0));
                 }
             }
 
             Gizmos.color = UnityEngine.Color.blue;
-            Gizmos.DrawWireSphere(new Vector3(hqCoordinate.X, hqCoordinate.Y, 0), .25f);
+            Gizmos.DrawWireSphere(transform.position, .25f);
         }
     }
 
+    /// <summary>
+    /// Makes a two way connection between two points
+    /// </summary>
+    /// <param name="current">The first DamCell being connected</param>
+    /// <param name="relativeOffset">The coordinates relative to "current", ex. (1,0) would be right/east</param>
     private void ConnectCells(DamCell current, Point relativeOffset)
     {
         current.AddConnection(dam.Cells[current.CellArrayPosition.X + relativeOffset.X, current.CellArrayPosition.Y + relativeOffset.Y]);
