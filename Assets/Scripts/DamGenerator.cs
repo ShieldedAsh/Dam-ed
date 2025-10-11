@@ -12,6 +12,12 @@ public class DamGenerator : MonoBehaviour
     private Point hqCoordinate;
     [SerializeField] private int connectionDensityPercentage;
 
+    //Path Testing
+    private Vector2 startIndex;
+    private Vector2 endIndex;
+    [SerializeField] private bool updateEachFrame;
+
+
     //Properties
     /// <summary>
     /// The dimensions of the dam
@@ -26,7 +32,8 @@ public class DamGenerator : MonoBehaviour
 
     //Methods
     private void Awake()
-    {
+    {   
+        
         stack = new Stack<DamCell>();
 
         //Converts damSize from Vector2 --> Point
@@ -72,6 +79,7 @@ public class DamGenerator : MonoBehaviour
         
         //Sets HQ
         hqCoordinate = new Point((int)Math.Ceiling(damSize.X / 2.0)-1, (int)Math.Ceiling((damSize.Y / 2.0))-1);
+        startIndex = new Vector2(hqCoordinate.X, hqCoordinate.Y);
         Point start = new Point(hqCoordinate.X - 1, hqCoordinate.Y);
         Point startExtraC = new Point(hqCoordinate.X + 1, hqCoordinate.Y);
 
@@ -196,12 +204,30 @@ public class DamGenerator : MonoBehaviour
         
     }
 
+    private void Update()
+    {
+        if (updateEachFrame || Input.GetKeyDown(KeyCode.Space))
+        {
+            endIndex.x++;
+            if (endIndex.x >= damSize.X)
+            {
+                endIndex.x = 0;
+                endIndex.y++;
+            }
+            if (endIndex.y >= damSize.Y)
+            {
+                endIndex.y = 0;
+            }
+        }
+    }
+
     //Visualizes the dam, drawn position is based off parent transform
     private void OnDrawGizmosSelected()
     {
         /* Cells are red circles
         * Connections are yellow lines
         * HQ is a blue circle
+        * Pathfinding from HQ --> endIndex are green lines
         */
         if (dam != null)
         {
@@ -216,6 +242,20 @@ public class DamGenerator : MonoBehaviour
                 {
                     Gizmos.DrawLine(new Vector3(gCell.CellArrayPosition.X + xOffset, gCell.CellArrayPosition.Y + yOffset, 0), new Vector3(cell.CellArrayPosition.X + xOffset, cell.CellArrayPosition.Y + yOffset, 0));
                 }
+            }
+
+            dam.ShortestPath(dam.Cells[(int)startIndex.x, (int)startIndex.y], dam.Cells[(int)endIndex.x, (int)endIndex.y]);
+            
+            DamCell current = dam.Cells[(int)endIndex.x, (int)endIndex.y];
+            while (current != null)
+            {
+                Gizmos.color = UnityEngine.Color.green;
+                Gizmos.DrawWireSphere(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), .25f);
+                if (current.PathNeighbor != null)
+                {
+                    Gizmos.DrawLine(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), new Vector3(current.PathNeighbor.CellArrayPosition.X + xOffset, current.PathNeighbor.CellArrayPosition.Y + yOffset, 0));
+                }
+                current = current.PathNeighbor;
             }
 
             Gizmos.color = UnityEngine.Color.blue;

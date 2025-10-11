@@ -2,12 +2,19 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using System.Drawing;
+using UnityEngine.UIElements;
 
+#nullable enable
 public class DamCell
 {
     //Variables
     private List<DamCell> connections;
     private Tuple<char, int> cellCoordinates;
+
+    //Pathfinding Variables
+    private bool permanence;
+    private int dist;
+    private DamCell? pathNeighbor;
 
     //Properties
     // Converts Ingame Coordinate to array position
@@ -25,6 +32,13 @@ public class DamCell
     //Connections Property
     public List<DamCell> Connections { get => connections; }
 
+
+    //Pathfinding Properties
+    public bool Permanence { get => permanence; set => permanence = value; }
+    public int Distance { get => dist; set => dist = value; }
+
+    public DamCell? PathNeighbor { get => pathNeighbor; set => pathNeighbor = value; }
+
     //Constructor
     /// <summary>
     /// A cell with no neighbors and default coordinates
@@ -33,6 +47,7 @@ public class DamCell
     {
         connections = new List<DamCell>();
         SetCoordinate('a', 1);
+        Reset();
     }
 
     /// <summary>
@@ -52,5 +67,15 @@ public class DamCell
     public void AddConnection(DamCell cell)
     {
         connections.Add(cell);
+    }
+
+    /// <summary>
+    /// Resets the pathfinding variables for the cell
+    /// </summary>
+    public void Reset()
+    {
+        permanence = false;
+        dist = int.MaxValue;
+        pathNeighbor = null;
     }
 }
