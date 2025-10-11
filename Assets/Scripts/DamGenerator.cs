@@ -16,7 +16,7 @@ public class DamGenerator : MonoBehaviour
     {
         stack = new Stack<DamCell>();
         
-        damSize = new Point(5, 5);
+        damSize = new Point(10, 10);
 
         //Array min 3x3
         if (damSize.X < 3)
@@ -67,8 +67,6 @@ public class DamGenerator : MonoBehaviour
         bool abort = false;
         while ((totalConnections < damSize.X * damSize.Y) || abort)
         {
-            stack.Push(current);
-
             List<Point> validDirections = new List<Point>();
             //North
             if (current.CellArrayPosition.Y - 1 >= 0 && dam.Cells[current.CellArrayPosition.X, current.CellArrayPosition.Y - 1].Connections.Count == 0)
@@ -95,7 +93,7 @@ public class DamGenerator : MonoBehaviour
             {
                 if (stack.Count > 0)
                 {
-                    stack.Pop();
+                    current = stack.Pop();
                 }
                 else
                 {
@@ -106,6 +104,7 @@ public class DamGenerator : MonoBehaviour
             {
                 Point nextPoint = validDirections[UnityEngine.Random.Range(0, validDirections.Count)];
                 ConnectCells(current, nextPoint);
+                stack.Push(current);
                 current = dam.Cells[current.CellArrayPosition.X + nextPoint.X, current.CellArrayPosition.Y + nextPoint.Y];
                 totalConnections++;
             }
@@ -190,16 +189,23 @@ public class DamGenerator : MonoBehaviour
     }
 
     //Visualize Cells
-    private void OnDrawGizmoSelected()
+    private void OnDrawGizmosSelected()
     {
-        Gizmos.color = UnityEngine.Color.red;
-        foreach (DamCell gCell in dam.Cells)
+        if (dam != null)
         {
-            Gizmos.DrawWireSphere(new Vector3(gCell.CellArrayPosition.X, gCell.CellArrayPosition.Y, 0), .5f);
-            foreach (DamCell cell in gCell.Connections)
+            foreach (DamCell gCell in dam.Cells)
             {
-                Gizmos.DrawLine(new Vector3(gCell.CellArrayPosition.X, gCell.CellArrayPosition.Y, 0), new Vector3(cell.CellArrayPosition.X, cell.CellArrayPosition.Y, 0));
+                Gizmos.color = UnityEngine.Color.red;
+                Gizmos.DrawWireSphere(new Vector3(gCell.CellArrayPosition.X, gCell.CellArrayPosition.Y, 0), .25f);
+                Gizmos.color = UnityEngine.Color.yellow;
+                foreach (DamCell cell in gCell.Connections)
+                {
+                    Gizmos.DrawLine(new Vector3(gCell.CellArrayPosition.X, gCell.CellArrayPosition.Y, 0), new Vector3(cell.CellArrayPosition.X, cell.CellArrayPosition.Y, 0));
+                }
             }
+
+            Gizmos.color = UnityEngine.Color.blue;
+            Gizmos.DrawWireSphere(new Vector3(hqCoordinate.X, hqCoordinate.Y, 0), .25f);
         }
     }
 
