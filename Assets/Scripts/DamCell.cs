@@ -78,4 +78,19 @@ public class DamCell
         dist = int.MaxValue;
         pathNeighbor = null;
     }
+
+    /// <summary>
+    /// Removes a cell connection one-way
+    /// </summary>
+    /// <param name="cell">The cell to attempt to remove</param>
+    /// <returns>True if the cell was removed, false if it wasn't found</returns>
+    public bool RemoveConnection(DamCell cell)
+    {
+        if (connections.Contains(cell))
+        {
+            connections.Remove(cell);
+            return true;
+        }
+        return false;
+    }
 }
