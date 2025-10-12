@@ -3,11 +3,9 @@ using UnityEngine.InputSystem;
 
 public class PaintScript : MonoBehaviour
 {
-    //These public variables can be changed freely
-    public Color brushColor = Color.red;
-    public float width = 0.2f;
-    public Material brush;
 
+    public DrawingTool tool;
+    
     //These are four private variables that get the position of the mouse and assign where to be drawing the line
     Vector3 mousePos;
     Vector3 screenpoint;
@@ -24,7 +22,7 @@ public class PaintScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        brush = new Material(Shader.Find("Sprites/Default"));
+
     }
 
     // Update is called once per frame
@@ -49,18 +47,21 @@ public class PaintScript : MonoBehaviour
         brushLine = child.AddComponent<LineRenderer>();
 
         // This assigns the material, color, and width of the new line
-        brushLine.material = new Material(brush);
-        brushLine.startColor = brushColor;
-        brushLine.endColor = brushColor;
-        brushLine.startWidth = width;
-        brushLine.endWidth = width;
+        brushLine.material = new Material(tool.brush);
+        brushLine.startColor = tool.color;
+        brushLine.endColor = tool.color;
+        brushLine.startWidth = tool.width;
+        brushLine.endWidth = tool.width;
+
+        brushLine.numCapVertices = 4;
+        brushLine.numCornerVertices = 4;
 
         //This sets the first position of the line
         brushLine.positionCount = 1;
         brushLine.SetPosition(0, mousePos);
 
         brushLine.sortingOrder = drawOrder;
-        brushLine.sortingLayerName = layerName;
+        brushLine.sortingLayerName = tool.layer;
     }
 
     private void OnMouseDrag()

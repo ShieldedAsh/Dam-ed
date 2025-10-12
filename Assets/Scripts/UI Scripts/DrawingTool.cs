@@ -9,11 +9,12 @@ public class DrawingTool : MonoBehaviour
     public float width = 0.2f;
 
     public string layer = "Pencil";
+    public Material brush;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-       
+        brush = new Material(Shader.Find("Sprites/Default"));
     }
 
     // Update is called once per frame
@@ -24,9 +25,6 @@ public class DrawingTool : MonoBehaviour
 
     private void OnMouseDown()
     {
-        //Cannot get the color to update right now for some reason...
-        paintScript.brushColor = color;
-        paintScript.width = width;
-        paintScript.layerName = layer;
+        paintScript.tool = this;
     }
 }

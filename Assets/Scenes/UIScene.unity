@@ -302,6 +302,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+--- !u!114 &320580400 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+  m_PrefabInstance: {fileID: 665565402}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 011f97d9543425a499b9eb61ad181779, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &320580402 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7052862652731637426, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
@@ -1418,21 +1429,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!4 &2039165025
-Transform:
+--- !u!224 &2039165025
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2039165021}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.01, y: 0.1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 8, y: 8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.01, y: 0.1}
+  m_SizeDelta: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2039165026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1445,9 +1460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c65d47855c9d39d44ae1bdb7db486aa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brushColor: {r: 0.09743297, g: 1, b: 0, a: 1}
-  width: 0.2
-  brush: {fileID: 0}
+  tool: {fileID: 320580400}
   layerName: Pencils
 --- !u!1001 &2078678336
 PrefabInstance:
@@ -1539,7 +1552,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1749796882}
-  - {fileID: 2039165025}
   - {fileID: 1917973379}
   - {fileID: 1125128527}
   - {fileID: 1545653930}
+  - {fileID: 2039165025}
