@@ -8,6 +8,8 @@ public class DrawingTool : MonoBehaviour
     
     public float width = 0.2f;
 
+    public string layer = "Pencil";
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,5 +27,6 @@ public class DrawingTool : MonoBehaviour
         //Cannot get the color to update right now for some reason...
         paintScript.brushColor = color;
         paintScript.width = width;
+        paintScript.layerName = layer;
     }
 }

@@ -44,6 +44,7 @@ public class StickerScript : MonoBehaviour
         child.transform.AddComponent<BoxCollider2D>();
         child.transform.AddComponent<MoveSticker>();
         child.transform.GetComponent<MoveSticker>().dropField = dropField;
+        child.transform.GetComponent<SpriteRenderer>().sortingLayerName = "Stickers";
         
     }
 

@@ -16,10 +16,11 @@ public class PaintScript : MonoBehaviour
     //A boolean to make sure the lines don't go off the page
     bool offGrid = false;
 
-    //an integer to make sure things aren't drawn under each other
+    //integers and strings for Drawing Layers
     int drawOrder = -1;
+    public string layerName = "Pencils";
 
-
+    GameObject child;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,6 +35,7 @@ public class PaintScript : MonoBehaviour
     //Generates the start of the line and assigns the initial components
     private void OnMouseDown()
     {
+        drawOrder++;
         offGrid = false;
         //When clicked, it gets the current mouse position and translates it to the worldpoint
         screenpoint = Mouse.current.position.ReadValue();
@@ -56,6 +58,9 @@ public class PaintScript : MonoBehaviour
         //This sets the first position of the line
         brushLine.positionCount = 1;
         brushLine.SetPosition(0, mousePos);
+
+        brushLine.sortingOrder = drawOrder;
+        brushLine.sortingLayerName = layerName;
     }
 
     private void OnMouseDrag()
@@ -81,8 +86,25 @@ public class PaintScript : MonoBehaviour
         else
         {
             //Cuts off the line if not in-bounds
+
+            //Simplifies the line to reduce load and assigns it a collider so it can be deleted
+            if(brushLine != null)
+            {
+                brushLine.Simplify(0.02f);
+                
+            }
+            
             brushLine = null;
             offGrid = true;
+        }
+    }
+
+    private void OnMouseUp()
+    {
+        if(brushLine != null)
+        {
+            brushLine.Simplify(0.02f);
+            brushLine = null;
         }
     }
 
