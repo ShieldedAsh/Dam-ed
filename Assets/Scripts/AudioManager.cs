@@ -80,7 +80,6 @@ public class AudioSystem : MonoBehaviour
     {
         _audioTime += time;
         PlaySound();
-        GetNextAudioTime();
     }
 
     /// <summary>
@@ -120,6 +119,15 @@ public class AudioSystem : MonoBehaviour
             }
 
             aS.Play();
+            
+            //If _audioTime is greater than _nextAudio, then a sound will always play one after another. This can be
+            //avoided by setting _audioTime to 0.
+            if(_audioTime > _nextAudio)
+            {
+                _audioTime = 0;
+            }
+
+            GetNextAudioTime();
         }
     }
 
@@ -129,6 +137,7 @@ public class AudioSystem : MonoBehaviour
     public void GetNextAudioTime()
     {
         //A random amount of time, from 0-15 minutes, in seconds.
+        //30s is 30f, 15min is 900f
         _nextAudio = Random.Range(0f, 900f);
     }
 }
