@@ -3,7 +3,9 @@ using UnityEngine;
 public class Scrap : Item
 {
     //Add code to this later, just exists to connect it for now
-    
+    private int count;
+
+
     /// <summary>
     /// This is a Scrap item
     /// </summary>
@@ -12,5 +14,10 @@ public class Scrap : Item
     /// <summary>
     /// How many scrap items are here
     /// </summary>
-    public int Count { get; }
+    public int Count { get => count; }
+
+    public Scrap()
+    {
+        count = Random.Range(1, 4);
+    }
 }

@@ -1,10 +1,10 @@
-using System;
 using UnityEngine;
 
 public class Food : Item
 {
     //Add code to this later, just exists to connect it for now
-    
+    private int count;
+
     /// <summary>
     /// This is a food item
     /// </summary>
@@ -13,5 +13,10 @@ public class Food : Item
     /// <summary>
     /// How many Food items are here
     /// </summary>
-    public int Count { get; }
+    public int Count { get => count; }
+
+    public Food()
+    {
+        count = Random.Range(10, 31);
+    }
 }
