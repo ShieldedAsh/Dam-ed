@@ -36,7 +36,7 @@ public class DamCell
     /// <summary>
     /// What the cell contains
     /// </summary>
-    public List<Item> Contents { get; private set; }
+    public List<IItem> Contents { get; private set; }
 
     //Pathfinding Properties
     public bool Permanence { get => permanence; set => permanence = value; }
@@ -53,14 +53,14 @@ public class DamCell
         connections = new List<DamCell>();
         cellCoordinates = new Tuple<char, int>('a', 1);
         Reset();
-        Contents = new List<Item>();
+        Contents = new List<IItem>();
     }
 
     /// <summary>
     /// Adds an item the contents of the room
     /// </summary>
     /// <param name="item">The item being added</param>
-    public void AddItem(Item item)
+    public void AddItem(IItem item)
     {
         Contents.Add(item);
     }
@@ -69,7 +69,7 @@ public class DamCell
     /// Removes an item from the contents of the room
     /// </summary>
     /// <param name="item">The item being removed</param>
-    public void RemoveItem(Item item)
+    public void RemoveItem(IItem item)
     {
         Contents.Remove(item);
     }

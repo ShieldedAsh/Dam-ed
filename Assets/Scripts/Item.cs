@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface Item
+public interface IItem
 {
     /// <summary>
     /// Types of items that exist

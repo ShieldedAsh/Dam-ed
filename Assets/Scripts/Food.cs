@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Food : Item
+public class Food : IItem
 {
     //Add code to this later, just exists to connect it for now
     private int count;
@@ -8,7 +8,7 @@ public class Food : Item
     /// <summary>
     /// This is a food item
     /// </summary>
-    public Item.ItemType itemType { get { return Item.ItemType.Food; } }
+    public IItem.ItemType itemType { get { return IItem.ItemType.Food; } }
 
     /// <summary>
     /// How many Food items are here

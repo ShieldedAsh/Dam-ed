@@ -1,15 +1,14 @@
 using UnityEngine;
 
-public class Scrap : Item
+public class Scrap : IItem
 {
     //Add code to this later, just exists to connect it for now
     private int count;
 
-
     /// <summary>
     /// This is a Scrap item
     /// </summary>
-    public Item.ItemType itemType { get { return Item.ItemType.Scrap; } }
+    public IItem.ItemType itemType { get { return IItem.ItemType.Scrap; } }
 
     /// <summary>
     /// How many scrap items are here

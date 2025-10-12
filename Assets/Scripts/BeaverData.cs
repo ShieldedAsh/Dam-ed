@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BeaverData : MonoBehaviour, Item
+public class BeaverData : MonoBehaviour, IItem
 {
     /// <summary>
     /// The name of the Beaver
@@ -37,7 +37,7 @@ public class BeaverData : MonoBehaviour, Item
     /// <summary>
     /// What the beaver is actively carrying;
     /// </summary>
-    public Item Carrying { get; set; }
+    public IItem Carrying { get; set; }
 
     /// <summary>
     /// Is the beaver dead
@@ -57,7 +57,7 @@ public class BeaverData : MonoBehaviour, Item
     /// <summary>
     /// This is a Beaver item
     /// </summary>
-    public Item.ItemType itemType { get { return Item.ItemType.Beaver; } }
+    public IItem.ItemType itemType { get { return IItem.ItemType.Beaver; } }
 
     private float timeToMove;
 
@@ -118,7 +118,7 @@ public class BeaverData : MonoBehaviour, Item
     public void EvaluateRoom()
     {
         Memory.Add(new Memory(CurrentLocation));
-        foreach(Item item in CurrentLocation.Contents)
+        foreach(IItem item in CurrentLocation.Contents)
         {
             Memory[Memory.Count - 1].AddItem(item);
         }
