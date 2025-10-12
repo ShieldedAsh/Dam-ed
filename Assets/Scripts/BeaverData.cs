@@ -120,6 +120,7 @@ public class BeaverData : IItem
         Carrying = default;
         BeaverStatus = Status.Healthy;
         CurrentLocation = dam.HQ;
+    }
 
     /// <summary>
     /// Evaluates a room and adds everything in it to the Beaver's memory (can later be used to check if a beaver survives an encounter with a wolf)
