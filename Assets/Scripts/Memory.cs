@@ -11,7 +11,7 @@ public class Memory : MonoBehaviour
     /// <summary>
     /// What the Beaver found at that position
     /// </summary>
-    public List<Item> Knowledge { get; private set; }
+    public List<IItem> Knowledge { get; private set; }
 
     /// <summary>
     /// Constructor for a memory
@@ -20,14 +20,14 @@ public class Memory : MonoBehaviour
     public Memory(DamCell cell)
     {
         Cell = cell;
-        Knowledge = new List<Item>();
+        Knowledge = new List<IItem>();
     }
 
     /// <summary>
     /// Adds an item to the memory
     /// </summary>
     /// <param name="item">The item to add</param>
-    public void AddItem(Item item)
+    public void AddItem(IItem item)
     {
         Knowledge.Add(item);
     }
@@ -43,11 +43,11 @@ public class Memory : MonoBehaviour
             return "I saw nothing";
         }
         string output = "I saw ";
-        foreach (Item mem in Knowledge)
+        foreach (IItem mem in Knowledge)
         {
             switch (mem.itemType)
             {
-                case Item.ItemType.Beaver:
+                case IItem.ItemType.Beaver:
                     BeaverData beaver = (BeaverData)mem;
                     output += "our friend " + beaver.BeaverName;
                     if (beaver.IsDead)
@@ -63,13 +63,13 @@ public class Memory : MonoBehaviour
                         output += $" he was {beaver.CurrentOrder}. I also saw ";
                     }
                         break;
-                case Item.ItemType.Wolf:
+                case IItem.ItemType.Wolf:
                     output += " a wolf, ";
                     break;
-                case Item.ItemType.Food:
+                case IItem.ItemType.Food:
                     output += $"a stack of {((Food)mem).Count} pieces of food, ";
                     break;
-                case Item.ItemType.Scrap:
+                case IItem.ItemType.Scrap:
                     output += $"a stack of {((Scrap)mem).Count} pieces of scrap, ";
                     break;
             }
