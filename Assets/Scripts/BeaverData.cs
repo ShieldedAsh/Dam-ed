@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BeaverData : MonoBehaviour, IItem
+[System.Serializable]
+public class BeaverData : IItem
 {
     /// <summary>
     /// The name of the Beaver
@@ -64,14 +65,24 @@ public class BeaverData : MonoBehaviour, IItem
     /// </summary>
     public IItem.ItemType itemType { get { return IItem.ItemType.Beaver; } }
 
+    public DamGroup dam { get; private set; }
+
     private float timeToMove;
 
-    private void Update()
+    private BeaverManager beaverManager;
+
+    public void UpdateBeaver()
     {
+        if (Orders[0] == null)
+        {
+            GiveOrder(new Order(Order.Action.Move, this, beaverManager, dam.Cells[7, 8]));
+        }
         if(timeToMove <= 0)
         {
+            Debug.Log($"Moving from: ({CurrentLocation.CellCoordinates.Item1},{CurrentLocation.CellCoordinates.Item2}) --> ");
             timeToMove = Random.Range(5f - Speed, 10f - Speed);
             ExecuteOrder();
+            Debug.Log($" ({CurrentLocation.CellCoordinates.Item1},{CurrentLocation.CellCoordinates.Item2})");
         }
         if (CurrentOrder.ThisOrder == Order.Action.Move)
         {
@@ -86,17 +97,13 @@ public class BeaverData : MonoBehaviour, IItem
     /// <param name="name">The Beaver's name</param>
     /// <param name="intelligence">The Beaver's intelligence</param>
     /// <param name="speed">The Beaver's speed</param>
-    public BeaverData(string name, int intelligence, float speed)
+    public BeaverData(string name, int intelligence, float speed) : this()
     {
         BeaverName = name;
         Intelligence = intelligence;
         Speed = speed;
-        Memory = new List<Memory>();
-        Orders = new Order[intelligence + 1];
-        Orders[Orders.Length] = new Order(Order.Action.Move, this, DamGenerator.HQ);
-        Carrying = default;
-        BeaverStatus = Status.Healthy;
-        CurrentLocation = DamGenerator.HQ;
+        Orders = new Order[Intelligence + 1];
+        Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, beaverManager, dam.HQ);
     }
 
     /// <summary>
@@ -109,11 +116,10 @@ public class BeaverData : MonoBehaviour, IItem
         Speed = 1;
         Memory = new List<Memory>();
         Orders = new Order[Intelligence + 1];
-        Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, DamGenerator.HQ);
+        Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, beaverManager, dam.HQ);
         Carrying = default;
         BeaverStatus = Status.Healthy;
-        CurrentLocation = DamGenerator.HQ;
-    }
+        CurrentLocation = dam.HQ;
 
     /// <summary>
     /// Evaluates a room and adds everything in it to the Beaver's memory (can later be used to check if a beaver survives an encounter with a wolf)

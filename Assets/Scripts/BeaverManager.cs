@@ -1,12 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class BeaverManager : MonoBehaviour
 {
-    [SerializeField] DamGroup theDam;
+    private DamGroup theDam;
 
-    public static DamGroup TheDam { get; }
+    public DamGroup TheDam { get => theDam; }
 
     public List<BeaverData> Beavers { get; private set; }
+
+    public void Awake()
+    {
+        theDam = FindAnyObjectByType<DamGenerator>().Dam;
+    }
+
+    private void Update()
+    {
+        foreach(BeaverData beaver in Beavers)
+        {
+            beaver.UpdateBeaver();
+        }
+    }
 
 }

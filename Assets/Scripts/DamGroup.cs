@@ -6,12 +6,14 @@ public class DamGroup
 {
     //Variables
     private DamCell[,] cells;
+    private DamCell hq;
 
     //Properties
     /// <summary>
     /// Read-Only array of DamCells
     /// </summary>
     public DamCell[,] Cells { get => cells; }
+    public DamCell HQ { get => hq;}
 
     //Constructor
     /// <summary>
@@ -108,5 +110,10 @@ public class DamGroup
             }
         }
         return path;
+    }
+
+    public void setHQ(DamCell hq)
+    {
+
     }
 }

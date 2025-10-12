@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class Order : MonoBehaviour
+public class Order
 {
     private List<DamCell> PathToTarget;
     private int currentPathIndex;
@@ -10,6 +10,7 @@ public class Order : MonoBehaviour
     /// <summary>
     /// Things a beaver can do
     /// </summary>
+    [System.Serializable]
     public enum Action
     {
         Move,
@@ -34,14 +35,18 @@ public class Order : MonoBehaviour
     /// </summary>
     private BeaverData beaver;
 
+    [SerializeField] private BeaverManager beaverManager;
+    [SerializeField] private Action action;
+
     /// <summary>
     /// Constructor for a single Order with no target
     /// </summary>
     /// <param name="action">The action you want this order to contain</param>
     /// <param name="beaver">The beaver being given the order</param>
-    public Order(Action action, BeaverData beaver)
+    public Order(Action action, BeaverData beaver, BeaverManager beaverManager)
     {
         ThisOrder = action;
+        this.beaverManager = beaverManager;
     }
 
     /// <summary>
@@ -50,12 +55,12 @@ public class Order : MonoBehaviour
     /// <param name="action">The action you want this order to contain</param>
     /// <param name="beaver">The beaver being given the order</param>
     /// <param name="target">The target of the order being taken</param>
-    public Order(Action action, BeaverData beaver, DamCell target) : this(action, beaver)
-    {
-        TargetDamCell = target;
-        if(ThisOrder == Action.Move)
+    public Order(Action action, BeaverData beaver, BeaverManager beaverManager, DamCell target) : this(action, beaver, beaverManager)
+    {   
+        TargetDamCell = beaverManager.TheDam.HQ;
+        if (ThisOrder == Action.Move)
         {
-            PathToTarget = BeaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, target);
+            PathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
             currentPathIndex = 0;
         }
     }
@@ -70,7 +75,7 @@ public class Order : MonoBehaviour
             case Action.Move:
                 beaver.EvaluateRoom();
                 //Re-evaluates Path to find current best route
-                PathToTarget = BeaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
+                PathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
                 currentPathIndex = 0;
                 beaver.CurrentLocation = PathToTarget[currentPathIndex];
                 currentPathIndex++;
@@ -84,12 +89,12 @@ public class Order : MonoBehaviour
                 }
                 break;
             case Action.Barricade:
-                BeaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].RemoveConnection(TargetDamCell);
-                BeaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].RemoveConnection(beaver.CurrentLocation);
+                beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].RemoveConnection(TargetDamCell);
+                beaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].RemoveConnection(beaver.CurrentLocation);
                 break;
             case Action.Tunnel:
-                BeaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].AddConnection(TargetDamCell);
-                BeaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].AddConnection(beaver.CurrentLocation);
+                beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].AddConnection(TargetDamCell);
+                beaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].AddConnection(beaver.CurrentLocation);
                 break;
             case Action.Distract:
                 //finds all wolves within 5 spaces
