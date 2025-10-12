@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ClearPad : MonoBehaviour
 {
-    public GameObject drawPad;
+    public PaintScript drawPad;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,5 +21,6 @@ public class ClearPad : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        drawPad.drawOrder = -1;
     }
 }

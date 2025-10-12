@@ -30,6 +30,13 @@ public class DamGenerator : MonoBehaviour
     /// </summary>
     public int ConnectionDensityPercentage { get => connectionDensityPercentage; set => connectionDensityPercentage = value; }
 
+    //Drawing Properties
+    public UnityEngine.Color connectionColor;
+    public Sprite cellSprite;
+    private GameObject child;
+    private GameObject connection;
+    private LineRenderer connectionLine;
+    public float connectionWidth;
     //Methods
     private void Awake()
     {   
@@ -201,6 +208,8 @@ public class DamGenerator : MonoBehaviour
                 }
             }
         }
+
+        DrawDam();
         
     }
 
@@ -272,5 +281,43 @@ public class DamGenerator : MonoBehaviour
     {
         current.AddConnection(dam.Cells[current.CellArrayPosition.X + relativeOffset.X, current.CellArrayPosition.Y + relativeOffset.Y]);
         dam.Cells[current.CellArrayPosition.X + relativeOffset.X, current.CellArrayPosition.Y + relativeOffset.Y].AddConnection(current);
+    }
+    
+
+    private void DrawDam()
+    {
+        if (dam != null)
+        {
+
+            float xOffset = transform.position.x - hqCoordinate.X;
+            float yOffset = transform.position.y - hqCoordinate.Y;
+            foreach (DamCell gCell in dam.Cells)
+            {
+                child = new GameObject();
+                child.transform.SetParent(transform);
+                child.transform.position = new Vector3(gCell.CellArrayPosition.X + xOffset, gCell.CellArrayPosition.Y + yOffset, 0);
+                child.AddComponent<SpriteRenderer>();
+                child.GetComponent<SpriteRenderer>().sprite = cellSprite;
+                child.GetComponent<SpriteRenderer>().sortingLayerName = "Map";
+                child.transform.name = gCell.CellArrayPosition.ToString();
+                foreach (DamCell cell in gCell.Connections)
+                {
+                    connection = new GameObject();
+                    connection.transform.SetParent(child.transform);
+                    connectionLine = connection.AddComponent<LineRenderer>();
+                    connectionLine.material = new Material(Shader.Find("Sprites/Default"));
+                    connectionLine.startWidth = connectionWidth;
+                    connectionLine.endWidth = connectionWidth;
+                    connectionLine.startColor = connectionColor;
+                    connectionLine.endColor = connectionColor;
+                    connectionLine.sortingLayerName = "Map";
+                    connectionLine.sortingOrder = -1;
+                    connectionLine.positionCount = 2;
+                    connectionLine.SetPosition(0, new Vector3(gCell.CellArrayPosition.X + xOffset, gCell.CellArrayPosition.Y + yOffset, 0));
+                    connectionLine.SetPosition(1, new Vector3(cell.CellArrayPosition.X + xOffset, cell.CellArrayPosition.Y + yOffset, 0));
+                    
+                }
+            }
+        }
     }
 }

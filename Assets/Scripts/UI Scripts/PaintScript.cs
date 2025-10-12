@@ -15,7 +15,7 @@ public class PaintScript : MonoBehaviour
     bool offGrid = false;
 
     //integers and strings for Drawing Layers
-    int drawOrder = -1;
+    public int drawOrder = -1;
     public string layerName = "Pencils";
 
     GameObject child;
@@ -28,6 +28,7 @@ public class PaintScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
     }
 
     //Generates the start of the line and assigns the initial components
@@ -43,7 +44,7 @@ public class PaintScript : MonoBehaviour
         //This makes the new line
         child = new GameObject();
         child.transform.SetParent(transform);
-        child.transform.name = "Line";
+        child.transform.name = tool.layer.ToString() + " Line";
         brushLine = child.AddComponent<LineRenderer>();
 
         // This assigns the material, color, and width of the new line
