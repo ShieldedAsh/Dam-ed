@@ -118,6 +118,7 @@ public class AudioSystem : MonoBehaviour
                     break;
             }
 
+            //Put volume/other settings here if needed.
             aS.Play();
             
             //If _audioTime is greater than _nextAudio, then a sound will always play one after another. This can be
