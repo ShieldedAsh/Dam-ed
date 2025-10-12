@@ -50,11 +50,11 @@ public class Memory : MonoBehaviour
                 case IItem.ItemType.Beaver:
                     BeaverData beaver = (BeaverData)mem;
                     output += "our friend " + beaver.BeaverName;
-                    if (beaver.IsDead)
+                    if (beaver.BeaverStatus == BeaverData.Status.Dead)
                     {
                         output += " he was dead. I also saw ";
                     }
-                    else if (beaver.IsInjured)
+                    else if (beaver.BeaverStatus == BeaverData.Status.Injured)
                     {
                         output += " he was injured. I also saw ";
                     }

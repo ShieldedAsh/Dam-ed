@@ -40,14 +40,19 @@ public class BeaverData : MonoBehaviour, IItem
     public IItem Carrying { get; set; }
 
     /// <summary>
-    /// Is the beaver dead
+    /// Enum for the status of the Beaver
     /// </summary>
-    public bool IsDead { get; private set; }
-    
+    public enum Status
+    {
+        Dead,
+        Injured,
+        Healthy
+    }
+
     /// <summary>
-    /// Is the beaver injured
+    /// What is the beaver's current status
     /// </summary>
-    public bool IsInjured { get; private set; }
+    public Status BeaverStatus { get; private set; }
 
     /// <summary>
     /// The current location of the beaver
@@ -90,8 +95,7 @@ public class BeaverData : MonoBehaviour, IItem
         Orders = new Order[intelligence + 1];
         Orders[Orders.Length] = new Order(Order.Action.Move, this, DamGenerator.HQ);
         Carrying = default;
-        IsDead = false;
-        IsInjured = false;
+        BeaverStatus = Status.Healthy;
         CurrentLocation = DamGenerator.HQ;
     }
 
@@ -107,8 +111,7 @@ public class BeaverData : MonoBehaviour, IItem
         Orders = new Order[Intelligence + 1];
         Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, DamGenerator.HQ);
         Carrying = default;
-        IsDead = false;
-        IsInjured = false;
+        BeaverStatus = Status.Healthy;
         CurrentLocation = DamGenerator.HQ;
     }
 
