@@ -73,10 +73,6 @@ public class BeaverData : IItem
 
     public void UpdateBeaver()
     {
-        if (Orders[0] == null)
-        {
-            GiveOrder(new Order(Order.Action.Move, this, beaverManager, dam.Cells[7, 8]));
-        }
         if(timeToMove <= 0)
         {
             Debug.Log($"Moving from: ({CurrentLocation.CellCoordinates.Item1},{CurrentLocation.CellCoordinates.Item2}) --> ");
@@ -97,26 +93,26 @@ public class BeaverData : IItem
     /// <param name="name">The Beaver's name</param>
     /// <param name="intelligence">The Beaver's intelligence</param>
     /// <param name="speed">The Beaver's speed</param>
-    public BeaverData(string name, int intelligence, float speed) : this()
+    public BeaverData(BeaverManager beaverManager, string name, int intelligence, float speed) : this(beaverManager)
     {
         BeaverName = name;
         Intelligence = intelligence;
         Speed = speed;
         Orders = new Order[Intelligence + 1];
-        Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, beaverManager, dam.HQ);
+        Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, beaverManager, beaverManager.TheDam.HQ);
     }
 
     /// <summary>
     /// Default constructor for a beaver. sets the name to BGDD-R(2) and the intelligence to 5 and speed to 1
     /// </summary>
-    public BeaverData()
+    public BeaverData(BeaverManager beaverManager)
     {
         BeaverName = "BGDD-R(2)";
         Intelligence = 5;
         Speed = 1;
         Memory = new List<Memory>();
         Orders = new Order[Intelligence + 1];
-        Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, beaverManager, dam.HQ);
+        Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, beaverManager, beaverManager.TheDam.HQ);
         Carrying = default;
         BeaverStatus = Status.Healthy;
         CurrentLocation = dam.HQ;

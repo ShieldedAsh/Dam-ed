@@ -13,6 +13,11 @@ public class BeaverManager : MonoBehaviour
     public void Awake()
     {
         theDam = FindAnyObjectByType<DamGenerator>().Dam;
+        for (int i = 0; i < 9; i++)
+        {
+            AddBeaver();
+        }
+        Beavers[0].GiveOrder(new Order(Order.Action.Move, Beavers[0], this, theDam.Cells[7, 8]));
     }
 
     private void Update()
@@ -21,6 +26,11 @@ public class BeaverManager : MonoBehaviour
         {
             beaver.UpdateBeaver();
         }
+    }
+
+    public void AddBeaver()
+    {
+        Beavers.Add(new BeaverData(this));
     }
 
 }
