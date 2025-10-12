@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 #nullable enable
 public class DamCell
 {
+
     //Variables
     private List<DamCell> connections;
     private Tuple<char, int> cellCoordinates;
@@ -32,6 +33,10 @@ public class DamCell
     //Connections Property
     public List<DamCell> Connections { get => connections; }
 
+    /// <summary>
+    /// What the cell contains
+    /// </summary>
+    public List<Item> Contents { get; private set; }
 
     //Pathfinding Properties
     public bool Permanence { get => permanence; set => permanence = value; }
@@ -46,8 +51,27 @@ public class DamCell
     public DamCell()
     {
         connections = new List<DamCell>();
-        SetCoordinate('a', 1);
+        cellCoordinates = new Tuple<char, int>('a', 1);
         Reset();
+        Contents = new List<Item>();
+    }
+
+    /// <summary>
+    /// Adds an item the contents of the room
+    /// </summary>
+    /// <param name="item">The item being added</param>
+    public void AddItem(Item item)
+    {
+        Contents.Add(item);
+    }
+
+    /// <summary>
+    /// Removes an item from the contents of the room
+    /// </summary>
+    /// <param name="item">The item being removed</param>
+    public void RemoveItem(Item item)
+    {
+        Contents.Remove(item);
     }
 
     /// <summary>

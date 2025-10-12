@@ -1,52 +1,79 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BeaverData : MonoBehaviour
+public class BeaverData : MonoBehaviour, Item
 {
-    /// <summary>
-    /// Items a beaver can carry
-    /// </summary>
-    public enum Carrying
-    {
-        Scrap,
-        Food,
-        Beaver,
-        Nothing
-    }
-
     /// <summary>
     /// The name of the Beaver
     /// </summary>
-    public string beaverName { get; private set; }
+    public string BeaverName { get; private set; }
+
     /// <summary>
     /// The intelligence of the Beaver
     /// </summary>
-    public int intelligence { get; private set; }
+    public int Intelligence { get; private set; }
+
     /// <summary>
     /// The speed of the beaver
     /// </summary>
-    public int speed {  get; private set; }
+    public float Speed {  get; private set; }
+
     /// <summary>
     /// The memories of the Beaver
     /// </summary>
-    public List<Memory> memory { get; private set; }
+    public List<Memory> Memory { get; private set; }
+
     /// <summary>
     /// The beaver's current orders (NOTE: Length = intelligence + 1, as last order is always a move order to HQ)
     /// </summary>
-    public Order[] orders { get; private set; }
-    private int currentOrderIndex;
+    public Order[] Orders { get; private set; }
+
     /// <summary>
     /// The order the beaver is currently carrying out
     /// </summary>
-    public Order currentOrder { get { return orders[currentOrderIndex]; } }
+    public Order CurrentOrder { get { return Orders[currentOrderIndex]; } }
+    private int currentOrderIndex;
+
     /// <summary>
     /// What the beaver is actively carrying;
     /// </summary>
-    public Carrying carrying { get; private set; }
+    public Item Carrying { get; set; }
+
     /// <summary>
     /// Is the beaver dead
     /// </summary>
-    public bool isDead { get; private set; }
+    public bool IsDead { get; private set; }
+    
+    /// <summary>
+    /// Is the beaver injured
+    /// </summary>
+    public bool IsInjured { get; private set; }
+
+    /// <summary>
+    /// The current location of the beaver
+    /// </summary>
+    public DamCell CurrentLocation { get; set; }
+    
+    /// <summary>
+    /// This is a Beaver item
+    /// </summary>
+    public Item.ItemType itemType { get { return Item.ItemType.Beaver; } }
+
+    private float timeToMove;
+
+    private void Update()
+    {
+        if(timeToMove <= 0)
+        {
+            timeToMove = Random.Range(5f - Speed, 10f - Speed);
+            ExecuteOrder();
+        }
+        if (CurrentOrder.ThisOrder == Order.Action.Move)
+        {
+           
+        }
+        timeToMove -= Time.deltaTime;
+    }
 
     /// <summary>
     /// Creates a beavers with a given name as well as intelligence and speed stats
@@ -54,38 +81,47 @@ public class BeaverData : MonoBehaviour
     /// <param name="name">The Beaver's name</param>
     /// <param name="intelligence">The Beaver's intelligence</param>
     /// <param name="speed">The Beaver's speed</param>
-    public BeaverData(string name, int intelligence, int speed)
+    public BeaverData(string name, int intelligence, float speed)
     {
-        beaverName = name;
-        this.intelligence = intelligence;
-        this.speed = speed;
-        memory = new List<Memory>();
-        orders = new Order[intelligence + 1];
-        carrying = Carrying.Nothing;
-        isDead = false;
+        BeaverName = name;
+        Intelligence = intelligence;
+        Speed = speed;
+        Memory = new List<Memory>();
+        Orders = new Order[intelligence + 1];
+        Orders[Orders.Length] = new Order(Order.Action.Move, this, DamGenerator.HQ);
+        Carrying = default;
+        IsDead = false;
+        IsInjured = false;
+        CurrentLocation = DamGenerator.HQ;
     }
 
     /// <summary>
-    /// Default constructor for a beaver. sets the name to BGDD-R(2) and the intelligence and speed to 5
+    /// Default constructor for a beaver. sets the name to BGDD-R(2) and the intelligence to 5 and speed to 1
     /// </summary>
     public BeaverData()
     {
-        beaverName = "BGDD-R(2)";
-        intelligence = 5;
-        speed = 5;
-        memory = new List<Memory>();
-        orders = new Order[intelligence + 1];
-        orders[orders.Length] = new Order(Order.Action.Move);
-        carrying = Carrying.Nothing;
-        isDead = false;
+        BeaverName = "BGDD-R(2)";
+        Intelligence = 5;
+        Speed = 1;
+        Memory = new List<Memory>();
+        Orders = new Order[Intelligence + 1];
+        Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, DamGenerator.HQ);
+        Carrying = default;
+        IsDead = false;
+        IsInjured = false;
+        CurrentLocation = DamGenerator.HQ;
     }
 
     /// <summary>
-    /// UPDATE TO ACTUALLY TAKE A ROOM THING!!!!!
+    /// Evaluates a room and adds everything in it to the Beaver's memory (can later be used to check if a beaver survives an encounter with a wolf)
     /// </summary>
     public void EvaluateRoom()
     {
-
+        Memory.Add(new Memory(CurrentLocation));
+        foreach(Item item in CurrentLocation.Contents)
+        {
+            Memory[Memory.Count - 1].AddItem(item);
+        }
     }
 
     /// <summary>
@@ -95,11 +131,11 @@ public class BeaverData : MonoBehaviour
     /// <returns>Whether or not the order was added</returns>
     public bool GiveOrder(Order order)
     {
-        for(int i = 0; i < orders.Length - 1; i++)
+        for(int i = 0; i < Orders.Length - 1; i++)
         {
-            if (orders[i] == null)
+            if (Orders[i] == null)
             {
-                orders[i] = order;
+                Orders[i] = order;
                 return true;
             }
         }
@@ -112,7 +148,17 @@ public class BeaverData : MonoBehaviour
     /// </summary>
     public void ExecuteOrder()
     {
-        currentOrder.TakeAction();
-        currentOrderIndex++;
+        CurrentOrder.TakeAction();
+        if(CurrentOrder.ThisOrder == Order.Action.Move)
+        {
+            if(CurrentLocation == CurrentOrder.TargetDamCell)
+            {
+                currentOrderIndex++;
+            }
+        }
+        else
+        {
+            currentOrderIndex++;
+        }
     }
 }

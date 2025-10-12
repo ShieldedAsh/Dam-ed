@@ -30,6 +30,11 @@ public class DamGenerator : MonoBehaviour
     /// </summary>
     public int ConnectionDensityPercentage { get => connectionDensityPercentage; set => connectionDensityPercentage = value; }
 
+    /// <summary>
+    /// The DamCell containing the HQ
+    /// </summary>
+    public static DamCell HQ { get; private set; }
+
     //Methods
     private void Awake()
     {   
@@ -82,6 +87,7 @@ public class DamGenerator : MonoBehaviour
         startIndex = new Vector2(hqCoordinate.X, hqCoordinate.Y);
         Point start = new Point(hqCoordinate.X - 1, hqCoordinate.Y);
         Point startExtraC = new Point(hqCoordinate.X + 1, hqCoordinate.Y);
+        HQ = dam.Cells[hqCoordinate.X, hqCoordinate.Y];
 
         ConnectCells(dam.Cells[hqCoordinate.X, hqCoordinate.Y], new Point(-1, 0));
         ConnectCells(dam.Cells[hqCoordinate.X, hqCoordinate.Y], new Point(1, 0));
@@ -244,7 +250,7 @@ public class DamGenerator : MonoBehaviour
                 }
             }
 
-            dam.ShortestPath(dam.Cells[(int)startIndex.x, (int)startIndex.y], dam.Cells[(int)endIndex.x, (int)endIndex.y]);
+            dam.GenerateShortestPath(dam.Cells[(int)startIndex.x, (int)startIndex.y], dam.Cells[(int)endIndex.x, (int)endIndex.y]);
             
             DamCell current = dam.Cells[(int)endIndex.x, (int)endIndex.y];
             while (current != null)

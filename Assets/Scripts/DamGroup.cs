@@ -1,5 +1,6 @@
-using System.Drawing;
 using System.Collections.Generic;
+using System.Drawing;
+using static UnityEngine.GraphicsBuffer;
 
 public class DamGroup
 {
@@ -31,7 +32,7 @@ public class DamGroup
         cells = new DamCell[size.X, size.Y];
     }
 
-    public void ShortestPath(DamCell start, DamCell end)
+    public void GenerateShortestPath(DamCell start, DamCell end)
     {
         DamCell currentCell = start;
         int currentRow = start.CellArrayPosition.X;
@@ -84,6 +85,28 @@ public class DamGroup
             }
             smallest.Permanence = true;
             currentCell = smallest;
-        } 
+        }
+    }
+
+    /// <summary>
+    /// Gets the shortest path to the target
+    /// </summary>
+    /// <param name="start">Where the path starts</param>
+    /// <param name="end">Where the path ends</param>
+    /// <returns>A list of DamCells containing the path</returns>
+    public List<DamCell> GetShortestPath(DamCell start, DamCell end)
+    {
+        GenerateShortestPath(start, end);
+        DamCell current = end;
+        List<DamCell> path = new List<DamCell>();
+        while (current != null)
+        {
+            path.Add(current);
+            if (current.PathNeighbor != null)
+            {
+                current = current.PathNeighbor;
+            }
+        }
+        return path;
     }
 }

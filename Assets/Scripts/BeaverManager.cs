@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class BeaverManager : MonoBehaviour
 {
-    public List<BeaverData> beavers { get; private set; }
+    [SerializeField] DamGroup theDam;
+
+    public static DamGroup TheDam { get; }
+
+    public List<BeaverData> Beavers { get; private set; }
 
 }
