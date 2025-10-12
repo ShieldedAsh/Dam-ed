@@ -155,6 +155,7 @@ MonoBehaviour:
   _knownBeaversLeft: 0
   _jumpscareMus:
   - {fileID: 8300000, guid: 2bce3dbbc8acc7c47b0ccf00ae694e5d, type: 3}
+  - {fileID: 8300000, guid: db73cee0231acef4ebbcd654412bd093, type: 3}
   _normalMus:
   - {fileID: 8300000, guid: 67828111338c09547a8d35d5b53c5d05, type: 3}
   _ambientSounds: []
