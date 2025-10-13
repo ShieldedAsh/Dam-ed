@@ -27,7 +27,7 @@ public class BeaverManager : MonoBehaviour
             {
                 AddBeaver();
             }
-            Beavers[0].GiveOrder(new Order(Order.Action.Move, Beavers[0], this, theDam.Cells[7, 8]));
+            Beavers[0].GiveOrder(new Order(Order.Action.Move, Beavers[0], this, theDam.Cells[0, 0]));
         }
         if (Beavers.Count > 0)
         {

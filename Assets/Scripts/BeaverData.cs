@@ -67,7 +67,7 @@ public class BeaverData : IItem
     /// </summary>
     public IItem.ItemType itemType { get { return IItem.ItemType.Beaver; } }
 
-    private float timeToMove;
+    private float timeToMove = 0;
 
     private BeaverManager beaverManager;
 
@@ -77,11 +77,8 @@ public class BeaverData : IItem
         {
             if (timeToMove <= 0)
             {
-                Debug.Log($"Order amounts: {Orders.Length}");
-                Debug.Log($"Moving from: ({CurrentLocation.CellCoordinates.Item1},{CurrentLocation.CellCoordinates.Item2}) --> ");
-                timeToMove = Random.Range(5f - Speed, 10f - Speed);
+                timeToMove = Random.Range(2f - Speed, 3f - Speed);
                 ExecuteOrder();
-                Debug.Log($" ({CurrentLocation.CellCoordinates.Item1},{CurrentLocation.CellCoordinates.Item2})");
             }
             timeToMove -= Time.deltaTime;
         }

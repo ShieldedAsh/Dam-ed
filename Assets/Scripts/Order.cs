@@ -58,11 +58,11 @@ public class Order
     /// <param name="target">The target of the order being taken</param>
     public Order(Action action, BeaverData beaver, BeaverManager beaverManager, DamCell target) : this(action, beaver, beaverManager)
     {   
-        TargetDamCell = beaverManager.TheDam.HQ;
+        TargetDamCell = target;
         if (ThisOrder == Action.Move)
         {
             PathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
-            currentPathIndex = 0;
+            currentPathIndex = PathToTarget.Count - 1;
         }
     }
 
@@ -74,12 +74,14 @@ public class Order
         switch (ThisOrder)
         {
             case Action.Move:
+                Debug.Log($"Moving from: ({beaver.CurrentLocation.CellCoordinates.Item1},{beaver.CurrentLocation.CellCoordinates.Item2}) --> ");
                 beaver.EvaluateRoom();
                 //Re-evaluates Path to find current best route
                 PathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
-                currentPathIndex = 0;
-                beaver.CurrentLocation = PathToTarget[currentPathIndex];
-                currentPathIndex++;
+                currentPathIndex = PathToTarget.Count - 1;
+                beaver.CurrentLocation = PathToTarget[currentPathIndex - 1];
+                Debug.Log($" ({beaver.CurrentLocation.CellCoordinates.Item1},{beaver.CurrentLocation.CellCoordinates.Item2})");
+                currentPathIndex--;
                 
                 break;
             case Action.Scavenge:
