@@ -118,6 +118,8 @@ public class SaveAndValidatebeavers : MonoBehaviour
         {
             bw.Write(beaverNames[i]);
         }
+        bw.Flush();
+        bw.Close();
         return true;
     }
     /// <summary>
@@ -160,6 +162,8 @@ public class SaveAndValidatebeavers : MonoBehaviour
         {
             bw.Write(beaverNames[i]);
         }
+        bw.Flush();
+        bw.Close();
         return true;
     }
 }
