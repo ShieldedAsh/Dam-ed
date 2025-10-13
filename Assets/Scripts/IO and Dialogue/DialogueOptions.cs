@@ -2,34 +2,48 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-enum dataTypes
+public enum dataTypes
 {
-
+    Unknown,
     ItemType,
     BeaverStatus,
 }
-struct extractedData
+public struct extractedData
 {
+    [Tooltip("what type of enum is this data")]
     public dataTypes data;
+    [Tooltip("what should trigger this")]
     public string dataName;
-    public string phrase;
-    public extractedData(dataTypes data, string dataName, string phrase)
+    [Tooltip("phrases that can be said")]
+    private string[] phrases;
+    [Tooltip("a un-edited phrase for this data")]
+    public string GetPhrase { get { return phrases[Random.Range(0, phrases.Length)]; } }
+
+    /// <summary>
+    /// parses the raw dialogue data
+    /// </summary>
+    /// <param name="data">what type of enum is this data</param>
+    /// <param name="dataName">what should trigger this</param>
+    /// <param name="phrases">what phrases should be able to be said</param>
+    public extractedData(dataTypes data, string dataName, string phrases)
     {
         this.data = data;
         this.dataName = dataName;
-        this.phrase = phrase;
+        this.phrases = phrases.Split('~');
     }
 }
 public class DialogueOptions : MonoBehaviour
 {
-    public string filePath;
+    [Tooltip("the dialogue file")]
+    public TextAsset filePath;
 
-    private void Start()
-    {
-        Loadfile();
-    }
+    /// <summary>
+    /// finds and parses the dialogue file
+    /// </summary>
+    /// <returns>true if it successfully reads the file, otherwise false</returns>
     public bool Loadfile()
     {
+        /*
         Stream sr = null;
         StreamReader br = null;
         try
@@ -43,10 +57,12 @@ public class DialogueOptions : MonoBehaviour
         }
         string words = br.ReadToEnd();
         br.Close();
+        */
 
+        string words = filePath.text;
+        List<extractedData> reservedPhrases = new List<extractedData>();
         char pastChar = ' ';
         bool isComment = false;
-        List<extractedData> reservedPhrases = new List<extractedData>();
         for (int i = 0; i < words.Length; i++)
         {
             char character = words[i];
@@ -55,6 +71,7 @@ public class DialogueOptions : MonoBehaviour
                 switch (character)
                 {
                     case '#':
+                    case '$':
                         char newCheckerChar = character;
                         int enumIndexRef = i;
                         while (newCheckerChar != ':')
@@ -72,59 +89,30 @@ public class DialogueOptions : MonoBehaviour
                             }
                             newCheckerChar = words[chunkIndex];
                         }
-
-                        reservedPhrases.Add(new extractedData(getDataType(words[++i..--enumIndexRef]), words[++i..--enumIndexRef], words[++enumIndexRef..chunkIndex]));
-                        break;
-                    case '$':
+                        reservedPhrases.Add(new extractedData(getDataType(words[i..enumIndexRef]), words[++i..--enumIndexRef], words[++enumIndexRef..chunkIndex]));
                         break;
                 }
-            }
-            switch (pastChar)
-            {
-                case '\\':
-                    if (!isComment)
-                    {
-                        switch (character)
-                        {
-                            case ';':
-                                break;
-                            case '|':
-                                break;
-                            case '+':
-                                break;
-                            case '-':
-                                break;
-                        }
-                    }
-                    break;
-                case '*':
-                    if (character == '/')
-                    {
-                        isComment = false;
-                    }
-                    break;
-                case '/':
-                    if(character == '*')
-                    {
-                        isComment = true;
-                    }
-                    break;
             }
             pastChar = character;
         }
 
         return true;
     }
-
+    /// <summary>
+    /// finds what enum in dataType this word is
+    /// </summary>
+    /// <param name="word">the word to check</param>
+    /// <returns>a dataType that references what enum it should be</returns>
     private dataTypes getDataType(string word)
     {
-        if (word[0] == '#')
+        switch (word[0])
         {
-            return dataTypes.ItemType;
-        }
-        else
-        {
-            return default;
+            case '#':
+                return dataTypes.ItemType;
+            case '$':
+                return dataTypes.BeaverStatus;
+            default:
+                return dataTypes.Unknown;
         }
     }
 }
