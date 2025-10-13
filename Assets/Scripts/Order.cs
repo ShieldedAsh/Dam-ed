@@ -46,6 +46,7 @@ public class Order
     public Order(Action action, BeaverData beaver, BeaverManager beaverManager)
     {
         ThisOrder = action;
+        this.beaver = beaver;
         this.beaverManager = beaverManager;
     }
 

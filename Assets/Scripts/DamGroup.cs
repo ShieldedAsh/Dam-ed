@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using System.Drawing;
 using static UnityEngine.GraphicsBuffer;
@@ -108,12 +109,16 @@ public class DamGroup
             {
                 current = current.PathNeighbor;
             }
+            else
+            {
+                current = null;
+            }
         }
         return path;
     }
 
     public void setHQ(DamCell hq)
     {
-
+        this.hq = hq;
     }
 }

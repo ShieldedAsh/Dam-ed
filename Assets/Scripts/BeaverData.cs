@@ -2,8 +2,10 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [System.Serializable]
+
 public class BeaverData : IItem
 {
+    #nullable enable
     /// <summary>
     /// The name of the Beaver
     /// </summary>
@@ -32,7 +34,7 @@ public class BeaverData : IItem
     /// <summary>
     /// The order the beaver is currently carrying out
     /// </summary>
-    public Order CurrentOrder { get { return Orders[currentOrderIndex]; } }
+    public Order? CurrentOrder { get { return Orders[currentOrderIndex]; } }
     private int currentOrderIndex;
 
     /// <summary>
@@ -65,26 +67,24 @@ public class BeaverData : IItem
     /// </summary>
     public IItem.ItemType itemType { get { return IItem.ItemType.Beaver; } }
 
-    public DamGroup dam { get; private set; }
-
     private float timeToMove;
 
     private BeaverManager beaverManager;
 
     public void UpdateBeaver()
     {
-        if(timeToMove <= 0)
+        if(CurrentOrder != null)
         {
-            Debug.Log($"Moving from: ({CurrentLocation.CellCoordinates.Item1},{CurrentLocation.CellCoordinates.Item2}) --> ");
-            timeToMove = Random.Range(5f - Speed, 10f - Speed);
-            ExecuteOrder();
-            Debug.Log($" ({CurrentLocation.CellCoordinates.Item1},{CurrentLocation.CellCoordinates.Item2})");
+            if (timeToMove <= 0)
+            {
+                Debug.Log($"Order amounts: {Orders.Length}");
+                Debug.Log($"Moving from: ({CurrentLocation.CellCoordinates.Item1},{CurrentLocation.CellCoordinates.Item2}) --> ");
+                timeToMove = Random.Range(5f - Speed, 10f - Speed);
+                ExecuteOrder();
+                Debug.Log($" ({CurrentLocation.CellCoordinates.Item1},{CurrentLocation.CellCoordinates.Item2})");
+            }
+            timeToMove -= Time.deltaTime;
         }
-        if (CurrentOrder.ThisOrder == Order.Action.Move)
-        {
-           
-        }
-        timeToMove -= Time.deltaTime;
     }
 
     /// <summary>
@@ -99,7 +99,7 @@ public class BeaverData : IItem
         Intelligence = intelligence;
         Speed = speed;
         Orders = new Order[Intelligence + 1];
-        Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, beaverManager, beaverManager.TheDam.HQ);
+        //Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, beaverManager, beaverManager.TheDam.HQ);
     }
 
     /// <summary>
@@ -112,10 +112,10 @@ public class BeaverData : IItem
         Speed = 1;
         Memory = new List<Memory>();
         Orders = new Order[Intelligence + 1];
-        Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, beaverManager, beaverManager.TheDam.HQ);
-        Carrying = default;
+        //Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, beaverManager, beaverManager.TheDam.HQ);
+        Carrying = default!;
         BeaverStatus = Status.Healthy;
-        CurrentLocation = dam.HQ;
+        CurrentLocation = beaverManager.TheDam.HQ;
     }
 
     /// <summary>
@@ -154,7 +154,7 @@ public class BeaverData : IItem
     /// </summary>
     public void ExecuteOrder()
     {
-        CurrentOrder.TakeAction();
+        CurrentOrder!.TakeAction();
         if(CurrentOrder.ThisOrder == Order.Action.Move)
         {
             if(CurrentLocation == CurrentOrder.TargetDamCell)

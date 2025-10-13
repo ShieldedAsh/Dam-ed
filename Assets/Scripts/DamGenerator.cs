@@ -11,6 +11,7 @@ public class DamGenerator : MonoBehaviour
     private DamGroup dam;
     private Point hqCoordinate;
     [SerializeField] private int connectionDensityPercentage;
+    public static bool hasGenerated = false;
 
     //Path Testing
     private Vector2 startIndex;
@@ -35,7 +36,6 @@ public class DamGenerator : MonoBehaviour
     //Methods
     private void Awake()
     {   
-        
         stack = new Stack<DamCell>();
 
         //Converts damSize from Vector2 --> Point
@@ -74,19 +74,15 @@ public class DamGenerator : MonoBehaviour
                 dam.Cells[r, c].SetCoordinate((char)(r + 97), c + 1);
             }
         }
-    }
 
-    private void Start()
-    {
-        
         //Sets HQ
-        hqCoordinate = new Point((int)Math.Ceiling(damSize.X / 2.0)-1, (int)Math.Ceiling((damSize.Y / 2.0))-1);
+        hqCoordinate = new Point((int)Math.Ceiling(damSize.X / 2.0) - 1, (int)Math.Ceiling((damSize.Y / 2.0)) - 1);
         dam.setHQ(dam.Cells[hqCoordinate.X, hqCoordinate.Y]);
 
         startIndex = new Vector2(hqCoordinate.X, hqCoordinate.Y);
         Point start = new Point(hqCoordinate.X - 1, hqCoordinate.Y);
         Point startExtraC = new Point(hqCoordinate.X + 1, hqCoordinate.Y);
-        
+
 
         ConnectCells(dam.Cells[hqCoordinate.X, hqCoordinate.Y], new Point(-1, 0));
         ConnectCells(dam.Cells[hqCoordinate.X, hqCoordinate.Y], new Point(1, 0));
@@ -152,8 +148,8 @@ public class DamGenerator : MonoBehaviour
         }
         int extraConnections = (int)Math.Round(damSize.X * damSize.Y * (connectionDensityPercentage / 100.0));
         int connectionsMade = 0;
-        
-        
+
+
         //start with cell right of hq
         current = dam.Cells[startExtraC.X, startExtraC.Y];
         switch (UnityEngine.Random.Range(1, 4))
@@ -197,7 +193,7 @@ public class DamGenerator : MonoBehaviour
                 {
                     validDirections.Add(new Point(-1, 0));
                 }
-                
+
                 if (validDirections.Count != 0)
                 {
                     Point nextPoint = validDirections[UnityEngine.Random.Range(0, validDirections.Count)];
@@ -205,8 +201,9 @@ public class DamGenerator : MonoBehaviour
                     connectionsMade++;
                 }
             }
+
+            hasGenerated = true;
         }
-        
     }
 
     private void Update()

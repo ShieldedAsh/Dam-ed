@@ -12,19 +12,29 @@ public class BeaverManager : MonoBehaviour
 
     public void Awake()
     {
+        Beavers = new List<BeaverData>();
+    }
+    public void Start()
+    {
         theDam = FindAnyObjectByType<DamGenerator>().Dam;
-        for (int i = 0; i < 9; i++)
-        {
-            AddBeaver();
-        }
-        Beavers[0].GiveOrder(new Order(Order.Action.Move, Beavers[0], this, theDam.Cells[7, 8]));
     }
 
     private void Update()
     {
-        foreach(BeaverData beaver in Beavers)
+        if (Beavers != null && Beavers.Count == 0 && DamGenerator.hasGenerated)
         {
-            beaver.UpdateBeaver();
+            for (int i = 0; i < 9; i++)
+            {
+                AddBeaver();
+            }
+            Beavers[0].GiveOrder(new Order(Order.Action.Move, Beavers[0], this, theDam.Cells[7, 8]));
+        }
+        if (Beavers.Count > 0)
+        {
+            foreach (BeaverData beaver in Beavers)
+            {
+                beaver.UpdateBeaver();
+            }
         }
     }
 
