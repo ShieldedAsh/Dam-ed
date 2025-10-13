@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using System.Drawing;
+using UnityEngine.InputSystem.Switch;
 
 public class DamGenerator : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class DamGenerator : MonoBehaviour
     private GameObject connection;
     private LineRenderer connectionLine;
     public float connectionWidth;
+    public Sprite maskSprite;
     //Methods
     private void Awake()
     {   
@@ -299,7 +301,11 @@ public class DamGenerator : MonoBehaviour
                 child.AddComponent<SpriteRenderer>();
                 child.GetComponent<SpriteRenderer>().sprite = cellSprite;
                 child.GetComponent<SpriteRenderer>().sortingLayerName = "Map";
+                child.AddComponent<SpriteMask>();
+                child.GetComponent<SpriteMask>().sprite = maskSprite;
                 child.transform.name = gCell.CellArrayPosition.ToString();
+
+
                 foreach (DamCell cell in gCell.Connections)
                 {
                     connection = new GameObject();
@@ -313,8 +319,11 @@ public class DamGenerator : MonoBehaviour
                     connectionLine.sortingLayerName = "Map";
                     connectionLine.sortingOrder = -1;
                     connectionLine.positionCount = 2;
+
+
                     connectionLine.SetPosition(0, new Vector3(gCell.CellArrayPosition.X + xOffset, gCell.CellArrayPosition.Y + yOffset, 0));
                     connectionLine.SetPosition(1, new Vector3(cell.CellArrayPosition.X + xOffset, cell.CellArrayPosition.Y + yOffset, 0));
+                    connectionLine.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
                     
                 }
             }

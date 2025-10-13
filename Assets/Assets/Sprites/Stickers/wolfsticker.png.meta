@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b84cf82764790594180cfedcd3562069
+guid: 40503700b852872429c1cc3613f5955e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1751314037236353543
-    second: beaver_0
+      213: -2559437261395541050
+    second: wolfsticker 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -152,13 +152,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: beaver_0
+      name: wolfsticker 1_0
       rect:
         serializedVersion: 2
-        x: 15
-        y: 23
-        width: 226
-        height: 210
+        x: 0
+        y: 0
+        width: 28
+        height: 30
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -167,8 +167,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 70ac0a786daed4810800000000000000
-      internalID: 1751314037236353543
+      spriteID: 6c3ce990f5d0b7cd0800000000000000
+      internalID: -2559437261395541050
       vertices: []
       indices: 
       edges: []
@@ -187,7 +187,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      beaver_0: 1751314037236353543
+      wolfsticker 1_0: -2559437261395541050
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
