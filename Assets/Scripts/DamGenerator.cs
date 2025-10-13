@@ -11,6 +11,7 @@ public class DamGenerator : MonoBehaviour
     private DamGroup dam;
     private Point hqCoordinate;
     [SerializeField] private int connectionDensityPercentage;
+    public static bool hasGenerated = false;
 
     //Path Testing
     private Vector2 startIndex;
@@ -30,10 +31,11 @@ public class DamGenerator : MonoBehaviour
     /// </summary>
     public int ConnectionDensityPercentage { get => connectionDensityPercentage; set => connectionDensityPercentage = value; }
 
+    public DamGroup Dam { get => dam; }
+
     //Methods
     private void Awake()
     {   
-        
         stack = new Stack<DamCell>();
 
         //Converts damSize from Vector2 --> Point
@@ -72,16 +74,15 @@ public class DamGenerator : MonoBehaviour
                 dam.Cells[r, c].SetCoordinate((char)(r + 97), c + 1);
             }
         }
-    }
 
-    private void Start()
-    {
-        
         //Sets HQ
-        hqCoordinate = new Point((int)Math.Ceiling(damSize.X / 2.0)-1, (int)Math.Ceiling((damSize.Y / 2.0))-1);
+        hqCoordinate = new Point((int)Math.Ceiling(damSize.X / 2.0) - 1, (int)Math.Ceiling((damSize.Y / 2.0)) - 1);
+        dam.setHQ(dam.Cells[hqCoordinate.X, hqCoordinate.Y]);
+
         startIndex = new Vector2(hqCoordinate.X, hqCoordinate.Y);
         Point start = new Point(hqCoordinate.X - 1, hqCoordinate.Y);
         Point startExtraC = new Point(hqCoordinate.X + 1, hqCoordinate.Y);
+
 
         ConnectCells(dam.Cells[hqCoordinate.X, hqCoordinate.Y], new Point(-1, 0));
         ConnectCells(dam.Cells[hqCoordinate.X, hqCoordinate.Y], new Point(1, 0));
@@ -147,8 +148,8 @@ public class DamGenerator : MonoBehaviour
         }
         int extraConnections = (int)Math.Round(damSize.X * damSize.Y * (connectionDensityPercentage / 100.0));
         int connectionsMade = 0;
-        
-        
+
+
         //start with cell right of hq
         current = dam.Cells[startExtraC.X, startExtraC.Y];
         switch (UnityEngine.Random.Range(1, 4))
@@ -192,7 +193,7 @@ public class DamGenerator : MonoBehaviour
                 {
                     validDirections.Add(new Point(-1, 0));
                 }
-                
+
                 if (validDirections.Count != 0)
                 {
                     Point nextPoint = validDirections[UnityEngine.Random.Range(0, validDirections.Count)];
@@ -201,7 +202,7 @@ public class DamGenerator : MonoBehaviour
                 }
             }
         }
-        
+        hasGenerated = true;
     }
 
     private void Update()
@@ -244,7 +245,7 @@ public class DamGenerator : MonoBehaviour
                 }
             }
 
-            dam.ShortestPath(dam.Cells[(int)startIndex.x, (int)startIndex.y], dam.Cells[(int)endIndex.x, (int)endIndex.y]);
+            /*dam.GenerateShortestPath(dam.Cells[(int)startIndex.x, (int)startIndex.y], dam.Cells[(int)endIndex.x, (int)endIndex.y]);
             
             DamCell current = dam.Cells[(int)endIndex.x, (int)endIndex.y];
             while (current != null)
@@ -256,7 +257,7 @@ public class DamGenerator : MonoBehaviour
                     Gizmos.DrawLine(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), new Vector3(current.PathNeighbor.CellArrayPosition.X + xOffset, current.PathNeighbor.CellArrayPosition.Y + yOffset, 0));
                 }
                 current = current.PathNeighbor;
-            }
+            }*/
 
             Gizmos.color = UnityEngine.Color.blue;
             Gizmos.DrawWireSphere(transform.position, .25f);
