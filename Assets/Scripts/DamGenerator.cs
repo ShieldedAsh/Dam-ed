@@ -301,9 +301,15 @@ public class DamGenerator : MonoBehaviour
                 child.AddComponent<SpriteRenderer>();
                 child.GetComponent<SpriteRenderer>().sprite = cellSprite;
                 child.GetComponent<SpriteRenderer>().sortingLayerName = "Map";
+                child.GetComponent<SpriteRenderer>().color = UnityEngine.Color.black;
                 child.AddComponent<SpriteMask>();
                 child.GetComponent<SpriteMask>().sprite = maskSprite;
                 child.transform.name = gCell.CellArrayPosition.ToString();
+                
+                if(gCell.CellArrayPosition == hqCoordinate)
+                {
+                    child.GetComponent<SpriteRenderer>().color = UnityEngine.Color.red;
+                }
 
 
                 foreach (DamCell cell in gCell.Connections)
