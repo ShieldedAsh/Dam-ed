@@ -201,9 +201,8 @@ public class DamGenerator : MonoBehaviour
                     connectionsMade++;
                 }
             }
-
-            hasGenerated = true;
         }
+        hasGenerated = true;
     }
 
     private void Update()

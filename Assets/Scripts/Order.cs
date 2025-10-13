@@ -74,15 +74,12 @@ public class Order
         switch (ThisOrder)
         {
             case Action.Move:
-                Debug.Log($"Moving from: ({beaver.CurrentLocation.CellCoordinates.Item1},{beaver.CurrentLocation.CellCoordinates.Item2}) --> ");
                 beaver.EvaluateRoom();
                 //Re-evaluates Path to find current best route
                 PathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
                 currentPathIndex = PathToTarget.Count - 1;
                 beaver.CurrentLocation = PathToTarget[currentPathIndex - 1];
-                Debug.Log($" ({beaver.CurrentLocation.CellCoordinates.Item1},{beaver.CurrentLocation.CellCoordinates.Item2})");
                 currentPathIndex--;
-                
                 break;
             case Action.Scavenge:
                 if(beaver.CurrentLocation.Contents.Count != 0)
@@ -92,8 +89,11 @@ public class Order
                 }
                 break;
             case Action.Barricade:
-                beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].RemoveConnection(TargetDamCell);
-                beaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].RemoveConnection(beaver.CurrentLocation);
+                if (beaver.Carrying.itemType == IItem.ItemType.Scrap)
+                {
+                    beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].RemoveConnection(TargetDamCell);
+                    beaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].RemoveConnection(beaver.CurrentLocation);
+                }
                 break;
             case Action.Tunnel:
                 beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].AddConnection(TargetDamCell);

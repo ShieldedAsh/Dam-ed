@@ -27,7 +27,7 @@ public class BeaverData : IItem
     public List<Memory> Memory { get; private set; }
 
     /// <summary>
-    /// The beaver's current orders (NOTE: Length = intelligence + 1, as last order is always a move order to HQ)
+    /// The beaver's current orders
     /// </summary>
     public Order[] Orders { get; private set; }
 
@@ -67,26 +67,61 @@ public class BeaverData : IItem
     /// </summary>
     public IItem.ItemType itemType { get { return IItem.ItemType.Beaver; } }
 
+    /// <summary>
+    /// The time until the next action is taken
+    /// </summary>
     private float timeToMove = 0;
 
+    /// <summary>
+    /// The beaver manager the beaver is attached to
+    /// </summary>
     private BeaverManager beaverManager;
 
+    /// <summary>
+    /// If the beaver is at home
+    /// </summary>
+    private bool atHome;
+
+    /// <summary>
+    /// Updates this beaver's current status. Do this for each beaver every update
+    /// </summary>
     public void UpdateBeaver()
     {
         if(CurrentOrder != null)
         {
+            atHome = false;
             if (timeToMove <= 0)
             {
-                timeToMove = Random.Range(2f - Speed, 3f - Speed);
+                timeToMove = Random.Range(5f - Speed, 10f - Speed);
                 ExecuteOrder();
             }
             timeToMove -= Time.deltaTime;
         }
+        //Sends the beaver home after finishing all orders
+        else if(CurrentOrder == null && BeaverStatus == Status.Healthy && CurrentLocation != beaverManager.TheDam.HQ)
+        {
+            Orders[0] = new Order(Order.Action.Move, this, beaverManager, beaverManager.TheDam.HQ);
+            currentOrderIndex = 0;
+            for(int i = 1; i < Orders.Length; i++)
+            {
+                Orders[i] = null!;
+            }
+        }
+        //Unloads the memory once
+        else if(atHome == false)
+        {
+            foreach(Memory mem in Memory)
+            {
+                //THIS IS WHERE THE BEAVER TELLS YOU WHAT THEY REMEMBER!
+            }
+        }
+        
     }
 
     /// <summary>
     /// Creates a beavers with a given name as well as intelligence and speed stats
     /// </summary>
+    /// <param name="beaverManager"></param>
     /// <param name="name">The Beaver's name</param>
     /// <param name="intelligence">The Beaver's intelligence</param>
     /// <param name="speed">The Beaver's speed</param>
@@ -95,8 +130,7 @@ public class BeaverData : IItem
         BeaverName = name;
         Intelligence = intelligence;
         Speed = speed;
-        Orders = new Order[Intelligence + 1];
-        //Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, beaverManager, beaverManager.TheDam.HQ);
+        Orders = new Order[Intelligence];
     }
 
     /// <summary>
@@ -108,10 +142,10 @@ public class BeaverData : IItem
         Intelligence = 5;
         Speed = 1;
         Memory = new List<Memory>();
-        Orders = new Order[Intelligence + 1];
-        //Orders[Orders.Length - 1] = new Order(Order.Action.Move, this, beaverManager, beaverManager.TheDam.HQ);
+        Orders = new Order[Intelligence];
         Carrying = default!;
         BeaverStatus = Status.Healthy;
+        this.beaverManager = beaverManager;
         CurrentLocation = beaverManager.TheDam.HQ;
     }
 
@@ -134,7 +168,7 @@ public class BeaverData : IItem
     /// <returns>Whether or not the order was added</returns>
     public bool GiveOrder(Order order)
     {
-        for(int i = 0; i < Orders.Length - 1; i++)
+        for(int i = 0; i < Orders.Length; i++)
         {
             if (Orders[i] == null)
             {
