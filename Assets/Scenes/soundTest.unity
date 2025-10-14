@@ -163,15 +163,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c93deeaebaabd70418844a7929902741, type: 3}
   _ambientSounds: []
   _deadBeaverTracks:
-  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
-  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
-  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
-  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
-  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
-  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
-  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
-  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
-  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
+  - {fileID: 8300000, guid: e2f8510354b39b74ca5c05d4d8648627, type: 3}
+  - {fileID: 8300000, guid: 44aba3ff3ad32d744b2614018b486288, type: 3}
+  - {fileID: 8300000, guid: 44829372149542b4bb62ae3839d1f83a, type: 3}
+  - {fileID: 8300000, guid: 668f2a5b683b1ed408a80bb210fd2c53, type: 3}
+  - {fileID: 8300000, guid: aa478726b8ac7484abfd60385419902f, type: 3}
+  - {fileID: 8300000, guid: 5cc9468b713501047bc8ac383cb1695d, type: 3}
+  - {fileID: 8300000, guid: 749bd0b1b617d254da4a3f74664a34b2, type: 3}
+  - {fileID: 8300000, guid: b9e278ff4c7e8784d9c0b20e538dbd57, type: 3}
+  - {fileID: 8300000, guid: 5c7650a2e75f8c54bb49e2bf146eff37, type: 3}
   - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
 --- !u!82 &1342274882
 AudioSource:
