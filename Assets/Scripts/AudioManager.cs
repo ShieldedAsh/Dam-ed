@@ -33,7 +33,7 @@ public class AudioSystem : MonoBehaviour
     /// </summary>
     [SerializeField]
     [Tooltip ("The number of beavers left the players know about.")]
-    private float _knownBeaversLeft;
+    private int _knownBeaversLeft;
 
     /// <summary>
     /// Jumpscare-ish tracks such as panic1-4
@@ -55,6 +55,13 @@ public class AudioSystem : MonoBehaviour
     [SerializeField]
     [Tooltip ("Ambient sounds that play during gamplay.")]
     private List<AudioClip> _ambientSounds;
+
+    /// <summary>
+    /// Tracks corresponding to the amount of living beavers the player knows about."
+    /// </summary>
+    [SerializeField]
+    [Tooltip ("Tracks corresponding to the amount of living beavers the player knows about.")]
+    private List<AudioClip> _deadBeaverTracks;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -93,11 +100,12 @@ public class AudioSystem : MonoBehaviour
         if (_audioTime >= _nextAudio && !aS.isPlaying)
         {
             _audioTime -= _nextAudio;
-            //Roll 1d3.
+            //Roll 1d4.
             //1-Plays a random track from panic1-4
             //2-Plays a random regular track
             //3-Plays an ambient sound
-            int die = Random.Range(1, 4);
+            //4-Plays the mass beaver death track.
+            int die = Random.Range(1, 5);
             int index = 0;
 
             switch (die)
@@ -115,6 +123,11 @@ public class AudioSystem : MonoBehaviour
                 case 3:
                     index = Random.Range(0, _ambientSounds.Count);
                     aS.clip = _ambientSounds[index];
+                    break;
+
+                case 4:
+                    index = _knownBeaversLeft - 1;
+                    aS.clip = _deadBeaverTracks[index];
                     break;
             }
 

@@ -160,7 +160,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d1f39a9d090e6184cbd18aaa4b3d6c78, type: 3}
   _normalMus:
   - {fileID: 8300000, guid: 67828111338c09547a8d35d5b53c5d05, type: 3}
+  - {fileID: 8300000, guid: c93deeaebaabd70418844a7929902741, type: 3}
   _ambientSounds: []
+  _deadBeaverTracks:
+  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
+  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
+  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
+  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
+  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
+  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
+  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
+  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
+  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
+  - {fileID: 8300000, guid: 07507ad14996081468214d8e4edbed3b, type: 3}
 --- !u!82 &1342274882
 AudioSource:
   m_ObjectHideFlags: 0
