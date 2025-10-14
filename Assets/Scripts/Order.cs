@@ -89,15 +89,20 @@ public class Order
                 }
                 break;
             case Action.Barricade:
-                if (beaver.Carrying.itemType == IItem.ItemType.Scrap)
+                if (beaver.Carrying.itemType == IItem.ItemType.Scrap && IsNeighbor(beaver.CurrentLocation, TargetDamCell) && beaver.CurrentLocation.Connections.Contains(TargetDamCell))
                 {
                     beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].RemoveConnection(TargetDamCell);
                     beaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].RemoveConnection(beaver.CurrentLocation);
+                    beaver.Carrying = null;
                 }
                 break;
             case Action.Tunnel:
-                beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].AddConnection(TargetDamCell);
-                beaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].AddConnection(beaver.CurrentLocation);
+                if (beaver.Carrying.itemType == IItem.ItemType.Scrap && IsNeighbor(beaver.CurrentLocation, TargetDamCell) && !beaver.CurrentLocation.Connections.Contains(TargetDamCell))
+                {
+                    beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].AddConnection(TargetDamCell);
+                    beaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].AddConnection(beaver.CurrentLocation);
+                    beaver.Carrying = null;
+                }
                 break;
             case Action.Distract:
                 //finds all wolves within 5 spaces
@@ -128,5 +133,49 @@ public class Order
             default:
                 return "not doing anything";
         }
+    }
+    
+    /// <summary>
+    /// Checks to see if target is a neighbor to currentLocation
+    /// </summary>
+    /// <param name="currentLocation">The current location</param>
+    /// <param name="target">the cell to check</param>
+    /// <returns>True if a neighbor, false if not</returns>
+    public bool IsNeighbor(DamCell currentLocation, DamCell target)
+    {
+        // Y-1
+        if (currentLocation.CellArrayPosition.Y-1 >= 0)
+        {
+            if (currentLocation.CellArrayPosition.X == target.CellArrayPosition.X && currentLocation.CellArrayPosition.Y - 1 == target.CellArrayPosition.Y)
+            {
+                return true;
+            }
+        }
+        // X-1
+        if (currentLocation.CellArrayPosition.X-1 >= 0)
+        {
+            if (currentLocation.CellArrayPosition.X-1 == target.CellArrayPosition.X && currentLocation.CellArrayPosition.Y == target.CellArrayPosition.Y)
+            {
+                return true;
+            }
+        }
+        // Y+1
+        if (currentLocation.CellArrayPosition.Y+1 < beaverManager.TheDam.Cells.GetLength(1))
+        {
+            if (currentLocation.CellArrayPosition.X == target.CellArrayPosition.X && currentLocation.CellArrayPosition.Y + 1 == target.CellArrayPosition.Y)
+            {
+                return true;
+            }
+        }
+        // X+1
+        if (currentLocation.CellArrayPosition.X + 1 < beaverManager.TheDam.Cells.GetLength(0))
+        {
+            if (currentLocation.CellArrayPosition.X + 1 == target.CellArrayPosition.X && currentLocation.CellArrayPosition.Y == target.CellArrayPosition.Y)
+            {
+                return true;
+            }
+        }
+        return false;
+
     }
 }
