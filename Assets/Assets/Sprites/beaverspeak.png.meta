@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 9e19a41138396d34aa7f881569e22c87
+guid: de8b0e076f0839643b4f4048bc60f84a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2687400042420656832
-    second: blackpencil_0
+      213: -6704024597944348835
+    second: beaverspeak_0
+  - first:
+      213: -7534454263001672485
+    second: beaverspeak_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -74,8 +77,8 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
+    textureFormat: 4
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -152,23 +155,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: blackpencil_0
+      name: beaverspeak_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 464
-        height: 58
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 22, y: 19, z: 6, w: 6}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5fcb0ac52586f2a0800000000000000
+      internalID: -6704024597944348835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: beaverspeak_1
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 11
+        width: 60
+        height: 51
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 045a52e56ef64bad0800000000000000
-      internalID: -2687400042420656832
+      spriteID: bd49b5d54cd307790800000000000000
+      internalID: -7534454263001672485
       vertices: []
       indices: 
       edges: []
@@ -177,7 +202,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: e8f8eacf8096b8047a8979e12c450567
     internalID: 0
     vertices: []
     indices: 
@@ -187,7 +212,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      blackpencil_0: -2687400042420656832
+      beaverspeak_0: -6704024597944348835
+      beaverspeak_1: -7534454263001672485
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

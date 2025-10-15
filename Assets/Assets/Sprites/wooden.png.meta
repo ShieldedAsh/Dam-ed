@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9e19a41138396d34aa7f881569e22c87
+guid: 83206cb51726f074eacef1f6810e6e81
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2687400042420656832
-    second: blackpencil_0
+      213: 5831936790779453474
+    second: wooden_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -152,23 +152,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: blackpencil_0
+      name: wooden_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 464
-        height: 58
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 12, y: 12, z: 12, w: 12}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 045a52e56ef64bad0800000000000000
-      internalID: -2687400042420656832
+      spriteID: 220e0febc933fe050800000000000000
+      internalID: 5831936790779453474
       vertices: []
       indices: 
       edges: []
@@ -177,7 +177,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 74db9a8243716f145b3dba3e003826c2
     internalID: 0
     vertices: []
     indices: 
@@ -187,7 +187,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      blackpencil_0: -2687400042420656832
+      wooden_0: 5831936790779453474
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
