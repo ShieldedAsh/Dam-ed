@@ -3,10 +3,10 @@ using UnityEditor;
 using System.Collections.Generic;
 using System;
 
-public class Wolf : MonoBehaviour, IItem
+public class Wolf : IItem
 {
     //TheDam
-    private BeaverManager beaverManager;
+    private WolfManager wolfManager;
     
     //Wolf's Current Location
     public DamCell CurrentLocation { get; set; }
@@ -15,44 +15,42 @@ public class Wolf : MonoBehaviour, IItem
     private List<DamCell> pathToTarget;
     private int currentPathIndex;
     private DamCell mainTarget;
+
+    private float timeToMove;
     
     /// <summary>
     /// closest cell to mainTarget when trapped
     /// </summary>
     private DamCell intermediateTarget;
 
-    public void Start()
+    #nullable enable
+    public DamCell? MainTarget { get => mainTarget; }
+
+    public Wolf(WolfManager wolfManager, DamCell startPosition)
     {
-        beaverManager = FindAnyObjectByType<BeaverManager>();
+        this.wolfManager = wolfManager;
     }
 
-    public void MoveWolf()
+    public void UpdateWolf()
     {
-        // this might need to be 0
-        if (pathToTarget.Count == 1)
-        {
-            intermediateTarget = null;
-        }
-
-        
         if (intermediateTarget == null) // is not trapped currently
         {
-            pathToTarget = beaverManager.TheDam.GetShortestPath(CurrentLocation, mainTarget);
+            pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, mainTarget);
             // if wolf is trapped
-            if (pathToTarget[0].Distance <= 0)
+            if (pathToTarget[0].Distance < 0)
             {
                 //Find all cells within isolated chunk
                 List<DamCell> validCells = new List<DamCell>();
                 validCells = GetNeighboringCells(CurrentLocation);
 
                 //gets all of the cells closest to mainTarget in the isolated chunk
-                List<(DamCell, float)> shortestDistance = new List<(DamCell, float)>() { (null, float.MaxValue) };
+                List<(DamCell?, float)> shortestDistance = new List<(DamCell?, float)>() { (null, float.MaxValue) };
                 foreach (DamCell cell in validCells)
                 {
                     float dist = Vector2.Distance(new Vector2(cell.CellArrayPosition.X, cell.CellArrayPosition.X), new Vector2(mainTarget.CellArrayPosition.X, mainTarget.CellArrayPosition.Y));
                     if (dist < shortestDistance[0].Item2)
                     {
-                        shortestDistance = new List<(DamCell, float)>() { (cell, dist) };
+                        shortestDistance = new List<(DamCell?, float)>() { (cell, dist) };
                     }
                     else if (dist == shortestDistance[0].Item2)
                     {
@@ -61,11 +59,11 @@ public class Wolf : MonoBehaviour, IItem
                 }
 
                 //finds the cell closest to wolf within shortestDistance
-                List<DamCell> shortestPath = beaverManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[0].Item1);
+                List<DamCell> shortestPath = wolfManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[0].Item1);
                 intermediateTarget = shortestDistance[0].Item1;
                 for (int i = 1; i < shortestDistance.Count; i++)
                 {
-                    List<DamCell> checking = beaverManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[i].Item1);
+                    List<DamCell> checking = wolfManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[i].Item1);
                     if (checking.Count < shortestPath.Count)
                     {
                         shortestPath = checking;
@@ -75,25 +73,46 @@ public class Wolf : MonoBehaviour, IItem
             }
             else //Normal movement
             {
-                currentPathIndex = pathToTarget.Count - 1;
-                CurrentLocation = pathToTarget[currentPathIndex - 1];
-                currentPathIndex--;
+                if (timeToMove <= 0)
+                {
+                    timeToMove = UnityEngine.Random.Range(5f, 10f);
+                    currentPathIndex = pathToTarget.Count - 1;
+                    CurrentLocation = pathToTarget[currentPathIndex - 1];
+                    currentPathIndex--;
+                    if (CurrentLocation == mainTarget)
+                    {
+                        mainTarget = null;
+                    }
+                }
             }
         }
         else // is trapped
         {
-            pathToTarget = beaverManager.TheDam.GetShortestPath(CurrentLocation, intermediateTarget);
-            currentPathIndex = pathToTarget.Count - 1;
-            CurrentLocation = pathToTarget[currentPathIndex - 1];
-            currentPathIndex--;
-            //when it has reached the intermediate target, dig towards mainTarget
-            if (CurrentLocation == intermediateTarget)
+            if (timeToMove <= 0)
             {
-                Vector2 digDirection = (new Vector2(mainTarget.CellArrayPosition.X, mainTarget.CellArrayPosition.Y) - new Vector2(CurrentLocation.CellArrayPosition.X, CurrentLocation.CellArrayPosition.Y)).normalized;
-                beaverManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X, CurrentLocation.CellArrayPosition.Y].AddConnection(beaverManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X + (int)digDirection.x, CurrentLocation.CellArrayPosition.Y + (int)digDirection.y]);
-                beaverManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X + (int)digDirection.x, CurrentLocation.CellArrayPosition.Y + (int)digDirection.y].AddConnection(CurrentLocation);
+                timeToMove = UnityEngine.Random.Range(5f, 10f);
+                pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, intermediateTarget);
+                if (pathToTarget[0].Distance < 0)
+                {
+                    intermediateTarget = null;
+                }
+                else
+                {
+                    currentPathIndex = pathToTarget.Count - 1;
+                    CurrentLocation = pathToTarget[currentPathIndex - 1];
+                    currentPathIndex--;
+                    //when it has reached the intermediate target, dig towards mainTarget
+                    if (CurrentLocation == intermediateTarget)
+                    {
+                        Vector2 digDirection = (new Vector2(mainTarget.CellArrayPosition.X, mainTarget.CellArrayPosition.Y) - new Vector2(CurrentLocation.CellArrayPosition.X, CurrentLocation.CellArrayPosition.Y)).normalized;
+                        wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X, CurrentLocation.CellArrayPosition.Y].AddConnection(wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X + (int)digDirection.x, CurrentLocation.CellArrayPosition.Y + (int)digDirection.y]);
+                        wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X + (int)digDirection.x, CurrentLocation.CellArrayPosition.Y + (int)digDirection.y].AddConnection(CurrentLocation);
+                        intermediateTarget = null;
+                    }
+                }
             }
         }
+        timeToMove -= Time.deltaTime;
     }
 
     /// <summary>
