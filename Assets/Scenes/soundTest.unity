@@ -161,7 +161,11 @@ MonoBehaviour:
   _normalMus:
   - {fileID: 8300000, guid: 67828111338c09547a8d35d5b53c5d05, type: 3}
   - {fileID: 8300000, guid: c93deeaebaabd70418844a7929902741, type: 3}
-  _ambientSounds: []
+  _ambientSounds:
+  - {fileID: 8300000, guid: d994124cc8bf03046ae8f721bb0e4479, type: 3}
+  - {fileID: 8300000, guid: 7a0ea2d9e4cef3e4dae843d882db6940, type: 3}
+  - {fileID: 8300000, guid: 96893e1f31ac24f43b3cb68aba3d2e32, type: 3}
+  - {fileID: 8300000, guid: 753d8c1c74e1ac14c9ca45dd3d0b5cc3, type: 3}
   _deadBeaverTracks:
   - {fileID: 8300000, guid: e2f8510354b39b74ca5c05d4d8648627, type: 3}
   - {fileID: 8300000, guid: 44aba3ff3ad32d744b2614018b486288, type: 3}
