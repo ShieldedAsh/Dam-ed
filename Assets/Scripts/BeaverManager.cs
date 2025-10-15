@@ -17,8 +17,6 @@ public class BeaverManager : MonoBehaviour
     public void Start()
     {
         theDam = FindAnyObjectByType<DamGenerator>().Dam;
-        AddBeaver();
-        Beavers[0].GiveOrder(new Order(Order.Action.Move, Beavers[0], this, TheDam.Cells[1, 1]));
     }
 
     private void Update()
