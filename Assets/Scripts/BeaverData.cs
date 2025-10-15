@@ -82,6 +82,8 @@ public class BeaverData : IItem
     /// </summary>
     private bool atHome;
 
+    public bool testing = true;
+
     /// <summary>
     /// Updates this beaver's current status. Do this for each beaver every update
     /// </summary>
@@ -92,7 +94,12 @@ public class BeaverData : IItem
             atHome = false;
             if (timeToMove <= 0)
             {
-                timeToMove = Random.Range(5f - Speed, 10f - Speed);
+                #if UNITY_EDITOR
+                    timeToMove = Random.Range(1f - Speed, 1f - Speed);
+                #else
+                    timeToMove = Random.Range(5f - Speed, 10f - Speed);
+                #endif
+
                 ExecuteOrder();
             }
             timeToMove -= Time.deltaTime;
@@ -108,14 +115,16 @@ public class BeaverData : IItem
             }
         }
         //Unloads the memory once
-        else if(atHome == false)
+        else if(atHome == false && CurrentLocation == beaverManager.TheDam.HQ)
+        
         {
+            string totalMemories = "";
             foreach(Memory mem in Memory)
             {
-                DialogueOptions.RecallMemory(mem);
+                totalMemories += DialogueOptions.RecallMemory(mem);
+                atHome = true;
             }
         }
-        
     }
 
     /// <summary>
@@ -154,10 +163,13 @@ public class BeaverData : IItem
     /// </summary>
     public void EvaluateRoom()
     {
-        Memory.Add(new Memory(CurrentLocation));
-        foreach(IItem item in CurrentLocation.Contents)
+        if(CurrentLocation.Contents.Count > 0)
         {
-            Memory[Memory.Count - 1].AddItem(item);
+            Memory.Add(new Memory(CurrentLocation));
+            foreach (IItem item in CurrentLocation.Contents)
+            {
+                Memory[Memory.Count - 1].AddItem(item);
+            }
         }
     }
 
@@ -188,6 +200,7 @@ public class BeaverData : IItem
         CurrentOrder!.TakeAction();
         if(CurrentOrder.ThisOrder == Order.Action.Move)
         {
+            Debug.Log($"Current Location: {CurrentLocation.CellCoordinates.Item1}, {CurrentLocation.CellCoordinates.Item2}");
             if(CurrentLocation == CurrentOrder.TargetDamCell)
             {
                 currentOrderIndex++;

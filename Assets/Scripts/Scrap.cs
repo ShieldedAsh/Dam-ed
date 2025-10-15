@@ -19,4 +19,16 @@ public class Scrap : IItem
     {
         count = Random.Range(1, 4);
     }
+
+    /// <summary>
+    /// checks to make sure the item is scrap, and if so, add it to this count
+    /// </summary>
+    /// <param name="scrap">the scrap to add</param>
+    public void AddScrap(IItem scrap)
+    {
+        if (scrap is Scrap)
+        {
+            count += ((Scrap)scrap).count;
+        }
+    }
 }

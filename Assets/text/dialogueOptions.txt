@@ -15,7 +15,7 @@
 
 #Wolf:I saw a wolf~there was a wolf, I don't think i've run faster;
 
-#Food:I found \+ pieces of food~Out on my travels I saw {+>20?"quite a bit of food,":"a litte bit of"}, \+ pieces";
+#Food:I found \+ pieces of food~Out on my travels I saw, \+ pieces of food";
 
 #Scrap:I found \ - pieces of scrap;
 

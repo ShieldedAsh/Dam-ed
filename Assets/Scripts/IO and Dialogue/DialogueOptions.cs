@@ -37,7 +37,8 @@ public class DialogueOptions : MonoBehaviour
 {
     [Tooltip("the dialogue file")]
     public TextAsset filePath;
-    public static List<extractedData> reservedPhrases = new List<extractedData>();
+
+    private static List<extractedData> reservedPhrases = new List<extractedData>();
 
 
     private void Awake()
@@ -131,9 +132,9 @@ public class DialogueOptions : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// converts a memory into a string
     /// </summary>
-    /// <param name="memory"></param>
+    /// <param name="memory">the memory to convert</param>
     public static string RecallMemory(Memory memory)
     {
         string parsedMemory = "";
@@ -147,14 +148,14 @@ public class DialogueOptions : MonoBehaviour
                     switch (item)
                     {
                         case BeaverData:
-                            fixedText.Replace("\\;", ((BeaverData)item).BeaverName);
-                            fixedText.Replace("\\|", ((BeaverData)item).CurrentOrder.ToString());
+                            fixedText = fixedText.Replace(@"\;", ((BeaverData)item).BeaverName);
+                            fixedText = fixedText.Replace(@"\|", ((BeaverData)item).CurrentOrder.ToString());
                             break;
                         case Food:
-                            fixedText.Replace("\\+", "" + ((Food)item).Count);
+                            fixedText = fixedText.Replace(@"\+", "" + ((Food)item).Count);
                             break;
                         case Scrap:
-                            fixedText.Replace("\\-", "" + ((Scrap)item).Count);
+                            fixedText = fixedText.Replace(@"\-", "" + ((Scrap)item).Count);
                             break;
 
                     }
