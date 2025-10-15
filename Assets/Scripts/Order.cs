@@ -89,7 +89,11 @@ public class Order
                 }
                 break;
             case Action.Barricade:
-                if (beaver.Carrying.itemType == IItem.ItemType.Scrap && IsNeighbor(beaver.CurrentLocation, TargetDamCell) && beaver.CurrentLocation.Connections.Contains(TargetDamCell))
+                if(beaverManager.TheDam.HQ != beaver.CurrentLocation)
+                {
+                    //CODE FOR REINFORCING HQ BARRICADE
+                }
+                else if (beaver.Carrying.itemType == IItem.ItemType.Scrap && IsNeighbor(beaver.CurrentLocation, TargetDamCell) && beaver.CurrentLocation.Connections.Contains(TargetDamCell))
                 {
                     beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].RemoveConnection(TargetDamCell);
                     beaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].RemoveConnection(beaver.CurrentLocation);
@@ -97,7 +101,8 @@ public class Order
                 }
                 break;
             case Action.Tunnel:
-                if (beaver.Carrying.itemType == IItem.ItemType.Scrap && IsNeighbor(beaver.CurrentLocation, TargetDamCell) && !beaver.CurrentLocation.Connections.Contains(TargetDamCell))
+                if (beaver.Carrying.itemType == IItem.ItemType.Scrap && IsNeighbor(beaver.CurrentLocation, TargetDamCell) && !beaver.CurrentLocation.Connections.Contains(TargetDamCell)
+                    && beaverManager.TheDam.HQ != TargetDamCell && beaverManager.TheDam.HQ != beaver.CurrentLocation)
                 {
                     beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].AddConnection(TargetDamCell);
                     beaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].AddConnection(beaver.CurrentLocation);
@@ -105,8 +110,40 @@ public class Order
                 }
                 break;
             case Action.Distract:
-                //finds all wolves within 5 spaces
-                //makes all of them start moving to this square
+                List<DamCell> distractCells = new List<DamCell>();
+                distractCells.Add(beaver.CurrentLocation);
+                for(int i = 0; i < 5; i++)
+                {
+                    List<DamCell> toAdd = new List<DamCell>();
+                    foreach(DamCell cell in distractCells)
+                    {
+                        foreach(DamCell connectCell in cell.Connections)
+                        {
+                            if(distractCells.Contains(connectCell) == false && toAdd.Contains(connectCell) == false)
+                            {
+                                toAdd.Add(connectCell);
+                            }
+                        }
+                    }
+                    foreach (DamCell cell in distractCells)
+                    {
+                        distractCells.Add(cell);
+                    }
+                }
+
+                /*
+                 * foreach(Wolf wolf in WolfManager.WolfList)
+                 * {
+                 *     foreach (DamCell cell in distractCells)
+                 *     {
+                 *          if(wolf.CurrentLocation == cell)
+                 *          {
+                 *              wolf.TargetCell = beaver.CurrentLocation;
+                 *              break;
+                 *          }
+                 *     }
+                 * }
+                 */
                 break;
         }
     }
