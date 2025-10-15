@@ -63,6 +63,69 @@ public class AudioSystem : MonoBehaviour
     [Tooltip ("Tracks corresponding to the amount of living beavers the player knows about.")]
     private List<AudioClip> _deadBeaverTracks;
 
+    /// <summary>
+    /// Clips of an eraser being used.
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Clips of an eraser being used.")]
+    private List<AudioClip> _eraser;
+
+    /// <summary>
+    /// Clips of footsteps
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Clips of footsteps.")]
+    private List<AudioClip> _footsteps;
+
+    /// <summary>
+    /// Clips of growling
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Clips of growling.")]
+    private List<AudioClip> _growl;
+
+    /// <summary>
+    /// Clips of a highlighter.
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Clips of a highlighter.")]
+    private List<AudioClip> _highlighter;
+
+    /// <summary>
+    /// Clips of paper being ripped.
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Clips of paper being ripped.")]
+    private List<AudioClip> _paper;
+
+    /// <summary>
+    /// Clips of a pencil being used.
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Clips of a pencil being used.")]
+    private List<AudioClip> _pencil;
+
+    /// <summary>
+    /// Clips of a barricade being repaired.
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Clips of a barricade being repaired.")]
+    private List<AudioClip> _repair;
+
+    /// <summary>
+    /// Clips of a sticker being placed.
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Clips of a sticker being placed.")]
+    private List<AudioClip> _sticker;
+
+    /// <summary>
+    /// A new temporary audio source.
+    /// </summary>
+    [SerializeField]
+    [Tooltip ("A new temporary audio source.")]
+    private AudioSource _tempAS;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -77,6 +140,7 @@ public class AudioSystem : MonoBehaviour
         //_knownBeaversLeft = _beaverManager.GetComponent<BeaverManager>()._knownBeaversLeft;
 
         AdvanceAudio(Time.deltaTime);
+        PlayAutoSound();
     }
 
     /// <summary>
@@ -86,13 +150,12 @@ public class AudioSystem : MonoBehaviour
     public void AdvanceAudio(float time)
     {
         _audioTime += time;
-        PlaySound();
     }
 
     /// <summary>
     /// Play an ambient track/noise if conditions are met.
     /// </summary>
-    public void PlaySound()
+    public void PlayAutoSound()
     {
         AudioSource aS = gameObject.GetComponent<AudioSource>();
 
@@ -153,5 +216,14 @@ public class AudioSystem : MonoBehaviour
         //A random amount of time, from 0-15 minutes, in seconds.
         //30s is 30f, 15min is 900f
         _nextAudio = Random.Range(0f, 900f);
+    }
+
+    /// <summary>
+    /// Play an audio caused by a specific event.
+    /// </summary>
+    public void PlayActiveAudio()
+    {
+        AudioSource aS = Instantiate(_tempAS, Vector3.zero, Quaternion.identity);
+
     }
 }
