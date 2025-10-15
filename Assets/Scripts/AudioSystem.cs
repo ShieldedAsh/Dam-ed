@@ -2,6 +2,59 @@ using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
+/// The active sound to play.
+/// Generic name-a random selection between its varients.
+/// Numbered name-that specific audio clip.
+/// </summary>
+public enum ActiveSoundName
+{
+    erasing,          //Eraser erasing something
+    erasing1,
+    erasing2,
+    erasing3,
+    erasing4,
+
+    footsteps,       //Footsteps 
+    footsteps1,
+    footsteps2,
+    footsteps3,
+    footsteps4,
+
+    growling,        //A deep, low, roar
+    growling1,
+    growling2,
+    growling3,
+
+    highlighter,    //A highlighter marking something
+    highlighter1,
+    highlighter2,
+    highlighter3,
+    highlighter4,
+
+    paper,          //Paper being ripped
+    paper1,
+    paper2,
+    paper3,
+    paper4,
+
+    pencil,         //A pencil writing something
+    pencil1,
+    pencil2,
+    pencil3,
+    pencil4,
+
+    repairing,      //Metallic objects being hit together
+    repairing1,
+    repairing2,
+
+    sticker,        //Stickers being placed
+    sticker1,
+    sticker2,
+    sticker3,
+    sticker4
+};
+
+/// <summary>
 /// The audio system for Dam-ed.
 /// </summary>
 public class AudioSystem : MonoBehaviour
@@ -219,11 +272,48 @@ public class AudioSystem : MonoBehaviour
     }
 
     /// <summary>
+    /// Generic name-a random selection between its varients.
+    /// Numbered name-that specific audio clip.
     /// Play an audio caused by a specific event.
     /// </summary>
-    public void PlayActiveAudio()
+    public void PlayActiveAudio(ActiveSoundName sound)
     {
         AudioSource aS = Instantiate(_tempAS, Vector3.zero, Quaternion.identity);
+        int index = 0;
+        
+        //If the number is not specified, play a random sound of that type.
+        //If the number is specified, play that specific sound.
+        switch(sound)
+        {
+            case ActiveSoundName.erasing:
+                index = Random.Range(0, _eraser.Count);
+                aS.clip = _eraser[index];
+                break;
+            case ActiveSoundName.erasing1:
+                aS.clip = _eraser[0];
+                break;
+            case ActiveSoundName.erasing2:
+                aS.clip = _eraser[1];
+                break;
+            case ActiveSoundName.erasing3:
+                aS.clip = _eraser[2];
+                break;
+            case ActiveSoundName.erasing4:
+                aS.clip = _eraser[3];
+                break;
+
+            case ActiveSoundName.footsteps:
+                index = Random.Range(0, _footsteps.Count);
+                aS.clip = _footsteps[index];
+                break;
+            case ActiveSoundName.footsteps1:
+                aS.clip = _eraser[0];
+                break;
+            
+        }
+
+        aS.Play();
+
 
     }
 }
