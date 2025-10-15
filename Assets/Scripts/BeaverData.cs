@@ -112,7 +112,7 @@ public class BeaverData : IItem
         {
             foreach(Memory mem in Memory)
             {
-                //THIS IS WHERE THE BEAVER TELLS YOU WHAT THEY REMEMBER!
+                DialogueOptions.RecallMemory(mem);
             }
             HQ.Instance.AddItem(Carrying);
         }
