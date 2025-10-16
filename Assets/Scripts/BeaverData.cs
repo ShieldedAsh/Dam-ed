@@ -184,7 +184,7 @@ public class BeaverData : IItem
     }
 
     /// <summary>
-    /// Trys to add an order to the Beaver's list
+    /// Tries to add an order to the Beaver's list
     /// </summary>
     /// <param name="order">The order</param>
     /// <returns>Whether or not the order was added</returns>
