@@ -16,14 +16,15 @@ public class WolfManager : MonoBehaviour
     private void Start()
     {
         theDam = FindAnyObjectByType<DamGenerator>().Dam;
-        wolfCount = 1;
+        wolfCount = 2;
         wolves = new List<Wolf>();
         //should increase how many cells are excluded
-        List<DamCell> exclude = new List<DamCell>() { theDam.HQ };
 
         for (int i = 0; i < wolfCount; i++)
         {
+            List<DamCell> exclude = new List<DamCell>() { theDam.HQ };
             wolves.Add(new Wolf(this, theDam.GetRandomCell(exclude)));
+            exclude.Add(wolves[i].CurrentLocation);
             wolves[i].ChangeTarget(theDam.GetRandomCell(exclude));
         }
     }
@@ -34,7 +35,7 @@ public class WolfManager : MonoBehaviour
         {
             if (wolf.MainTarget == null)
             {
-                wolf.ChangeTarget(theDam.GetRandomCell(new List<DamCell> { TheDam.HQ }));
+                wolf.ChangeTarget(theDam.GetRandomCell(new List<DamCell> { TheDam.HQ, wolf.CurrentLocation }));
             }
             wolf.UpdateWolf();
         }

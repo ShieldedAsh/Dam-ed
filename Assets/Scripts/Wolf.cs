@@ -37,7 +37,7 @@ public class Wolf : IItem
     public Wolf(WolfManager wolfManager, DamCell startPosition)
     {
         this.wolfManager = wolfManager;
-        timeToMove = Random.Range(2f, 3f);
+        timeToMove = Random.Range(5f, 10f);
         currentLocation = startPosition;
         currentLocation.AddItem(this);
         isDistracted = false;
@@ -136,7 +136,7 @@ public class Wolf : IItem
                     if (pathToTarget[pathToTarget.Count - 1].Distance < 0)
                     {
                         currentLocation.RemoveItem(this);
-                        timeToMove = Random.Range(2f, 3f);
+                        timeToMove = Random.Range(5f, 10f);
                         currentPathIndex = pathToTarget.Count - 1;
                         CurrentLocation = pathToTarget[currentPathIndex - 1];
                         currentLocation.AddItem(this);
@@ -169,7 +169,7 @@ public class Wolf : IItem
         else if (timeToMove <= 0) //is trapped
         {
             currentLocation.RemoveItem(this);
-            timeToMove = Random.Range(2f, 3f);
+            timeToMove = Random.Range(5f, 10f);
             pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, intermediateTarget, true);
             if (pathToTarget[pathToTarget.Count - 1].Distance < 0)
             {
