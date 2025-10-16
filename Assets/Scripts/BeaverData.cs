@@ -95,12 +95,7 @@ public class BeaverData : IItem
             atHome = false;
             if (timeToMove <= 0)
             {
-                //#if UNITY_EDITOR
-                //    timeToMove = Random.Range(1f - Speed, 1f - Speed);
-                //#else
-                    timeToMove = Random.Range(2f - Speed, 3f - Speed);
-                //#endif
-
+                timeToMove = Random.Range(2f - Speed, 3f - Speed);
                 ExecuteOrder();
             }
             timeToMove -= Time.deltaTime;
@@ -108,18 +103,17 @@ public class BeaverData : IItem
         //Sends the beaver home after finishing all orders
         else if(CurrentOrder == null && BeaverStatus == Status.Healthy && CurrentLocation != beaverManager.TheDam.HQ)
         {
-            Debug.Log("Returning home");
             if (Orders.Length == 0)
             {
                 Orders = new Order[1];
             }
             
-            GiveOrder(beaverManager.OrderGenerator.TryCreateMoveOrder(this, $"{beaverManager.TheDam.HQ.CellCoordinates.Item1}{beaverManager.TheDam.HQ.CellCoordinates.Item2}")!);
-            currentOrderIndex = 0;
-            for(int i = 1; i < Orders.Length; i++)
+            for(int i = 0; i < Orders.Length; i++)
             {
                 Orders[i] = null!;
             }
+            GiveOrder(beaverManager.OrderGenerator.TryCreateMoveOrder(this, $"{beaverManager.TheDam.HQ.CellCoordinates.Item1}{beaverManager.TheDam.HQ.CellCoordinates.Item2}")!);
+            currentOrderIndex = 0;
         }
         //Unloads the memory once
         else if(atHome == false && CurrentLocation == beaverManager.TheDam.HQ)

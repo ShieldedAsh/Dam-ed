@@ -148,8 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8f777942eb1a634d87b706e04c6fffa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionDensityPercentage: 20
-  DamSize: {x: 11, y: 11}
+  connectionDensityPercentage: 5
+  DamSize: {x: 5, y: 5}
 --- !u!4 &83890257
 Transform:
   m_ObjectHideFlags: 0
