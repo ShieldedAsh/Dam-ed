@@ -215,6 +215,10 @@ PrefabInstance:
       propertyPath: paintScript
       value: 
       objectReference: {fileID: 2039165026}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
     m_RemovedComponents:
     - {fileID: 7787521054482906402, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
     m_RemovedGameObjects: []
@@ -433,6 +437,10 @@ PrefabInstance:
       propertyPath: paintScript
       value: 
       objectReference: {fileID: 2039165026}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
     m_RemovedComponents:
     - {fileID: 7787521054482906402, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
     m_RemovedGameObjects: []
@@ -597,6 +605,10 @@ PrefabInstance:
       propertyPath: paintScript
       value: 
       objectReference: {fileID: 2039165026}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
     m_RemovedComponents:
     - {fileID: 7787521054482906402, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
     m_RemovedGameObjects: []
@@ -1261,6 +1273,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!82 &730536370 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1943625548863799565, guid: f6a9889ca637d264a8667b79cbc1692c, type: 3}
+  m_PrefabInstance: {fileID: 898114437}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &749787327
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1361,6 +1378,10 @@ PrefabInstance:
       propertyPath: paintScript
       value: 
       objectReference: {fileID: 2039165026}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
     m_RemovedComponents:
     - {fileID: 7787521054482906402, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
     m_RemovedGameObjects: []
@@ -1635,6 +1656,63 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2239647146662052289, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
   m_PrefabInstance: {fileID: 1831138245}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &898114437
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1913174348469327664, guid: f6a9889ca637d264a8667b79cbc1692c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913174348469327664, guid: f6a9889ca637d264a8667b79cbc1692c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913174348469327664, guid: f6a9889ca637d264a8667b79cbc1692c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913174348469327664, guid: f6a9889ca637d264a8667b79cbc1692c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913174348469327664, guid: f6a9889ca637d264a8667b79cbc1692c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913174348469327664, guid: f6a9889ca637d264a8667b79cbc1692c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913174348469327664, guid: f6a9889ca637d264a8667b79cbc1692c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913174348469327664, guid: f6a9889ca637d264a8667b79cbc1692c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913174348469327664, guid: f6a9889ca637d264a8667b79cbc1692c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913174348469327664, guid: f6a9889ca637d264a8667b79cbc1692c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2357749577014291139, guid: f6a9889ca637d264a8667b79cbc1692c, type: 3}
+      propertyPath: m_Name
+      value: Audio Manager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f6a9889ca637d264a8667b79cbc1692c, type: 3}
 --- !u!1 &926273917
 GameObject:
   m_ObjectHideFlags: 0
@@ -2161,6 +2239,10 @@ PrefabInstance:
       propertyPath: paintScript
       value: 
       objectReference: {fileID: 2039165026}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
     m_RemovedComponents:
     - {fileID: 7787521054482906402, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
     m_RemovedGameObjects: []
@@ -3338,6 +3420,10 @@ PrefabInstance:
       propertyPath: paintScript
       value: 
       objectReference: {fileID: 2039165026}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
     m_RemovedComponents:
     - {fileID: 7787521054482906402, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
     m_RemovedGameObjects: []
@@ -3423,6 +3509,10 @@ PrefabInstance:
       propertyPath: paintScript
       value: 
       objectReference: {fileID: 2039165026}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
     m_RemovedComponents:
     - {fileID: 7787521054482906402, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
     m_RemovedGameObjects: []
@@ -3601,6 +3691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002086638e771384f841a572bcd06408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audioSystem: {fileID: 730536370}
   drawPad: {fileID: 2039165026}
 --- !u!61 &1917973377
 BoxCollider2D:
@@ -3971,6 +4062,10 @@ PrefabInstance:
       propertyPath: paintScript
       value: 
       objectReference: {fileID: 2039165026}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
     m_RemovedComponents:
     - {fileID: 7787521054482906402, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
     m_RemovedGameObjects: []
@@ -4294,6 +4389,10 @@ PrefabInstance:
       propertyPath: paintScript
       value: 
       objectReference: {fileID: 2039165026}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
     m_RemovedComponents:
     - {fileID: 7787521054482906402, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
     m_RemovedGameObjects: []
@@ -4362,3 +4461,4 @@ SceneRoots:
   - {fileID: 404641412}
   - {fileID: 1342787380}
   - {fileID: 1985757618}
+  - {fileID: 898114437}

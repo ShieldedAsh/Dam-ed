@@ -3,6 +3,13 @@ using UnityEngine;
 
 public class DrawingTool : MonoBehaviour
 {
+    //Fields
+    /// <summary>
+    /// Reference to the audio system
+    /// </summary>
+    [SerializeField]
+    [Tooltip ("Reference to the audio system")]
+    private AudioSource _audioSystem;
 
     public PaintScript paintScript;
     public Color color = Color.green;
@@ -36,6 +43,7 @@ public class DrawingTool : MonoBehaviour
 
     private void OnMouseDown()
     {
+        paintScript.layerName = layer;
         paintScript.tool = this;
         targetPos = restPos + Vector3.left * 0.4f;
         this.transform.parent.BroadcastMessage("ToolChanged");
@@ -57,6 +65,23 @@ public class DrawingTool : MonoBehaviour
         }
 
     }
+
+    public void OnMouseUp()
+    {
+        string tempLayer = layer;
+        tempLayer = tempLayer.ToLower();
+
+        if(tempLayer == "pencils")
+        {
+            _audioSystem.GetComponent<AudioSystem>().PlayActiveAudio(ActiveSoundName.pencil);
+        }
+        else
+        {
+            _audioSystem.GetComponent<AudioSystem>().PlayActiveAudio(ActiveSoundName.highlighter);
+        }
+    }
+
+
 
     private void ToolChanged()
     {

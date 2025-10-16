@@ -179,6 +179,10 @@ public class AudioSystem : MonoBehaviour
     [Tooltip ("A new temporary audio source.")]
     private AudioSource _tempAS;
 
+    [SerializeField]
+    [Tooltip ("A list of each temporary Audio Source that's been created.")]
+    private List<AudioSource> _tempAudioSources;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -188,10 +192,8 @@ public class AudioSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Updating _knownBeaversLeft each frame
-        //Should probably change this to whenever the _knownBeaversLeft changes, but meh
-        //_knownBeaversLeft = _beaverManager.GetComponent<BeaverManager>()._knownBeaversLeft;
-
+        //Change this to known beavers living somehow.
+        _knownBeaversLeft = _beaverManager.GetComponent<BeaverManager>().Beavers.Count;
         AdvanceAudio(Time.deltaTime);
         PlayAutoSound();
     }
@@ -278,7 +280,9 @@ public class AudioSystem : MonoBehaviour
     /// </summary>
     public void PlayActiveAudio(ActiveSoundName sound)
     {
+        DeleteTempAudioSources();
         AudioSource aS = Instantiate(_tempAS, Vector3.zero, Quaternion.identity);
+        _tempAudioSources.Add(aS);
         int index = 0;
 
         //If the number is not specified, play a random sound of that type.
@@ -414,5 +418,19 @@ public class AudioSystem : MonoBehaviour
         }
 
         aS.Play();
+    }
+
+    /// <summary>
+    /// Deletes a temporary audio source if it's not playing anything.
+    /// </summary>
+    public void DeleteTempAudioSources()
+    {
+        for(int i = 0; i < _tempAudioSources.Count; i++)
+        {
+            if (!_tempAudioSources[i].isPlaying)
+            {
+                Destroy(_tempAudioSources[i]);
+            }
+        }
     }
 }
