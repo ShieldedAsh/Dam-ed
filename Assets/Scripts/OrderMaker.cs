@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
+
 
 public class OrderMaker : MonoBehaviour
 {
@@ -10,29 +12,70 @@ public class OrderMaker : MonoBehaviour
     [SerializeField]
     TMP_InputField coordinates;
 
-    
+    string selectedOrder;
+    string selectedBeaver;
+
+    public List<Order> orders;
+
+    BeaverData activeBeaver;
+
+    [SerializeField] BeaverManager beaverManager;
+    [SerializeField] OrderGenerator orderGenerator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
+
+    }
+
+    public void ChangeOrder()
+    {
+        selectedOrder = order.captionText.text;
+        //Debug.Log(selectedOrder);
+    }
+
+    public void ChangeBeaver()
+    {
+        selectedBeaver = beaver.captionText.text;
+        Debug.Log(selectedBeaver);
+        activeBeaver = beaverManager.getBeaverFromName(selectedBeaver);
         
     }
 
-    void AddOrder()
+    public void AddOrder()
     {
-        TMP_Text currentOrder = order.captionText;
-        switch (currentOrder)
+        
+        switch (selectedOrder)
         {
+            case "Move to":
+                
+            break;
+
+            case "Scavenge":
+                break;
+
+            case "Distract":
+                break;
+
+            case "Barricade to":
+                break;
+
+            case "Tunnel to":
+                break;
+            
+            default:
+                
+                break;
 
         }
     }
 
-    void GiveOrder()
+    public void GiveOrder()
     {
 
     }

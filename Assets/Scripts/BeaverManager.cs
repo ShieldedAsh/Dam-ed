@@ -10,6 +10,7 @@ public class BeaverManager : MonoBehaviour
 
     public List<BeaverData> Beavers { get; private set; }
 
+
     [SerializeField]
     BeaverNamer namer;
 
@@ -24,14 +25,14 @@ public class BeaverManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("Dam: " + DamGenerator.hasGenerated);
-        Debug.Log("Beavers: " + Beavers);
+        //Debug.Log("Dam: " + DamGenerator.hasGenerated);
+        //Debug.Log("Beavers: " + Beavers);
 
         if (Beavers != null && Beavers.Count == 0 && DamGenerator.hasGenerated)
         {
             for (int i = 0; i < 9; i++)
             {
-                Debug.Log("Made Beav");
+                //Debug.Log("Made Beav");
                 AddBeaver();
             }
             namer.nameBeavers(Beavers);
@@ -48,6 +49,18 @@ public class BeaverManager : MonoBehaviour
     public void AddBeaver()
     {
         Beavers.Add(new BeaverData(this));
+    }
+
+    public BeaverData getBeaverFromName(string name)
+    {
+        for(int i = 0;i < Beavers.Count; i++)
+        {
+            if (Beavers[i].BeaverName == name)
+            {
+                return Beavers[i];
+            }
+        }
+        return null;
     }
 
 }

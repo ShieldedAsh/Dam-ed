@@ -32,7 +32,7 @@ public class BeaverNamer : MonoBehaviour
             beaverText[i].text = beavers[i].BeaverName + "\n¥" + beavers[i].Intelligence + " §" + beavers[i].Speed;
             Debug.Log("Named Beav");
 
-            dropdown.options.Add(new TMP_Dropdown.OptionData(beavers[i].BeaverName + "(¥" + beavers[i].Intelligence + " §" + beavers[i].Speed + ")"));
+            dropdown.options.Add(new TMP_Dropdown.OptionData(beavers[i].BeaverName));
         }
 
 
