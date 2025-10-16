@@ -37,7 +37,7 @@ public class Wolf : IItem
     public Wolf(WolfManager wolfManager, DamCell startPosition)
     {
         this.wolfManager = wolfManager;
-        timeToMove = Random.Range(2f, 3f);
+        timeToMove = Random.Range(5f, 10f);
         currentLocation = startPosition;
         currentLocation.AddItem(this);
         isDistracted = false;
@@ -45,12 +45,7 @@ public class Wolf : IItem
 
     public void UpdateWolf()
     {
-        if (CurrentLocation.Connections.Contains(HQ.Instance.HQCell) && isDistracted == false)
-        {
-            Debug.Log("Breaking down the door");
-            DoorLogic();
-        }
-        else
+        if (!CurrentLocation.Connections.Contains(HQ.Instance.HQCell) || isDistracted )
         {
             pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, mainTarget, true);
             if (pathToTarget.Count == 0)
@@ -78,6 +73,14 @@ public class Wolf : IItem
                     Debug.Log("Moving wolf to main");
                     MoveWolf(true);
                 }
+            }
+        }
+        else
+        {
+            if (CurrentLocation.Connections.Contains(HQ.Instance.HQCell) && isDistracted == false)
+            {
+                Debug.Log("Breaking down the door");
+                DoorLogic();
             }
         }
         timeToMove -= Time.deltaTime;
@@ -173,7 +176,7 @@ public class Wolf : IItem
         if (toMain)
         {
             currentLocation.RemoveItem(this);
-            timeToMove = Random.Range(2f, 3f);
+            timeToMove = Random.Range(5f, 10f);
             currentPathIndex = pathToTarget.Count - 1;
             CurrentLocation = pathToTarget[currentPathIndex - 1];
             currentLocation.AddItem(this);
@@ -187,7 +190,7 @@ public class Wolf : IItem
         else
         {
             currentLocation.RemoveItem(this);
-            timeToMove = Random.Range(2f, 3f);
+            timeToMove = Random.Range(5f, 10f);
             pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, intermediateTarget, true);
             if (pathToTarget.Count == 0)
             {
@@ -221,7 +224,7 @@ public class Wolf : IItem
     public void DoorLogic()
     {
         HQ hq = HQ.Instance;
-        if (CurrentLocation == hq.HQLeftCell) //Checks if the right cell is occupied
+        /*if (CurrentLocation == hq.HQLeftCell) //Checks if the right cell is occupied
         {
             foreach (IItem item in hq.HQRightCell.Contents)
             {
@@ -242,12 +245,14 @@ public class Wolf : IItem
                     break;
                 }
             }
-        }
+        }*/
         if (timeToMove < 0 && isDistracted == false) //IsDistracted just here to make sure a wolf doesn't sideswipe a door 
         {
             if (CurrentLocation == hq.HQLeftCell && hq.LeftDoorHealth > 0)
             {
                 hq.LeftDoorHealth -= 1;
+                Distract(wolfManager.TheDam.GetRandomCell(new List<DamCell>() { wolfManager.TheDam.HQ }));
+                Debug.Log("EAT DOOR");
             }
             else if (CurrentLocation == hq.HQLeftCell && hq.LeftDoorHealth == 0)
             {
@@ -256,6 +261,8 @@ public class Wolf : IItem
             else if (CurrentLocation == hq.HQRightCell && hq.RightDoorHealth > 0)
             {
                 hq.RightDoorHealth -= 1;
+                Distract(wolfManager.TheDam.GetRandomCell(new List<DamCell>() { wolfManager.TheDam.HQ }));
+                Debug.Log("EAT DOOR");
             }
             else if (CurrentLocation == hq.HQRightCell && hq.RightDoorHealth == 0)
             {

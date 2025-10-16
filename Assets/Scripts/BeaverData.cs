@@ -95,7 +95,7 @@ public class BeaverData : IItem
             atHome = false;
             if (timeToMove <= 0)
             {
-                timeToMove = Random.Range(2f - Speed, 3f - Speed);
+                timeToMove = Random.Range(6f - Speed, 11f - Speed);
                 ExecuteOrder();
             }
             timeToMove -= Time.deltaTime;
