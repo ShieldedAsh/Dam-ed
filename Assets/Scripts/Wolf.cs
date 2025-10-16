@@ -98,7 +98,7 @@ public class Wolf : IItem
             {
                 pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, mainTarget, true);
                 // if wolf is trapped
-                if (pathToTarget[pathToTarget.Count - 1].Distance < 0)
+                if (pathToTarget.Count == 0)
                 {
                     //Find all cells within isolated chunk
                     List<DamCell> validCells = new List<DamCell>();
@@ -133,7 +133,7 @@ public class Wolf : IItem
                         }
                     }
 
-                    if (pathToTarget[pathToTarget.Count - 1].Distance < 0)
+                    if (pathToTarget.Count == 0)
                     {
                         currentLocation.RemoveItem(this);
                         timeToMove = Random.Range(5f, 10f);

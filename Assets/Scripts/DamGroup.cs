@@ -126,7 +126,6 @@ public class DamGroup
             return path;
         }
         List<DamCell> empty = new List<DamCell>();
-        empty.Add(start);
         return empty;
     }
 

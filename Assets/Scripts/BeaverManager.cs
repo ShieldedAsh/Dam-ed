@@ -30,7 +30,6 @@ public class BeaverManager : MonoBehaviour
             {
                 AddBeaver();
             }
-            Beavers[0].Orders[0] = new Order(Order.Action.Move, Beavers[0], this, theDam.GetRandomCell(new List<DamCell>() { theDam.HQ }));
         }
         
         if (Beavers.Count > 0)

@@ -87,11 +87,14 @@ public class Order
                 beaver.EvaluateRoom();
                 //Re-evaluates Path to find current best route
                 pathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell, false);
-                beaver.CurrentLocation.RemoveItem(beaver);
-                currentPathIndex = pathToTarget.Count - 1;
-                beaver.CurrentLocation = pathToTarget[currentPathIndex - 1];
-                beaver.CurrentLocation.AddItem(beaver);
-                currentPathIndex--;
+                if (pathToTarget.Count != 0)
+                {
+                    beaver.CurrentLocation.RemoveItem(beaver);
+                    currentPathIndex = pathToTarget.Count - 1;
+                    beaver.CurrentLocation = pathToTarget[currentPathIndex - 1];
+                    beaver.CurrentLocation.AddItem(beaver);
+                    currentPathIndex--;
+                }
                 break;
             case Action.Scavenge:
                 if(beaver.CurrentLocation.Contents.Count != 0) //makes sure there are items on this cell
