@@ -9,7 +9,7 @@ public class BeaverData : IItem
     /// <summary>
     /// The name of the Beaver
     /// </summary>
-    public string BeaverName { get; private set; }
+    public string BeaverName { get; set; }
 
     /// <summary>
     /// The intelligence of the Beaver
