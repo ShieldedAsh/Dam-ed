@@ -24,6 +24,10 @@ public class Wolf : IItem
 
     #nullable enable
     public DamCell? MainTarget { get => mainTarget; }
+    /// <summary>
+    /// This is for viewing the path in DamGenerator
+    /// </summary>
+    public List<DamCell> CurrentPath { get => pathToTarget; }
 
     public Wolf(WolfManager wolfManager, DamCell startPosition)
     {

@@ -4,8 +4,13 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Order
 {
-    private List<DamCell> PathToTarget;
+    private List<DamCell> pathToTarget;
     private int currentPathIndex;
+
+    /// <summary>
+    /// This is for viewing the path in DamGenerator
+    /// </summary>
+    public List<DamCell> CurrentPath { get => pathToTarget; }
 
     /// <summary>
     /// Things a beaver can do
@@ -61,8 +66,8 @@ public class Order
         TargetDamCell = target;
         if (ThisOrder == Action.Move)
         {
-            PathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
-            currentPathIndex = PathToTarget.Count - 1;
+            pathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
+            currentPathIndex = pathToTarget.Count - 1;
         }
     }
 
@@ -76,9 +81,9 @@ public class Order
             case Action.Move:
                 beaver.EvaluateRoom();
                 //Re-evaluates Path to find current best route
-                PathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
-                currentPathIndex = PathToTarget.Count - 1;
-                beaver.CurrentLocation = PathToTarget[currentPathIndex - 1];
+                pathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
+                currentPathIndex = pathToTarget.Count - 1;
+                beaver.CurrentLocation = pathToTarget[currentPathIndex - 1];
                 currentPathIndex--;
                 break;
             case Action.Scavenge:
@@ -157,7 +162,7 @@ public class Order
         switch (ThisOrder)
         {
             case Action.Move:
-                return $"moving to ({PathToTarget[currentPathIndex].CellCoordinates.Item1}, {PathToTarget[currentPathIndex].CellCoordinates.Item2})";
+                return $"moving to ({pathToTarget[currentPathIndex].CellCoordinates.Item1}, {pathToTarget[currentPathIndex].CellCoordinates.Item2})";
 
             case Action.Scavenge:
                 return $"scavenging for resources";

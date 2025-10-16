@@ -14,6 +14,9 @@ public class DamGenerator : MonoBehaviour
     [SerializeField] private int connectionDensityPercentage;
     public static bool hasGenerated = false;
 
+    //Extra vars for drawing
+    private BeaverManager beaverManager;
+    private WolfManager wolfManager;
 
     //Properties
     /// <summary>
@@ -263,6 +266,13 @@ public class DamGenerator : MonoBehaviour
                         case IItem.ItemType.Wolf:
                             Gizmos.color = UnityEngine.Color.grey;
                             Gizmos.DrawCube(new Vector3(gCell.CellArrayPosition.X + xOffset - 0.1f, gCell.CellArrayPosition.Y + yOffset + 0.1f, 0), new Vector3(.1f, .1f, .1f));
+                            if (obj is Wolf)
+                            {
+                                foreach(DamCell cell in ((Wolf)obj).CurrentPath)
+                                {
+
+                                }
+                            }
                             break;
                         case IItem.ItemType.Beaver:
                             Gizmos.color = UnityEngine.Color.magenta;
