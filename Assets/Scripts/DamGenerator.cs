@@ -230,7 +230,7 @@ public class DamGenerator : MonoBehaviour
     {
         time += Time.deltaTime;
         cTime += Time.deltaTime;
-        if (cTime >= 2)
+        if (cTime >= 60)
         {
             Debug.Log("A minute has passed");
             minutesPassed++;

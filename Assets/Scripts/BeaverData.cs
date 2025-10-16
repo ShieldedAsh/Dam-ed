@@ -84,6 +84,8 @@ public class BeaverData : IItem
 
     public bool testing = true;
 
+
+    private MemoryDisplay memoryDisplay;
     /// <summary>
     /// Updates this beaver's current status. Do this for each beaver every update
     /// </summary>
@@ -122,7 +124,7 @@ public class BeaverData : IItem
             atHome = true;
             foreach(Memory mem in Memory)
             {
-                totalMemories += DialogueOptions.RecallMemory(mem);
+                memoryDisplay.ReturnBeaver(this);
                 atHome = true;
             }
             if(Carrying != null)
@@ -132,6 +134,20 @@ public class BeaverData : IItem
         }
     }
 
+    /// <summary>
+    /// clears a beavers memories
+    /// </summary>
+    /// <returns>all the memories the beaver had</returns>
+    public string DropOffMemories()
+    {
+        string memory = "";
+        Memory = new List<Memory>();
+        foreach (Memory mem in Memory)
+        {
+            memory += DialogueOptions.RecallMemory(mem);
+        }
+        return memory;
+    }
     /// <summary>
     /// Creates a beavers with a given name as well as intelligence and speed stats
     /// </summary>
@@ -145,6 +161,8 @@ public class BeaverData : IItem
         Intelligence = intelligence;
         Speed = speed;
         Orders = new Order[Intelligence];
+
+        memoryDisplay = Object.FindFirstObjectByType<MemoryDisplay>();
     }
 
     /// <summary>
