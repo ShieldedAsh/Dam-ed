@@ -18,7 +18,7 @@ public class MemoryDisplay : MonoBehaviour
     public void ReturnBeaver(BeaverData beaver)
     {
         totalMemories += beaver.BeaverName + "said: \n";
-         totalMemories += beaver.DropOffMemories();
+        totalMemories += beaver.DropOffMemories();
 
         ParseMemories();
     }
@@ -39,7 +39,13 @@ public class MemoryDisplay : MonoBehaviour
 
     public void OnClick()
     {
-        totalMemories += "You clicked a button " + timesClicked++ + " times!" +'\n';
+        totalMemories += "You clicked a button " + timesClicked++ + " times!" + '\n';
+        ParseMemories();
+    }
+
+    public void passMemory(string memory)
+    {
+        totalMemories += memory + '\n';
         ParseMemories();
     }
 }

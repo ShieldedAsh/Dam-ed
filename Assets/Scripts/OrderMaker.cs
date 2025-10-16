@@ -29,6 +29,8 @@ public class OrderMaker : MonoBehaviour
 
     [SerializeField]
     TextMeshProUGUI ordersList;
+
+    [SerializeField] MemoryDisplay memoryDisplay;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -91,11 +93,16 @@ public class OrderMaker : MonoBehaviour
                 break;
 
         }
-        if(selectedOrder != null && orders.Count < activeBeaver.Intelligence)
+        if(testOrder == null)
+        {
+            memoryDisplay.passMemory("The beavers do not comprehend.");
+        }
+        if(testOrder != null && orders.Count < activeBeaver.Intelligence)
         {
             orders.Add(testOrder);
             ordersList.text = ordersList.text + "\n" + selectedOrder.ToString();
         }
+        
 
     }
 
