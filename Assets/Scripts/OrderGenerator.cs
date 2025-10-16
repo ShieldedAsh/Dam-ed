@@ -19,6 +19,7 @@ public class OrderGenerator : MonoBehaviour
     /// <returns>The created order, if the location was invalid it returns null</returns>
     public Order? TryCreateMoveOrder(BeaverData beaver, string target)
     {
+        target = target.ToLower();
         if (IsValidCell(target))
         {
             return new Order(Order.Action.Move, beaver, beaverManager, beaverManager.TheDam.Cells[target[0] - 97, int.Parse(target.Substring(1, target.Length - 1)) - 1]);
@@ -44,6 +45,7 @@ public class OrderGenerator : MonoBehaviour
     /// <returns>The created order, if the location was invalid it returns null</returns>
     public Order? TryCreateBarricadeOrder(BeaverData beaver, string target)
     {
+        target = target.ToLower();
         if (IsValidCell(target))
         {
             return new Order(Order.Action.Barricade, beaver, beaverManager, beaverManager.TheDam.Cells[target[0] - 97, int.Parse(target.Substring(1, target.Length - 1)) - 1]);
@@ -59,6 +61,7 @@ public class OrderGenerator : MonoBehaviour
     /// <returns>The created order, if the location was invalid it returns null</returns>
     public Order? TryCreateTunnelOrder(BeaverData beaver, string target)
     {
+        target = target.ToLower();
         if (IsValidCell(target))
         {
             return new Order(Order.Action.Tunnel, beaver, beaverManager, beaverManager.TheDam.Cells[target[0] - 97, int.Parse(target.Substring(1, target.Length - 1)) - 1]);
@@ -83,42 +86,58 @@ public class OrderGenerator : MonoBehaviour
     /// <returns></returns>
     public bool IsValidCell(string input)
     {
+        Debug.Log("called");
         if (beaverManager.TheDam.Cells.GetLength(1) < 10)
         {
+            Debug.Log("small grid");
             if (input.Length != 2)
             {
+                Debug.Log("Not 2");
                 return false;
             }
             if ((int)input[0] < 97 || (int)input[0] >= 97 + beaverManager.TheDam.Cells.GetLength(0))
             {
+                Debug.Log("character out of range");
                 return false;
             }
-            if (input[1] < 1 || input[1] >= beaverManager.TheDam.Cells.GetLength(1))
+            if (input[1] < 1 ) 
             {
+                Debug.Log("less than 1");
+                return false;
+            }
+            Debug.Log(input[1]);
+            Debug.Log(beaverManager.TheDam.Cells.GetLength(1));
+            if (int.Parse(input.Substring(1, input.Length - 1)) >= beaverManager.TheDam.Cells.GetLength(1))
+            {
+                Debug.Log("greater than length");
                 return false;
             }
             return true;
         }
         else 
         {
+            Debug.Log("Large grid");
             if (input.Length < 2)
             {
                 return false;
             }
             if ((int)input[0] < 97 || (int)input[0] >= 97 + beaverManager.TheDam.Cells.GetLength(0))
             {
+                Debug.Log("character out of range");
                 return false;
             }
 
             int column;
             if (!int.TryParse(input.Substring(1, input.Length - 1), out column))
             {
+                Debug.Log("Could not parse");
                 return false;
             }
             else
             {
                 if (column < 1 || column >=  beaverManager.TheDam.Cells.GetLength(1))
                 {
+                    Debug.Log("out of range");
                     return false;
                 }
             }
