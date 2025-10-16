@@ -108,6 +108,7 @@ public class Order
                     {
                         hq.LeftDoorHealth += 1;
                         beaver.Carrying = null;
+                        
                     }
                     else if (TargetDamCell == hq.HQRightCell)
                     {

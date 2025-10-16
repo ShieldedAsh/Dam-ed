@@ -5,6 +5,14 @@ using UnityEngine.InputSystem.Switch;
 
 public class StickerScript : MonoBehaviour
 {
+    //Fields
+    /// <summary>
+    /// Reference to the audio system
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Reference to the audio system")]
+    private AudioSource _audioSystem;
+
     //The area within which stickers are allowed to be placed
     public Collider2D dropField;
     //The sprite of the sticker
@@ -74,5 +82,8 @@ public class StickerScript : MonoBehaviour
         if(!dropField.bounds.Contains(new Vector2(mousePos.x, mousePos.y))){
             Destroy(child);
         }
+
+        //Plays a random sticker sound
+        _audioSystem.GetComponent<AudioSystem>().PlayActiveAudio(ActiveSoundName.sticker);
     }
 }

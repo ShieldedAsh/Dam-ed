@@ -6,6 +6,11 @@ using Unity.VisualScripting;
 
 public class OrderMaker : MonoBehaviour
 {
+    //Fields
+    [SerializeField]
+    [Tooltip("Reference to the audio system")]
+    private AudioSource _audioSystem;
+
     [SerializeField]
     TMP_Dropdown beaver;
     [SerializeField]
@@ -111,8 +116,37 @@ public class OrderMaker : MonoBehaviour
         foreach(var order in orders)
         {
             activeBeaver.GiveOrder(order);
+
+            if(order.ActionType == Order.Action.Barricade && order.TargetDamCell == HQ.Instance.HQLeftCell)
+            {
+                Repair(false);
+            }
+            else if (order.ActionType == Order.Action.Barricade && order.TargetDamCell == HQ.Instance.HQRightCell)
+            {
+                Repair(true);
+            }
         }
         orders.Clear();
         ordersList.text = "";
+    }
+
+    /// <summary>
+    /// Plays a random repairing sound when a beaver repairs an HQ door
+    /// </summary>
+    /// <param name="right">Whether or not it's the right door</param>
+    public void Repair(bool right)
+    {
+        if (right)
+        {
+            _audioSystem.panStereo = 1;
+        }
+        else
+        {
+            _audioSystem.panStereo = -1;
+        }
+
+        //Plays a random repairing sound
+        _audioSystem.GetComponent<AudioSystem>().PlayActiveAudio(ActiveSoundName.repairing);
+        _audioSystem.panStereo = 0;
     }
 }
