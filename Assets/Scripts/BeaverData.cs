@@ -110,11 +110,15 @@ public class BeaverData : IItem
         //Runs when the beaver gets home
         else if(atHome == false)
         {
+            atHome = true;
             foreach(Memory mem in Memory)
             {
                 //THIS IS WHERE THE BEAVER TELLS YOU WHAT THEY REMEMBER!
             }
-            HQ.Instance.AddItem(Carrying);
+            if(Carrying != null)
+            {
+                HQ.Instance.AddItem(Carrying);
+            }
         }
         
     }
@@ -122,7 +126,7 @@ public class BeaverData : IItem
     /// <summary>
     /// Creates a beavers with a given name as well as intelligence and speed stats
     /// </summary>
-    /// <param name="beaverManager"></param>
+    /// <param name="beaverManager">The BeaverManager keeping track of this beaver</param>
     /// <param name="name">The Beaver's name</param>
     /// <param name="intelligence">The Beaver's intelligence</param>
     /// <param name="speed">The Beaver's speed</param>
@@ -137,6 +141,7 @@ public class BeaverData : IItem
     /// <summary>
     /// Default constructor for a beaver. sets the name to BGDD-R(2) and the intelligence to 5 and speed to 1
     /// </summary>
+    /// <param name="beaverManager">The BeaverManager keeping track of this beaver</param>
     public BeaverData(BeaverManager beaverManager)
     {
         BeaverName = "BGDD-R(2)";
@@ -148,6 +153,7 @@ public class BeaverData : IItem
         BeaverStatus = Status.Healthy;
         this.beaverManager = beaverManager;
         CurrentLocation = beaverManager.TheDam.HQ;
+        atHome = true;
     }
 
     /// <summary>
