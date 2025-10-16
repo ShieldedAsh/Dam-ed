@@ -100,6 +100,7 @@ public class DamGenerator : MonoBehaviour
 
         ConnectCells(dam.Cells[hqCoordinate.X, hqCoordinate.Y], new Point(-1, 0));
         ConnectCells(dam.Cells[hqCoordinate.X, hqCoordinate.Y], new Point(1, 0));
+        HQ.Instance.SetHQCell(dam.Cells[hqCoordinate.X, hqCoordinate.Y]);
 
         //Make Initial Connections
         int totalConnections = 3;
@@ -229,7 +230,7 @@ public class DamGenerator : MonoBehaviour
     {
         time += Time.deltaTime;
         cTime += Time.deltaTime;
-        if (cTime >= 2)
+        if (cTime >= 60)
         {
             Debug.Log("A minute has passed");
             minutesPassed++;
@@ -259,7 +260,10 @@ public class DamGenerator : MonoBehaviour
                 {
                     Gizmos.DrawLine(new Vector3(gCell.CellArrayPosition.X + xOffset, gCell.CellArrayPosition.Y + yOffset, 0), new Vector3(cell.CellArrayPosition.X + xOffset, cell.CellArrayPosition.Y + yOffset, 0));
                 }
-                foreach(IItem obj in gCell.Contents)
+            }
+            foreach(DamCell gCell in dam.Cells)
+            {
+                foreach (IItem obj in gCell.Contents)
                 {
                     switch (obj.itemType)
                     {
@@ -277,10 +281,10 @@ public class DamGenerator : MonoBehaviour
                             if (obj is Wolf)
                             {
                                 DamCell current = gCell;
-                                foreach(DamCell cell in ((Wolf)obj).CurrentPath)
+                                for (int i = ((Wolf)obj).CurrentPath.Count - 1; i >= 0; i--)
                                 {
-                                    Gizmos.DrawLine(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), new Vector3(cell.CellArrayPosition.X + xOffset, cell.CellArrayPosition.Y + yOffset, 0));
-                                    current = cell;
+                                    Gizmos.DrawLine(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), new Vector3(((Wolf)obj).CurrentPath[i].CellArrayPosition.X + xOffset, ((Wolf)obj).CurrentPath[i].CellArrayPosition.Y + yOffset, 0));
+                                    current = ((Wolf)obj).CurrentPath[i];
                                 }
                             }
                             break;
@@ -292,10 +296,10 @@ public class DamGenerator : MonoBehaviour
                                 if (((BeaverData)obj).CurrentOrder != null && ((BeaverData)obj).CurrentOrder.ActionType == Order.Action.Move)
                                 {
                                     DamCell current = gCell;
-                                    foreach (DamCell cell in ((BeaverData)obj).CurrentOrder.CurrentPath)
+                                    for (int i = ((BeaverData)obj).CurrentOrder.CurrentPath.Count - 1; i >= 0; i--)
                                     {
-                                        Gizmos.DrawLine(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), new Vector3(cell.CellArrayPosition.X + xOffset, cell.CellArrayPosition.Y + yOffset, 0));
-                                        current = cell;
+                                        Gizmos.DrawLine(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), new Vector3(((BeaverData)obj).CurrentOrder.CurrentPath[i].CellArrayPosition.X + xOffset, ((BeaverData)obj).CurrentOrder.CurrentPath[i].CellArrayPosition.Y + yOffset, 0));
+                                        current = ((BeaverData)obj).CurrentOrder.CurrentPath[i];
                                     }
                                 }
                             }

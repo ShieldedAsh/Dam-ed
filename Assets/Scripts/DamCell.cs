@@ -62,7 +62,20 @@ public class DamCell
     /// <param name="item">The item being added</param>
     public void AddItem(IItem item)
     {
-
+        foreach(IItem existingItem in Contents)
+        {
+            if(existingItem.GetType() == item.GetType())
+            {
+                switch (existingItem)
+                {
+                    case Food:
+                        ((Food)existingItem).AddFood(item);
+                        return;
+                    case Scrap:
+                        return;
+                }
+            }
+        }
         Contents.Add(item);
     }
 
@@ -70,9 +83,14 @@ public class DamCell
     /// Removes an item from the contents of the room
     /// </summary>
     /// <param name="item">The item being removed</param>
-    public void RemoveItem(IItem item)
+    public bool RemoveItem(IItem item)
     {
-        Contents.Remove(item);
+        if (Contents.Contains(item))
+        {
+            Contents.Remove(item);
+            return true;
+        }
+        return false;
     }
 
     /// <summary>

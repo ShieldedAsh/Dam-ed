@@ -154,7 +154,7 @@ public class DialogueOptions : MonoBehaviour
                             fixedText = fixedText.Replace(@"\+", "" + ((Food)item).Count);
                             break;
                         case Scrap:
-                            fixedText = fixedText.Replace(@"\-", "" + ("1"));
+                            fixedText = fixedText.Replace(@"\-", "" + "1");
                             break;
 
                     }
