@@ -1016,6 +1016,10 @@ PrefabInstance:
       propertyPath: dropField
       value: 
       objectReference: {fileID: 2039165023}
+    - target: {fileID: 7804816794162314434, guid: b6dd56ef6df5def47ac5a27a1fce2696, type: 3}
+      propertyPath: _audioSystem
+      value: 
+      objectReference: {fileID: 730536370}
     - target: {fileID: 8432826868398817082, guid: b6dd56ef6df5def47ac5a27a1fce2696, type: 3}
       propertyPath: m_Size.x
       value: 0.32
@@ -1145,6 +1149,10 @@ PrefabInstance:
       propertyPath: dropField
       value: 
       objectReference: {fileID: 2039165023}
+    - target: {fileID: 7804816794162314434, guid: b6dd56ef6df5def47ac5a27a1fce2696, type: 3}
+      propertyPath: _audioSystem
+      value: 
+      objectReference: {fileID: 730536370}
     - target: {fileID: 8432826868398817082, guid: b6dd56ef6df5def47ac5a27a1fce2696, type: 3}
       propertyPath: m_Size.x
       value: 0.28
@@ -2059,6 +2067,10 @@ PrefabInstance:
       propertyPath: dropField
       value: 
       objectReference: {fileID: 2039165023}
+    - target: {fileID: 7804816794162314434, guid: b6dd56ef6df5def47ac5a27a1fce2696, type: 3}
+      propertyPath: _audioSystem
+      value: 
+      objectReference: {fileID: 730536370}
     - target: {fileID: 8432826868398817082, guid: b6dd56ef6df5def47ac5a27a1fce2696, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
       value: 2.27
@@ -2435,6 +2447,10 @@ PrefabInstance:
       propertyPath: dropField
       value: 
       objectReference: {fileID: 2039165023}
+    - target: {fileID: 7804816794162314434, guid: b6dd56ef6df5def47ac5a27a1fce2696, type: 3}
+      propertyPath: _audioSystem
+      value: 
+      objectReference: {fileID: 730536370}
     - target: {fileID: 8432826868398817082, guid: b6dd56ef6df5def47ac5a27a1fce2696, type: 3}
       propertyPath: m_Size.x
       value: 0.34
