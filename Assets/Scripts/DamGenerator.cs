@@ -217,6 +217,16 @@ public class DamGenerator : MonoBehaviour
     float cTime = 0;
     private void Update()
     {
+        if (!dam.HQ.Connections[0].Connections.Contains(dam.HQ))
+        {
+            dam.HQ.Connections[0].AddConnection(dam.HQ);
+        }
+        if (!dam.HQ.Connections[1].Connections.Contains(dam.HQ))
+        {
+            dam.HQ.Connections[1].AddConnection(dam.HQ);
+        }
+
+
         time += Time.deltaTime;
         cTime += Time.deltaTime;
         if (cTime >= 60)

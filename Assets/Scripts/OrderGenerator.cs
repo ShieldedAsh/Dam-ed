@@ -87,21 +87,13 @@ public class OrderGenerator : MonoBehaviour
     /// <returns></returns>
     public bool IsValidCell(string input)
     {
+        int column;
         if (beaverManager.TheDam.Cells.GetLength(1) < 10)
         {
             if (input.Length != 2)
             {
                 return false;
             }
-            if ((int)input[0] < 97 || (int)input[0] >= 97 + beaverManager.TheDam.Cells.GetLength(0))
-            {
-                return false;
-            }
-            if (input[1] < 1 || input[1] >= beaverManager.TheDam.Cells.GetLength(1))
-            {
-                return false;
-            }
-            return true;
         }
         else 
         {
@@ -109,24 +101,24 @@ public class OrderGenerator : MonoBehaviour
             {
                 return false;
             }
-            if ((int)input[0] < 97 || (int)input[0] >= 97 + beaverManager.TheDam.Cells.GetLength(0))
-            {
-                return false;
-            }
-
-            int column;
-            if (!int.TryParse(input.Substring(1, input.Length - 1), out column))
-            {
-                return false;
-            }
-            else
-            {
-                if (column < 1 || column >=  beaverManager.TheDam.Cells.GetLength(1))
-                {
-                    return false;
-                }
-            }
-            return true;
         }
+
+        if ((int)input[0] < 97 || (int)input[0] >= 97 + beaverManager.TheDam.Cells.GetLength(0))
+        {
+            return false;
+        }
+
+        if (!int.TryParse(input.Substring(1, input.Length - 1), out column))
+        {
+            return false;
+        }
+        else
+        {
+            if (column < 1 || column >= beaverManager.TheDam.Cells.GetLength(1))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
