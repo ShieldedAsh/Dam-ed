@@ -5,14 +5,6 @@ public class WolfManager : MonoBehaviour
 {
     //Fields
     [SerializeField]
-    [Tooltip ("The left hand audio source for growling.")]
-    private GameObject _leftGrowlManager;
-
-    [SerializeField]
-    [Tooltip("The right hand audio source for growling.")]
-    private GameObject _rightGrowlManager;
-
-    [SerializeField]
     [Tooltip("Reference to the audio system")]
     private AudioSource _audioSystem;
 

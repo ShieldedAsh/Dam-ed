@@ -2900,6 +2900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e67ef1e520170f419582b038a633d22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audioSystem: {fileID: 730536370}
   beaver: {fileID: 1730073543}
   order: {fileID: 672039027}
   coordinates: {fileID: 149980277}
@@ -9780,6 +9781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c65d47855c9d39d44ae1bdb7db486aa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audioSystem: {fileID: 0}
   tool: {fileID: 0}
   drawOrder: -1
   layerName: Pencils
@@ -9887,10 +9889,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioSystem: {fileID: 730536370}
-  tool: {fileID: 0}
-  drawOrder: -1
-  layerName: Pencils
   m_Material: {fileID: 0}
   m_Color: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
   m_RaycastTarget: 1
