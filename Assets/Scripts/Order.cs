@@ -94,18 +94,28 @@ public class Order
                 currentPathIndex--;
                 break;
             case Action.Scavenge:
-                if(beaver.CurrentLocation.Contents.Count != 0)
+                if(beaver.CurrentLocation.Contents.Count != 0) //makes sure there are items on this cell
                 {
                     beaver.Carrying = beaver.CurrentLocation.Contents[beaver.CurrentLocation.Contents.Count - 1];
                     beaver.CurrentLocation.Contents.RemoveAt(beaver.CurrentLocation.Contents.Count - 1);
                 }
                 break;
             case Action.Barricade:
-                if(beaverManager.TheDam.HQ != beaver.CurrentLocation)
+                if(beaverManager.TheDam.HQ == beaver.CurrentLocation && beaver.Carrying.itemType == IItem.ItemType.Scrap) //Checks if the beaver is currently in the HQ to try to reinforce the doors and has scrap
                 {
-                    //CODE FOR REINFORCING HQ BARRICADE
+                    HQ hq = HQ.Instance;
+                    if (TargetDamCell == hq.HQLeftCell)
+                    {
+                        hq.LeftDoorHealth += 1;
+                        beaver.Carrying = null;
+                    }
+                    else if (TargetDamCell == hq.HQRightCell)
+                    {
+                        hq.RightDoorHealth += 1;
+                        beaver.Carrying = null;
+                    }
                 }
-                else if (beaver.Carrying.itemType == IItem.ItemType.Scrap && IsNeighbor(beaver.CurrentLocation, TargetDamCell) && beaver.CurrentLocation.Connections.Contains(TargetDamCell))
+                else if (beaver.Carrying.itemType == IItem.ItemType.Scrap && IsNeighbor(beaver.CurrentLocation, TargetDamCell) && beaver.CurrentLocation.Connections.Contains(TargetDamCell)) //Checks if the beaver has scrap to barricade with
                 {
                     beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].RemoveConnection(TargetDamCell);
                     beaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].RemoveConnection(beaver.CurrentLocation);
@@ -113,7 +123,7 @@ public class Order
                 }
                 break;
             case Action.Tunnel:
-                if (beaver.Carrying.itemType == IItem.ItemType.Scrap && IsNeighbor(beaver.CurrentLocation, TargetDamCell) && !beaver.CurrentLocation.Connections.Contains(TargetDamCell)
+                if (beaver.Carrying.itemType == IItem.ItemType.Scrap && IsNeighbor(beaver.CurrentLocation, TargetDamCell) && !beaver.CurrentLocation.Connections.Contains(TargetDamCell) //Checks all logic for tunneling
                     && beaverManager.TheDam.HQ != TargetDamCell && beaverManager.TheDam.HQ != beaver.CurrentLocation)
                 {
                     beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].AddConnection(TargetDamCell);
@@ -122,9 +132,9 @@ public class Order
                 }
                 break;
             case Action.Distract:
-                List<DamCell> distractCells = new List<DamCell>();
+                List<DamCell> distractCells = new List<DamCell>(); //Cells that wolves can hear from
                 distractCells.Add(beaver.CurrentLocation);
-                for(int i = 0; i < 5; i++)
+                for(int i = 0; i < 5; i++) //gets every cell within 5 cells of the current cell
                 {
                     List<DamCell> toAdd = new List<DamCell>();
                     foreach(DamCell cell in distractCells)
@@ -143,13 +153,13 @@ public class Order
                     }
                 }
 
-                foreach (Wolf wolf in Object.FindAnyObjectByType<WolfManager>().Wolves)
+                foreach (Wolf wolf in Object.FindAnyObjectByType<WolfManager>().Wolves) //Distracts all wolves in the area
                 {
                     foreach (DamCell cell in distractCells)
                     {
                         if (wolf.CurrentLocation == cell)
                         {
-                            wolf.ChangeTarget(beaver.CurrentLocation);
+                            wolf.Distract(beaver.CurrentLocation);
                             break;
                         }
                     }

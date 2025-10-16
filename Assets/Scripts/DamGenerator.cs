@@ -91,6 +91,7 @@ public class DamGenerator : MonoBehaviour
 
         ConnectCells(dam.Cells[hqCoordinate.X, hqCoordinate.Y], new Point(-1, 0));
         ConnectCells(dam.Cells[hqCoordinate.X, hqCoordinate.Y], new Point(1, 0));
+        HQ.Instance.SetHQCell(dam.Cells[hqCoordinate.X, hqCoordinate.Y]);
 
         //Make Initial Connections
         int totalConnections = 3;
