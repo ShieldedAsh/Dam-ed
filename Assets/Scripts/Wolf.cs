@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using System;
 
 public class Wolf : IItem
 {
@@ -29,6 +28,7 @@ public class Wolf : IItem
     public Wolf(WolfManager wolfManager, DamCell startPosition)
     {
         this.wolfManager = wolfManager;
+        timeToMove = Random.Range(5f, 10f);
     }
 
     public void UpdateWolf()
@@ -75,7 +75,7 @@ public class Wolf : IItem
             {
                 if (timeToMove <= 0)
                 {
-                    timeToMove = UnityEngine.Random.Range(5f, 10f);
+                    timeToMove = Random.Range(5f, 10f);
                     currentPathIndex = pathToTarget.Count - 1;
                     CurrentLocation = pathToTarget[currentPathIndex - 1];
                     currentPathIndex--;
@@ -83,14 +83,14 @@ public class Wolf : IItem
                     {
                         mainTarget = null;
                     }
-                }
+                }    
             }
         }
         else // is trapped
         {
             if (timeToMove <= 0)
             {
-                timeToMove = UnityEngine.Random.Range(5f, 10f);
+                timeToMove = Random.Range(5f, 10f);
                 pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, intermediateTarget);
                 if (pathToTarget[0].Distance < 0)
                 {

@@ -15,8 +15,7 @@ public class WolfManager : MonoBehaviour
     {
         theDam = FindAnyObjectByType<DamGenerator>().Dam;
         //should increase how many cells are excluded
-        List<DamCell> exclude = new List<DamCell>();
-        exclude.Add(theDam.HQ);
+        List<DamCell> exclude = new List<DamCell>() { theDam.HQ };
 
         for (int i = 0; i < wolfCount; i++)
         {

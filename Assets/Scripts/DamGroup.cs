@@ -1,8 +1,7 @@
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine;
 
 public class DamGroup
 {
@@ -129,7 +128,7 @@ public class DamGroup
     /// <returns>the DamCell chosen</returns>
     public DamCell GetRandomCell()
     {
-        return cells[UnityEngine.Random.Range(0, cells.GetLength(0)), UnityEngine.Random.Range(0, cells.GetLength(1))];
+        return cells[Random.Range(0, cells.GetLength(0)), Random.Range(0, cells.GetLength(1))];
     }
 
     /// <summary>
