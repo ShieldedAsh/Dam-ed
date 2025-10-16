@@ -72,7 +72,6 @@ public class DamCell
                         ((Food)existingItem).AddFood(item);
                         return;
                     case Scrap:
-                        ((Scrap)existingItem).AddScrap(item);
                         return;
                 }
             }

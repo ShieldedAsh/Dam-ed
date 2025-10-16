@@ -1,6 +1,8 @@
-using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.VersionControl;
+using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Wolf : IItem
 {
@@ -35,30 +37,20 @@ public class Wolf : IItem
     public Wolf(WolfManager wolfManager, DamCell startPosition)
     {
         this.wolfManager = wolfManager;
-<<<<<<< Updated upstream
         timeToMove = Random.Range(2f, 3f);
         currentLocation = startPosition;
         currentLocation.AddItem(this);
-=======
-        timeToMove = Random.Range(5f, 10f);
         isDistracted = false;
->>>>>>> Stashed changes
     }
 
     public void UpdateWolf()
     {
         if (intermediateTarget == null) // is not trapped currently
         {
-<<<<<<< Updated upstream
-            pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, mainTarget, true);
-            // if wolf is trapped
-            if (pathToTarget[0].Distance < 0)
-=======
             if (CurrentLocation.Connections.Contains(HQ.Instance.HQCell) && isDistracted == false) //Wolf attempting to break into HQ (NEEDS TO CHECK IF THERE IS A WOLF AT THE OTHER DOOR)
->>>>>>> Stashed changes
             {
                 HQ hq = HQ.Instance;
-                if(CurrentLocation == hq.HQLeftCell) //Checks if the right cell is occupied
+                if (CurrentLocation == hq.HQLeftCell) //Checks if the right cell is occupied
                 {
                     foreach (IItem item in hq.HQRightCell.Contents)
                     {
@@ -69,20 +61,9 @@ public class Wolf : IItem
                         }
                     }
                 }
-<<<<<<< Updated upstream
-
-                //finds the cell closest to wolf within shortestDistance
-                List<DamCell> shortestPath = wolfManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[0].Item1, true);
-                intermediateTarget = shortestDistance[0].Item1;
-                for (int i = 1; i < shortestDistance.Count; i++)
-                {
-                    List<DamCell> checking = wolfManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[i].Item1, true);
-                    if (checking.Count < shortestPath.Count)
-=======
                 else if (CurrentLocation == hq.HQRightCell) //Checks if the right cell is occupied
                 {
                     foreach (IItem item in hq.HQLeftCell.Contents)
->>>>>>> Stashed changes
                     {
                         if (item.itemType == IItem.ItemType.Wolf)
                         {
@@ -93,11 +74,11 @@ public class Wolf : IItem
                 }
                 if (timeToMove < 0 && isDistracted == false) //IsDistracted just here to make sure a wolf doesn't sideswipe a door 
                 {
-                    if(CurrentLocation == hq.HQLeftCell && hq.LeftDoorHealth > 0)
+                    if (CurrentLocation == hq.HQLeftCell && hq.LeftDoorHealth > 0)
                     {
                         hq.LeftDoorHealth -= 1;
                     }
-                    else if(CurrentLocation == hq.HQLeftCell && hq.LeftDoorHealth == 0)
+                    else if (CurrentLocation == hq.HQLeftCell && hq.LeftDoorHealth == 0)
                     {
                         //GAME ENDS AS YOU ARE EATEN
                     }
@@ -111,22 +92,13 @@ public class Wolf : IItem
                     }
                 }
             }
-            if (CurrentLocation.Connections.Contains(HQ.Instance.HQCell) == false || isDistracted == true) 
-                //Normal pathfinding (Another if statement to allow above to check to make sure there aren't wolves at both doors without preventing this from running)
+            if (CurrentLocation.Connections.Contains(HQ.Instance.HQCell) == false || isDistracted == true)
+            //Normal pathfinding (Another if statement to allow above to check to make sure there aren't wolves at both doors without preventing this from running)
             {
-                pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, mainTarget);
+                pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, mainTarget, true);
                 // if wolf is trapped
                 if (pathToTarget[0].Distance < 0)
                 {
-<<<<<<< Updated upstream
-                    currentLocation.RemoveItem(this);
-                    timeToMove = Random.Range(2f, 3f);
-                    currentPathIndex = pathToTarget.Count - 1;
-                    CurrentLocation = pathToTarget[currentPathIndex - 1];
-                    currentLocation.AddItem(this);
-                    currentPathIndex--;
-                    if (CurrentLocation == mainTarget)
-=======
                     //Find all cells within isolated chunk
                     List<DamCell> validCells = new List<DamCell>();
                     validCells = GetNeighboringCells(CurrentLocation);
@@ -134,7 +106,6 @@ public class Wolf : IItem
                     //gets all of the cells closest to mainTarget in the isolated chunk
                     List<(DamCell?, float)> shortestDistance = new List<(DamCell?, float)>() { (null, float.MaxValue) };
                     foreach (DamCell cell in validCells)
->>>>>>> Stashed changes
                     {
                         float dist = Vector2.Distance(new Vector2(cell.CellArrayPosition.X, cell.CellArrayPosition.X), new Vector2(mainTarget.CellArrayPosition.X, mainTarget.CellArrayPosition.Y));
                         if (dist < shortestDistance[0].Item2)
@@ -148,30 +119,49 @@ public class Wolf : IItem
                     }
 
                     //finds the cell closest to wolf within shortestDistance
-                    List<DamCell> shortestPath = wolfManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[0].Item1);
+                    List<DamCell> shortestPath = wolfManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[0].Item1, true);
                     intermediateTarget = shortestDistance[0].Item1;
                     for (int i = 1; i < shortestDistance.Count; i++)
                     {
-                        List<DamCell> checking = wolfManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[i].Item1);
+                        List<DamCell> checking = wolfManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[i].Item1, true);
                         if (checking.Count < shortestPath.Count)
                         {
                             shortestPath = checking;
                             intermediateTarget = shortestDistance[i].Item1;
+                            pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, mainTarget, true);
                         }
                     }
+
+                // if wolf is trapped
+                if (pathToTarget[0].Distance < 0)
+                {
+                    currentLocation.RemoveItem(this);
+                    timeToMove = Random.Range(2f, 3f);
+                    currentPathIndex = pathToTarget.Count - 1;
+                    CurrentLocation = pathToTarget[currentPathIndex - 1];
+                    currentLocation.AddItem(this);
+                    currentPathIndex--;
+                    if (CurrentLocation == mainTarget)
+                    {
+
+                    }
+                    
+
+                        
                 }
                 else //Normal movement
-                {
-                    if (timeToMove <= 0)
                     {
-                        timeToMove = Random.Range(5f, 10f);
-                        currentPathIndex = pathToTarget.Count - 1;
-                        CurrentLocation = pathToTarget[currentPathIndex - 1];
-                        currentPathIndex--;
-                        if (CurrentLocation == mainTarget)
+                        if (timeToMove <= 0)
                         {
-                            mainTarget = null;
-                            isDistracted = false;
+                            timeToMove = Random.Range(5f, 10f);
+                            currentPathIndex = pathToTarget.Count - 1;
+                            CurrentLocation = pathToTarget[currentPathIndex - 1];
+                            currentPathIndex--;
+                            if (CurrentLocation == mainTarget)
+                            {
+                                mainTarget = null;
+                                isDistracted = false;
+                            }
                         }
                     }
                 }
