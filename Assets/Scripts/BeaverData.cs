@@ -9,7 +9,7 @@ public class BeaverData : IItem
     /// <summary>
     /// The name of the Beaver
     /// </summary>
-    public string BeaverName { get; private set; }
+    public string BeaverName { get; set; }
 
     /// <summary>
     /// The intelligence of the Beaver
@@ -153,7 +153,10 @@ public class BeaverData : IItem
     /// <param name="beaverManager">The BeaverManager keeping track of this beaver</param>
     public BeaverData(BeaverManager beaverManager)
     {
-        BeaverName = "BGDD-R(2)";
+        //Debug.Log("BM: " + beaverManager);
+        //Debug.Log("dam: " + beaverManager.TheDam);
+        //Debug.Log("hq: " + beaverManager.TheDam.HQ);
+        BeaverName = Random.Range(0, 20).ToString();
         Intelligence = 5;
         Speed = 1;
         Memory = new List<Memory>();
@@ -181,7 +184,7 @@ public class BeaverData : IItem
     }
 
     /// <summary>
-    /// Trys to add an order to the Beaver's list
+    /// Tries to add an order to the Beaver's list
     /// </summary>
     /// <param name="order">The order</param>
     /// <returns>Whether or not the order was added</returns>

@@ -1,6 +1,7 @@
 using System.IO;
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// file format:
@@ -32,6 +33,10 @@ public class SaveAndValidatebeavers : MonoBehaviour
         }
         else
         {
+            if(beaverNames == null)
+            {
+                LoadBeavers();
+            }
             name = name.Trim().ToLower();
             for(int i = 0; i < beaverNames.Count; i++)
             {
@@ -79,6 +84,7 @@ public class SaveAndValidatebeavers : MonoBehaviour
         {
             beaverNames.Add(br.ReadString());
         }
+        sr.Close();
         return true;
     }
 
@@ -87,7 +93,7 @@ public class SaveAndValidatebeavers : MonoBehaviour
     /// </summary>
     /// <param name="beavers">beavers to save</param>
     /// <returns>true if read the file succesfully, otherwise false</returns>
-    public bool SaveMoreBeavers(string[] beavers)
+    public static bool SaveMoreBeavers(string[] beavers)
     {
         Stream sw = null;
         BinaryWriter bw = null;
@@ -103,8 +109,9 @@ public class SaveAndValidatebeavers : MonoBehaviour
             sw = File.OpenWrite(actualFilePath);
             bw = new BinaryWriter(sw);
         }
-        catch
+        catch (Exception e)
         {
+            Debug.LogError(e.Message);
             return false;
         }
 
