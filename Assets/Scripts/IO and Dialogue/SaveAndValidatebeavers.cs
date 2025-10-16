@@ -10,10 +10,18 @@ using System.Collections.Generic;
 /// </summary>
 public class SaveAndValidatebeavers : MonoBehaviour
 {
-    [Tooltip("a complete filepath to save the data to")]
-    public string filePath;
+    [Tooltip("the name of the file to save to")]
+    [SerializeField] private string fileName = "beavers.DEAD";
     public static List<string> beaverNames;
 
+    /// <summary>
+    /// the actual path for saving the file
+    /// </summary>
+    private string actualFilePath { get { return Application.persistentDataPath + "/" + fileName; } }
+    private void Start()
+    {
+        LoadBeavers();
+    }
     /// <summary>
     /// validates that a beaver name has not already been chosen
     /// </summary>
@@ -52,16 +60,16 @@ public class SaveAndValidatebeavers : MonoBehaviour
         try
         {
             //if the file does not exist already, create it
-            if (!File.Exists(filePath))
+            if (!File.Exists(actualFilePath))
             {
-                sr = File.Create(filePath);
+                sr = File.Create(actualFilePath);
                 BinaryWriter bw = new BinaryWriter(sr);
                 bw.Write(0);
                 sr.Flush();
                 sr.Close();
             }
 
-            sr = File.OpenRead(filePath);
+            sr = File.OpenRead(actualFilePath);
             br = new BinaryReader(sr);
         }
         catch
@@ -90,13 +98,13 @@ public class SaveAndValidatebeavers : MonoBehaviour
         LoadBeavers();
         try
         {
-            if (!File.Exists(filePath))
+            if (!File.Exists(actualFilePath))
             {
-                sw = File.Create(filePath);
+                sw = File.Create(actualFilePath);
                 bw = new BinaryWriter(sw);
                 sw.Close();
             }
-            sw = File.OpenWrite(filePath);
+            sw = File.OpenWrite(actualFilePath);
             bw = new BinaryWriter(sw);
         }
         catch
@@ -134,13 +142,13 @@ public class SaveAndValidatebeavers : MonoBehaviour
         LoadBeavers();
         try
         {
-            if (!File.Exists(filePath))
+            if (!File.Exists(actualFilePath))
             {
-                sw = File.Create(filePath);
+                sw = File.Create(actualFilePath);
                 bw = new BinaryWriter(sw);
                 sw.Close();
             }
-            sw = File.OpenWrite(filePath);
+            sw = File.OpenWrite(actualFilePath);
             bw = new BinaryWriter(sw);
         }
         catch
