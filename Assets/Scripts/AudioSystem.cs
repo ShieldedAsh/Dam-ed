@@ -179,6 +179,13 @@ public class AudioSystem : MonoBehaviour
     [Tooltip ("A new temporary audio source.")]
     private AudioSource _tempAS;
 
+    [SerializeField]
+    [Tooltip ("A list of each temporary Audio Source that's been created.")]
+    private List<AudioSource> _tempAudioSources;
+
+    [SerializeField]
+    private int die;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -188,10 +195,8 @@ public class AudioSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Updating _knownBeaversLeft each frame
-        //Should probably change this to whenever the _knownBeaversLeft changes, but meh
-        //_knownBeaversLeft = _beaverManager.GetComponent<BeaverManager>()._knownBeaversLeft;
-
+        //Change this to known beavers living somehow.
+        _knownBeaversLeft = _beaverManager.GetComponent<BeaverManager>().Beavers.Count;
         AdvanceAudio(Time.deltaTime);
         PlayAutoSound();
     }
@@ -211,7 +216,7 @@ public class AudioSystem : MonoBehaviour
     public void PlayAutoSound()
     {
         AudioSource aS = gameObject.GetComponent<AudioSource>();
-
+        aS.panStereo = 0;
         //Checks if enough time has passed and a sound isn't already being played.
         if (_audioTime >= _nextAudio && !aS.isPlaying)
         {
@@ -221,7 +226,7 @@ public class AudioSystem : MonoBehaviour
             //2-Plays a random regular track
             //3-Plays an ambient sound
             //4-Plays the mass beaver death track.
-            int die = Random.Range(1, 5);
+            die = Random.Range(1, 5);
             int index = 0;
 
             switch (die)
@@ -239,6 +244,7 @@ public class AudioSystem : MonoBehaviour
                 case 3:
                     index = Random.Range(0, _ambientSounds.Count);
                     aS.clip = _ambientSounds[index];
+                    aS.panStereo = Random.Range(-1f, 1f);
                     break;
 
                 case 4:
@@ -279,6 +285,7 @@ public class AudioSystem : MonoBehaviour
     public void PlayActiveAudio(ActiveSoundName sound)
     {
         AudioSource aS = Instantiate(_tempAS, Vector3.zero, Quaternion.identity);
+        _tempAudioSources.Add(aS);
         int index = 0;
 
         //If the number is not specified, play a random sound of that type.
@@ -414,5 +421,21 @@ public class AudioSystem : MonoBehaviour
         }
 
         aS.Play();
+        //DeleteTempAudioSources();
+    }
+
+    /// <summary>
+    /// Deletes a temporary audio source if it's not playing anything.
+    /// </summary>
+    public void DeleteTempAudioSources()
+    {
+        for(int i = _tempAudioSources.Count; i > 0; i--)
+        {
+            if (!_tempAudioSources[i].isPlaying)
+            {
+                Destroy(_tempAudioSources[i]);
+                _tempAudioSources.RemoveAt(i);
+            }
+        }
     }
 }

@@ -3,6 +3,13 @@ using UnityEngine.InputSystem;
 
 public class PaintScript : MonoBehaviour
 {
+    //Fields
+    /// <summary>
+    /// Reference to the audio system
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Reference to the audio system")]
+    private AudioSource _audioSystem;
 
     public DrawingTool tool;
     
@@ -107,6 +114,17 @@ public class PaintScript : MonoBehaviour
         {
             brushLine.Simplify(0.02f);
             brushLine = null;
+        }
+
+        if (layerName == "Pencil")
+        {
+            //Plays a random pencil sound
+            _audioSystem.GetComponent<AudioSystem>().PlayActiveAudio(ActiveSoundName.pencil);
+        }
+        else if (layerName == "Highlighter")
+        {
+            //Plays a random pencil sound
+            _audioSystem.GetComponent<AudioSystem>().PlayActiveAudio(ActiveSoundName.highlighter);
         }
     }
 

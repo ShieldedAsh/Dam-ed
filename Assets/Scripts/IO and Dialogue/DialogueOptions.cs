@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
+using static UnityEditor.Rendering.CameraUI;
 
 public enum dataTypes
 {
     Unknown,
-    ItemType,
+    itemType,
     BeaverStatus,
 }
 public struct extractedData
@@ -37,6 +37,13 @@ public class DialogueOptions : MonoBehaviour
     [Tooltip("the dialogue file")]
     public TextAsset filePath;
 
+    private static List<extractedData> reservedPhrases = new List<extractedData>();
+
+
+    private void Awake()
+    {
+        Loadfile();
+    }
     /// <summary>
     /// finds and parses the dialogue file
     /// </summary>
@@ -60,7 +67,6 @@ public class DialogueOptions : MonoBehaviour
         */
 
         string words = filePath.text;
-        List<extractedData> reservedPhrases = new List<extractedData>();
         char pastChar = ' ';
         bool isComment = false;
         for (int i = 0; i < words.Length; i++)
@@ -93,6 +99,14 @@ public class DialogueOptions : MonoBehaviour
                         break;
                 }
             }
+            if(pastChar == '/' && character == '*')
+            {
+                isComment = true;
+            }
+            else if(pastChar == '*' && character == '/')
+            {
+                isComment = false;
+            }
             pastChar = character;
         }
 
@@ -108,11 +122,46 @@ public class DialogueOptions : MonoBehaviour
         switch (word[0])
         {
             case '#':
-                return dataTypes.ItemType;
+                return dataTypes.itemType;
             case '$':
                 return dataTypes.BeaverStatus;
             default:
                 return dataTypes.Unknown;
         }
+    }
+
+    /// <summary>
+    /// converts a memory into a string
+    /// </summary>
+    /// <param name="memory">the memory to convert</param>
+    public static string RecallMemory(Memory memory)
+    {
+        string parsedMemory = "";
+        foreach(IItem item in memory.Knowledge)
+        {
+            foreach(extractedData textData in reservedPhrases)
+            {
+                if (item.ToString().Equals(textData.dataName))
+                {
+                    string fixedText = textData.GetPhrase;
+                    switch (item)
+                    {
+                        case BeaverData:
+                            fixedText = fixedText.Replace(@"\;", ((BeaverData)item).BeaverName);
+                            fixedText = fixedText.Replace(@"\|", ((BeaverData)item).CurrentOrder.ToString());
+                            break;
+                        case Food:
+                            fixedText = fixedText.Replace(@"\+", "" + ((Food)item).Count);
+                            break;
+                        case Scrap:
+                            fixedText = fixedText.Replace(@"\-", "" + ("1"));
+                            break;
+
+                    }
+                    parsedMemory += fixedText + " and ";
+                }
+            }
+        }
+        return parsedMemory;
     }
 }

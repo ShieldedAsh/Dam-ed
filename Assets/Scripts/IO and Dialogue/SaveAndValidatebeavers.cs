@@ -1,6 +1,7 @@
 using System.IO;
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// file format:
@@ -10,10 +11,14 @@ using System.Collections.Generic;
 /// </summary>
 public class SaveAndValidatebeavers : MonoBehaviour
 {
-    [Tooltip("a complete filepath to save the data to")]
-    public string filePath;
+    [Tooltip("the name of the file to save to")]
+    [SerializeField] private static string fileName = "beavers.DEAD";
     public static List<string> beaverNames;
 
+    /// <summary>
+    /// the actual path for saving the file
+    /// </summary>
+    private static string actualFilePath { get { return Application.persistentDataPath + "/" + fileName; } }
     /// <summary>
     /// validates that a beaver name has not already been chosen
     /// </summary>
@@ -28,6 +33,10 @@ public class SaveAndValidatebeavers : MonoBehaviour
         }
         else
         {
+            if(beaverNames == null)
+            {
+                LoadBeavers();
+            }
             name = name.Trim().ToLower();
             for(int i = 0; i < beaverNames.Count; i++)
             {
@@ -44,7 +53,7 @@ public class SaveAndValidatebeavers : MonoBehaviour
     /// loads the beavers from the filepath
     /// </summary>
     /// <returns>true if read the file succesfully, otherwise false</returns>
-    private bool LoadBeavers()
+    private static bool LoadBeavers()
     {
         Stream sr = null;
         BinaryReader br = null;
@@ -52,16 +61,16 @@ public class SaveAndValidatebeavers : MonoBehaviour
         try
         {
             //if the file does not exist already, create it
-            if (!File.Exists(filePath))
+            if (!File.Exists(actualFilePath))
             {
-                sr = File.Create(filePath);
+                sr = File.Create(actualFilePath);
                 BinaryWriter bw = new BinaryWriter(sr);
                 bw.Write(0);
                 sr.Flush();
                 sr.Close();
             }
 
-            sr = File.OpenRead(filePath);
+            sr = File.OpenRead(actualFilePath);
             br = new BinaryReader(sr);
         }
         catch
@@ -75,6 +84,7 @@ public class SaveAndValidatebeavers : MonoBehaviour
         {
             beaverNames.Add(br.ReadString());
         }
+        sr.Close();
         return true;
     }
 
@@ -83,24 +93,25 @@ public class SaveAndValidatebeavers : MonoBehaviour
     /// </summary>
     /// <param name="beavers">beavers to save</param>
     /// <returns>true if read the file succesfully, otherwise false</returns>
-    public bool SaveMoreBeavers(string[] beavers)
+    public static bool SaveMoreBeavers(string[] beavers)
     {
         Stream sw = null;
         BinaryWriter bw = null;
         LoadBeavers();
         try
         {
-            if (!File.Exists(filePath))
+            if (!File.Exists(actualFilePath))
             {
-                sw = File.Create(filePath);
+                sw = File.Create(actualFilePath);
                 bw = new BinaryWriter(sw);
                 sw.Close();
             }
-            sw = File.OpenWrite(filePath);
+            sw = File.OpenWrite(actualFilePath);
             bw = new BinaryWriter(sw);
         }
-        catch
+        catch (Exception e)
         {
+            Debug.LogError(e.Message);
             return false;
         }
 
@@ -127,20 +138,20 @@ public class SaveAndValidatebeavers : MonoBehaviour
     /// </summary>
     /// <param name="beavers">beavers to save</param>
     /// <returns>true if read the file succesfully, otherwise false</returns>
-    public bool SaveMoreBeavers(List<string> beavers)
+    public static bool SaveMoreBeavers(List<string> beavers)
     {
         Stream sw = null;
         BinaryWriter bw = null;
         LoadBeavers();
         try
         {
-            if (!File.Exists(filePath))
+            if (!File.Exists(actualFilePath))
             {
-                sw = File.Create(filePath);
+                sw = File.Create(actualFilePath);
                 bw = new BinaryWriter(sw);
                 sw.Close();
             }
-            sw = File.OpenWrite(filePath);
+            sw = File.OpenWrite(actualFilePath);
             bw = new BinaryWriter(sw);
         }
         catch

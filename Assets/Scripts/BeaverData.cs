@@ -9,7 +9,7 @@ public class BeaverData : IItem
     /// <summary>
     /// The name of the Beaver
     /// </summary>
-    public string BeaverName { get; private set; }
+    public string BeaverName { get; set; }
 
     /// <summary>
     /// The intelligence of the Beaver
@@ -82,6 +82,8 @@ public class BeaverData : IItem
     /// </summary>
     private bool atHome;
 
+    public bool testing = true;
+
     /// <summary>
     /// Updates this beaver's current status. Do this for each beaver every update
     /// </summary>
@@ -92,7 +94,12 @@ public class BeaverData : IItem
             atHome = false;
             if (timeToMove <= 0)
             {
-                timeToMove = Random.Range(5f - Speed, 10f - Speed);
+                #if UNITY_EDITOR
+                    timeToMove = Random.Range(1f - Speed, 1f - Speed);
+                #else
+                    timeToMove = Random.Range(5f - Speed, 10f - Speed);
+                #endif
+
                 ExecuteOrder();
             }
             timeToMove -= Time.deltaTime;
@@ -108,20 +115,27 @@ public class BeaverData : IItem
             }
         }
         //Unloads the memory once
-        else if(atHome == false)
+        else if(atHome == false && CurrentLocation == beaverManager.TheDam.HQ)
+        
         {
+            string totalMemories = "";
+            atHome = true;
             foreach(Memory mem in Memory)
             {
-                //THIS IS WHERE THE BEAVER TELLS YOU WHAT THEY REMEMBER!
+                totalMemories += DialogueOptions.RecallMemory(mem);
+                atHome = true;
+            }
+            if(Carrying != null)
+            {
+                HQ.Instance.AddItem(Carrying);
             }
         }
-        
     }
 
     /// <summary>
     /// Creates a beavers with a given name as well as intelligence and speed stats
     /// </summary>
-    /// <param name="beaverManager"></param>
+    /// <param name="beaverManager">The BeaverManager keeping track of this beaver</param>
     /// <param name="name">The Beaver's name</param>
     /// <param name="intelligence">The Beaver's intelligence</param>
     /// <param name="speed">The Beaver's speed</param>
@@ -136,9 +150,13 @@ public class BeaverData : IItem
     /// <summary>
     /// Default constructor for a beaver. sets the name to BGDD-R(2) and the intelligence to 5 and speed to 1
     /// </summary>
+    /// <param name="beaverManager">The BeaverManager keeping track of this beaver</param>
     public BeaverData(BeaverManager beaverManager)
     {
-        BeaverName = "BGDD-R(2)";
+        //Debug.Log("BM: " + beaverManager);
+        //Debug.Log("dam: " + beaverManager.TheDam);
+        //Debug.Log("hq: " + beaverManager.TheDam.HQ);
+        BeaverName = Random.Range(0, 20).ToString();
         Intelligence = 5;
         Speed = 1;
         Memory = new List<Memory>();
@@ -147,6 +165,7 @@ public class BeaverData : IItem
         BeaverStatus = Status.Healthy;
         this.beaverManager = beaverManager;
         CurrentLocation = beaverManager.TheDam.HQ;
+        atHome = true;
     }
 
     /// <summary>
@@ -154,15 +173,18 @@ public class BeaverData : IItem
     /// </summary>
     public void EvaluateRoom()
     {
-        Memory.Add(new Memory(CurrentLocation));
-        foreach(IItem item in CurrentLocation.Contents)
+        if(CurrentLocation.Contents.Count > 0)
         {
-            Memory[Memory.Count - 1].AddItem(item);
+            Memory.Add(new Memory(CurrentLocation));
+            foreach (IItem item in CurrentLocation.Contents)
+            {
+                Memory[Memory.Count - 1].AddItem(item);
+            }
         }
     }
 
     /// <summary>
-    /// Trys to add an order to the Beaver's list
+    /// Tries to add an order to the Beaver's list
     /// </summary>
     /// <param name="order">The order</param>
     /// <returns>Whether or not the order was added</returns>
@@ -188,6 +210,7 @@ public class BeaverData : IItem
         CurrentOrder!.TakeAction();
         if(CurrentOrder.ThisOrder == Order.Action.Move)
         {
+            Debug.Log($"Current Location: {CurrentLocation.CellCoordinates.Item1}, {CurrentLocation.CellCoordinates.Item2}");
             if(CurrentLocation == CurrentOrder.TargetDamCell)
             {
                 currentOrderIndex++;
