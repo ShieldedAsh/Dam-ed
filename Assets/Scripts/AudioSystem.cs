@@ -280,7 +280,6 @@ public class AudioSystem : MonoBehaviour
     /// </summary>
     public void PlayActiveAudio(ActiveSoundName sound)
     {
-        DeleteTempAudioSources();
         AudioSource aS = Instantiate(_tempAS, Vector3.zero, Quaternion.identity);
         _tempAudioSources.Add(aS);
         int index = 0;
@@ -418,6 +417,7 @@ public class AudioSystem : MonoBehaviour
         }
 
         aS.Play();
+        //DeleteTempAudioSources();
     }
 
     /// <summary>
@@ -425,11 +425,12 @@ public class AudioSystem : MonoBehaviour
     /// </summary>
     public void DeleteTempAudioSources()
     {
-        for(int i = 0; i < _tempAudioSources.Count; i++)
+        for(int i = _tempAudioSources.Count; i > 0; i--)
         {
             if (!_tempAudioSources[i].isPlaying)
             {
                 Destroy(_tempAudioSources[i]);
+                _tempAudioSources.RemoveAt(i);
             }
         }
     }

@@ -219,6 +219,10 @@ PrefabInstance:
       propertyPath: _audioSource
       value: 
       objectReference: {fileID: 730536370}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSystem
+      value: 
+      objectReference: {fileID: 730536370}
     m_RemovedComponents:
     - {fileID: 7787521054482906402, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
     m_RemovedGameObjects: []
@@ -441,6 +445,10 @@ PrefabInstance:
       propertyPath: _audioSource
       value: 
       objectReference: {fileID: 730536370}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSystem
+      value: 
+      objectReference: {fileID: 730536370}
     m_RemovedComponents:
     - {fileID: 7787521054482906402, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
     m_RemovedGameObjects: []
@@ -607,6 +615,10 @@ PrefabInstance:
       objectReference: {fileID: 2039165026}
     - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
       propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSystem
       value: 
       objectReference: {fileID: 730536370}
     m_RemovedComponents:
@@ -1380,6 +1392,10 @@ PrefabInstance:
       objectReference: {fileID: 2039165026}
     - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
       propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSystem
       value: 
       objectReference: {fileID: 730536370}
     m_RemovedComponents:
@@ -2241,6 +2257,10 @@ PrefabInstance:
       objectReference: {fileID: 2039165026}
     - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
       propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSystem
       value: 
       objectReference: {fileID: 730536370}
     m_RemovedComponents:
@@ -3424,6 +3444,10 @@ PrefabInstance:
       propertyPath: _audioSource
       value: 
       objectReference: {fileID: 730536370}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSystem
+      value: 
+      objectReference: {fileID: 730536370}
     m_RemovedComponents:
     - {fileID: 7787521054482906402, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
     m_RemovedGameObjects: []
@@ -3511,6 +3535,10 @@ PrefabInstance:
       objectReference: {fileID: 2039165026}
     - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
       propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSystem
       value: 
       objectReference: {fileID: 730536370}
     m_RemovedComponents:
@@ -4066,6 +4094,10 @@ PrefabInstance:
       propertyPath: _audioSource
       value: 
       objectReference: {fileID: 730536370}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSystem
+      value: 
+      objectReference: {fileID: 730536370}
     m_RemovedComponents:
     - {fileID: 7787521054482906402, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
     m_RemovedGameObjects: []
@@ -4282,6 +4314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c65d47855c9d39d44ae1bdb7db486aa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audioSystem: {fileID: 730536370}
   tool: {fileID: 0}
   drawOrder: -1
   layerName: Pencils
@@ -4391,6 +4424,10 @@ PrefabInstance:
       objectReference: {fileID: 2039165026}
     - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
       propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 730536370}
+    - target: {fileID: 8233561632585714170, guid: 8cccbf4a9f3308a468993782d3acd57f, type: 3}
+      propertyPath: _audioSystem
       value: 
       objectReference: {fileID: 730536370}
     m_RemovedComponents:

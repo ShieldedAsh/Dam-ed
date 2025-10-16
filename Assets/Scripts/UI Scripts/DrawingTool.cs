@@ -68,17 +68,7 @@ public class DrawingTool : MonoBehaviour
 
     public void OnMouseUp()
     {
-        string tempLayer = layer;
-        tempLayer = tempLayer.ToLower();
 
-        if(tempLayer == "pencils")
-        {
-            _audioSystem.GetComponent<AudioSystem>().PlayActiveAudio(ActiveSoundName.pencil);
-        }
-        else
-        {
-            _audioSystem.GetComponent<AudioSystem>().PlayActiveAudio(ActiveSoundName.highlighter);
-        }
     }
 
 
