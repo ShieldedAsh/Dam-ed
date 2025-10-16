@@ -19,4 +19,16 @@ public class Food : IItem
     {
         count = Random.Range(10, 31);
     }
+
+    /// <summary>
+    /// checks to make sure the item is food, and if so, add it to this count
+    /// </summary>
+    /// <param name="food">the food to add</param>
+    public void AddFood(IItem food)
+    {
+        if(food is Food)
+        {
+            count += ((Food)food).count;
+        }
+    }
 }
