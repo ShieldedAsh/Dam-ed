@@ -77,7 +77,7 @@ public class DamGenerator : MonoBehaviour
 
         //Sets HQ
         hqCoordinate = new Point((int)Math.Ceiling(damSize.X / 2.0) - 1, (int)Math.Ceiling((damSize.Y / 2.0)) - 1);
-        dam.setHQ(dam.Cells[hqCoordinate.X, hqCoordinate.Y]);
+        dam.SetHQ(dam.Cells[hqCoordinate.X, hqCoordinate.Y]);
 
         startIndex = new Vector2(hqCoordinate.X, hqCoordinate.Y);
         Point start = new Point(hqCoordinate.X - 1, hqCoordinate.Y);
