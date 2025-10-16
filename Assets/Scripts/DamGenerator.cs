@@ -13,11 +13,6 @@ public class DamGenerator : MonoBehaviour
     [SerializeField] private int connectionDensityPercentage;
     public static bool hasGenerated = false;
 
-    //Path Testing
-    private Vector2 startIndex;
-    private Vector2 endIndex;
-    [SerializeField] private bool updateEachFrame;
-
 
     //Properties
     /// <summary>
@@ -33,10 +28,21 @@ public class DamGenerator : MonoBehaviour
 
     public DamGroup Dam { get => dam; }
 
+    /// <summary>
+    /// how much time has passed since the dam was generated
+    /// </summary>
+    private float time;
+    /// <summary>
+    /// how many minutes have passed since the dam was generated
+    /// </summary>
+    private int minutesPassed;
+
     //Methods
     private void Awake()
     {   
         stack = new Stack<DamCell>();
+        time = 0;
+        minutesPassed = 0;
 
         //Converts damSize from Vector2 --> Point
         damSize = new Point((int)DamSize.x, (int)DamSize.y);
@@ -79,7 +85,6 @@ public class DamGenerator : MonoBehaviour
         hqCoordinate = new Point((int)Math.Ceiling(damSize.X / 2.0) - 1, (int)Math.Ceiling((damSize.Y / 2.0)) - 1);
         dam.SetHQ(dam.Cells[hqCoordinate.X, hqCoordinate.Y]);
 
-        startIndex = new Vector2(hqCoordinate.X, hqCoordinate.Y);
         Point start = new Point(hqCoordinate.X - 1, hqCoordinate.Y);
         Point startExtraC = new Point(hqCoordinate.X + 1, hqCoordinate.Y);
 
@@ -207,18 +212,12 @@ public class DamGenerator : MonoBehaviour
 
     private void Update()
     {
-        if (updateEachFrame || Input.GetKeyDown(KeyCode.Space))
+        time += Time.deltaTime;
+        if (time / 10 > minutesPassed)
         {
-            endIndex.x++;
-            if (endIndex.x >= damSize.X)
-            {
-                endIndex.x = 0;
-                endIndex.y++;
-            }
-            if (endIndex.y >= damSize.Y)
-            {
-                endIndex.y = 0;
-            }
+            Debug.Log("A minute has passed");
+            minutesPassed++;
+            GenerateItems();
         }
     }
 
@@ -243,21 +242,25 @@ public class DamGenerator : MonoBehaviour
                 {
                     Gizmos.DrawLine(new Vector3(gCell.CellArrayPosition.X + xOffset, gCell.CellArrayPosition.Y + yOffset, 0), new Vector3(cell.CellArrayPosition.X + xOffset, cell.CellArrayPosition.Y + yOffset, 0));
                 }
-            }
-
-            /*dam.GenerateShortestPath(dam.Cells[(int)startIndex.x, (int)startIndex.y], dam.Cells[(int)endIndex.x, (int)endIndex.y]);
-            
-            DamCell current = dam.Cells[(int)endIndex.x, (int)endIndex.y];
-            while (current != null)
-            {
-                Gizmos.color = UnityEngine.Color.green;
-                Gizmos.DrawWireSphere(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), .25f);
-                if (current.PathNeighbor != null)
+                foreach(IItem obj in gCell.Contents)
                 {
-                    Gizmos.DrawLine(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), new Vector3(current.PathNeighbor.CellArrayPosition.X + xOffset, current.PathNeighbor.CellArrayPosition.Y + yOffset, 0));
+                    switch (obj.itemType)
+                    {
+                        case IItem.ItemType.Food:
+                            Gizmos.color = UnityEngine.Color.green;
+                            break;
+                        case IItem.ItemType.Scrap:
+                            Gizmos.color = UnityEngine.Color.black;
+                            break;
+                        case IItem.ItemType.Wolf:
+                            Gizmos.color = UnityEngine.Color.grey;
+                            break;
+                        case IItem.ItemType.Beaver:
+                            Gizmos.color = UnityEngine.Color.magenta;
+                            break;
+                    }
                 }
-                current = current.PathNeighbor;
-            }*/
+            }
 
             Gizmos.color = UnityEngine.Color.blue;
             Gizmos.DrawWireSphere(transform.position, .25f);
@@ -273,5 +276,45 @@ public class DamGenerator : MonoBehaviour
     {
         current.AddConnection(dam.Cells[current.CellArrayPosition.X + relativeOffset.X, current.CellArrayPosition.Y + relativeOffset.Y]);
         dam.Cells[current.CellArrayPosition.X + relativeOffset.X, current.CellArrayPosition.Y + relativeOffset.Y].AddConnection(current);
+    }
+
+    /// <summary>
+    /// Generates items on just over 1/4th of the cells
+    /// </summary>
+    private void GenerateItems()
+    {
+        int itemCount = (int)((damSize.X * damSize.Y - 1) * .25);
+        System.Random RNGesus = new System.Random();
+        Debug.Log($"Generating {itemCount + 2} items because {damSize.X * damSize.Y} - 1 * .25 = {(damSize.X * damSize.Y - 1) * .25}");
+        int debug = 0;
+        for(int i = 0; i <= itemCount / 2 + 1; i++)
+        {
+            DamCell currentCell = dam.Cells[RNGesus.Next(damSize.X), RNGesus.Next(damSize.Y)];
+            if(currentCell != dam.Cells[hqCoordinate.X, hqCoordinate.Y] && currentCell.Contents.Count == 0)
+            {
+                debug++;
+                currentCell.AddItem(new Food());
+                Debug.Log($"Generated food at {currentCell.CellCoordinates}. It is item {debug}");
+            }
+            else
+            {
+                i--;
+            }
+        }
+
+        for (int i = 0; i <= itemCount / 2 + 1; i++)
+        {
+            DamCell currentCell = dam.Cells[RNGesus.Next(damSize.X), RNGesus.Next(damSize.Y)];
+            if (currentCell != dam.Cells[hqCoordinate.X, hqCoordinate.Y] && currentCell.Contents.Count == 0)
+            {
+                debug++;
+                currentCell.AddItem(new Scrap());
+                Debug.Log($"Generated scrap at {currentCell.CellCoordinates}. It is item {debug}");
+            }
+            else
+            {
+                i--;
+            }
+        }
     }
 }

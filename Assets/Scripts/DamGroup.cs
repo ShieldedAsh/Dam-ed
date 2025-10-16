@@ -43,7 +43,6 @@ public class DamGroup
         int endRow = end.CellArrayPosition.X;
         int endCol = end.CellArrayPosition.Y;
 
-        int pathAttempts = 10000;
         for (int i = 0; i < cells.GetLength(0); i++)
         {
             for (int j = 0; j < cells.GetLength(1); j++)
@@ -54,7 +53,7 @@ public class DamGroup
         start.Permanence = true;
         start.Distance = 0;
 
-        while (!end.Permanence || pathAttempts == 0)
+        while (!end.Permanence)
         {
             List<DamCell> adjCells = cells[currentRow, currentCol].Connections;
             for (int k = 0; k < adjCells.Count; k++)
@@ -70,7 +69,6 @@ public class DamGroup
                         cell.PathNeighbor = currentCell;
                     }
                 }
-                pathAttempts--;
             }
 
             DamCell smallest = null!;
@@ -101,20 +99,26 @@ public class DamGroup
     {
         GenerateShortestPath(start, end);
         DamCell current = end;
-        List<DamCell> path = new List<DamCell>();
-        while (current != null)
+        if (current.Distance > 0)
         {
-            path.Add(current);
-            if (current.PathNeighbor != null)
+            List<DamCell> path = new List<DamCell>();
+            while (current != null)
             {
-                current = current.PathNeighbor;
+                path.Add(current);
+                if (current.PathNeighbor != null)
+                {
+                    current = current.PathNeighbor;
+                }
+                else
+                {
+                    current = null;
+                }
             }
-            else
-            {
-                current = null;
-            }
+            return path;
         }
-        return path;
+        List<DamCell> empty = new List<DamCell>();
+        empty.Add(start);
+        return empty;
     }
 
     public void SetHQ(DamCell hq)
