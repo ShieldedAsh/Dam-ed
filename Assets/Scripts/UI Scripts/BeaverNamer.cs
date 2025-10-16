@@ -8,7 +8,10 @@ public class BeaverNamer : MonoBehaviour
     [SerializeField]
     List<TextMeshProUGUI> beaverText;
 
-    bool beaversNamed = false;
+    [SerializeField]
+    TMP_Dropdown dropdown;
+
+    List<string> names;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,10 +26,15 @@ public class BeaverNamer : MonoBehaviour
 
     public void nameBeavers(List<BeaverData> beavers)
     {
-        Debug.Log("Beavers Named");
+        dropdown.ClearOptions();
         for (int i = 0; i < beaverText.Count; i++)
         {
             beaverText[i].text = beavers[i].BeaverName + "\n¥" + beavers[i].Intelligence + " §" + beavers[i].Speed;
+            Debug.Log("Named Beav");
+
+            dropdown.options.Add(new TMP_Dropdown.OptionData(beavers[i].BeaverName + "(¥" + beavers[i].Intelligence + " §" + beavers[i].Speed + ")"));
         }
+
+
     }
 }
