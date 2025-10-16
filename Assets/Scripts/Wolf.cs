@@ -12,7 +12,7 @@ public class Wolf : IItem
 
     //Wolf's Current Location
     public DamCell CurrentLocation { get => currentLocation; set => currentLocation = value; }
-    
+
     //Wolf Pathfinding
     private List<DamCell> pathToTarget;
     private int currentPathIndex;
@@ -21,13 +21,13 @@ public class Wolf : IItem
     private float timeToMove;
 
     private bool isDistracted;
-    
+
     /// <summary>
     /// closest cell to mainTarget when trapped
     /// </summary>
     private DamCell intermediateTarget;
 
-    #nullable enable
+#nullable enable
     public DamCell? MainTarget { get => mainTarget; }
     /// <summary>
     /// This is for viewing the path in DamGenerator
@@ -92,12 +92,13 @@ public class Wolf : IItem
                     }
                 }
             }
+
             if (CurrentLocation.Connections.Contains(HQ.Instance.HQCell) == false || isDistracted == true)
-            //Normal pathfinding (Another if statement to allow above to check to make sure there aren't wolves at both doors without preventing this from running)
+            //Normal pathfinding (Another if statement to allow above to check to make sure there aren't wolves at both doors without preventing this from running)            
             {
                 pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, mainTarget, true);
                 // if wolf is trapped
-                if (pathToTarget[0].Distance < 0)
+                if (pathToTarget[pathToTarget.Count - 1].Distance < 0)
                 {
                     //Find all cells within isolated chunk
                     List<DamCell> validCells = new List<DamCell>();
@@ -132,70 +133,65 @@ public class Wolf : IItem
                         }
                     }
 
-                // if wolf is trapped
-                if (pathToTarget[0].Distance < 0)
-                {
-                    currentLocation.RemoveItem(this);
-                    timeToMove = Random.Range(2f, 3f);
-                    currentPathIndex = pathToTarget.Count - 1;
-                    CurrentLocation = pathToTarget[currentPathIndex - 1];
-                    currentLocation.AddItem(this);
-                    currentPathIndex--;
-                    if (CurrentLocation == mainTarget)
+                    if (pathToTarget[pathToTarget.Count - 1].Distance < 0)
                     {
-
+                        currentLocation.RemoveItem(this);
+                        timeToMove = Random.Range(2f, 3f);
+                        currentPathIndex = pathToTarget.Count - 1;
+                        CurrentLocation = pathToTarget[currentPathIndex - 1];
+                        currentLocation.AddItem(this);
+                        currentPathIndex--;
+                        if (CurrentLocation == mainTarget)
+                        {
+                            mainTarget = null;
+                        }
                     }
-                    
-
-                        
                 }
                 else //Normal movement
+                {
+                    if (timeToMove <= 0)
                     {
-                        if (timeToMove <= 0)
+                        currentLocation.RemoveItem(this);
+                        timeToMove = Random.Range(5f, 10f);
+                        currentPathIndex = pathToTarget.Count - 1;
+                        CurrentLocation = pathToTarget[currentPathIndex - 1];
+                        currentLocation.AddItem(this);
+                        currentPathIndex--;
+                        if (CurrentLocation == mainTarget)
                         {
-                            timeToMove = Random.Range(5f, 10f);
-                            currentPathIndex = pathToTarget.Count - 1;
-                            CurrentLocation = pathToTarget[currentPathIndex - 1];
-                            currentPathIndex--;
-                            if (CurrentLocation == mainTarget)
-                            {
-                                mainTarget = null;
-                                isDistracted = false;
-                            }
+                            mainTarget = null;
+                            isDistracted = false;
                         }
                     }
                 }
             }
         }
-        else // is trapped
+        else if (timeToMove <= 0) //is trapped
         {
-            if (timeToMove <= 0)
+            currentLocation.RemoveItem(this);
+            timeToMove = Random.Range(2f, 3f);
+            pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, intermediateTarget, true);
+            if (pathToTarget[pathToTarget.Count - 1].Distance < 0)
             {
-                currentLocation.RemoveItem(this);
-                timeToMove = Random.Range(2f, 3f);
-                pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, intermediateTarget, true);
-                if (pathToTarget[0].Distance < 0)
+                intermediateTarget = null;
+            }
+            else
+            {
+                currentPathIndex = pathToTarget.Count - 1;
+                CurrentLocation = pathToTarget[currentPathIndex - 1];
+                currentLocation.AddItem(this);
+                currentPathIndex--;
+                //when it has reached the intermediate target, dig towards mainTarget
+                if (CurrentLocation == intermediateTarget)
                 {
-                    intermediateTarget = null;
-                }
-                else
-                {
-                    currentPathIndex = pathToTarget.Count - 1;
-                    CurrentLocation = pathToTarget[currentPathIndex - 1];
-                    currentLocation.AddItem(this);
-                    currentPathIndex--;
-                    //when it has reached the intermediate target, dig towards mainTarget
-                    if (CurrentLocation == intermediateTarget)
+                    Vector2 digDirection = (new Vector2(mainTarget.CellArrayPosition.X, mainTarget.CellArrayPosition.Y) - new Vector2(CurrentLocation.CellArrayPosition.X, CurrentLocation.CellArrayPosition.Y)).normalized;
+                    if (wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X + (int)digDirection.x, CurrentLocation.CellArrayPosition.Y + (int)digDirection.y] == wolfManager.TheDam.HQ)
                     {
-                        Vector2 digDirection = (new Vector2(mainTarget.CellArrayPosition.X, mainTarget.CellArrayPosition.Y) - new Vector2(CurrentLocation.CellArrayPosition.X, CurrentLocation.CellArrayPosition.Y)).normalized;
-                        if (wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X + (int)digDirection.x, CurrentLocation.CellArrayPosition.Y + (int)digDirection.y] == wolfManager.TheDam.HQ)
-                        {
-                            intermediateTarget = intermediateTarget.Connections[Random.Range(0, intermediateTarget.Connections.Count)];
-                        }
-                        wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X, CurrentLocation.CellArrayPosition.Y].AddConnection(wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X + (int)digDirection.x, CurrentLocation.CellArrayPosition.Y + (int)digDirection.y]);
-                        wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X + (int)digDirection.x, CurrentLocation.CellArrayPosition.Y + (int)digDirection.y].AddConnection(CurrentLocation);
-                        intermediateTarget = null;
+                        intermediateTarget = intermediateTarget.Connections[Random.Range(0, intermediateTarget.Connections.Count)];
                     }
+                    wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X, CurrentLocation.CellArrayPosition.Y].AddConnection(wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X + (int)digDirection.x, CurrentLocation.CellArrayPosition.Y + (int)digDirection.y]);
+                    wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X + (int)digDirection.x, CurrentLocation.CellArrayPosition.Y + (int)digDirection.y].AddConnection(CurrentLocation);
+                    intermediateTarget = null;
                 }
             }
         }
