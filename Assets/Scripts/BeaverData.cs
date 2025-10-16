@@ -82,6 +82,8 @@ public class BeaverData : IItem
     /// </summary>
     private bool atHome;
 
+    public bool testing = true;
+
     /// <summary>
     /// Updates this beaver's current status. Do this for each beaver every update
     /// </summary>
@@ -92,7 +94,12 @@ public class BeaverData : IItem
             atHome = false;
             if (timeToMove <= 0)
             {
-                timeToMove = Random.Range(5f - Speed, 10f - Speed);
+                #if UNITY_EDITOR
+                    timeToMove = Random.Range(1f - Speed, 1f - Speed);
+                #else
+                    timeToMove = Random.Range(5f - Speed, 10f - Speed);
+                #endif
+
                 ExecuteOrder();
             }
             timeToMove -= Time.deltaTime;
@@ -107,20 +114,22 @@ public class BeaverData : IItem
                 Orders[i] = null!;
             }
         }
-        //Runs when the beaver gets home
-        else if(atHome == false)
+        //Unloads the memory once
+        else if(atHome == false && CurrentLocation == beaverManager.TheDam.HQ)
+        
         {
+            string totalMemories = "";
             atHome = true;
             foreach(Memory mem in Memory)
             {
-                //THIS IS WHERE THE BEAVER TELLS YOU WHAT THEY REMEMBER!
+                totalMemories += DialogueOptions.RecallMemory(mem);
+                atHome = true;
             }
             if(Carrying != null)
             {
                 HQ.Instance.AddItem(Carrying);
             }
         }
-        
     }
 
     /// <summary>
@@ -161,15 +170,13 @@ public class BeaverData : IItem
     /// </summary>
     public void EvaluateRoom()
     {
-        Memory.Add(new Memory(CurrentLocation));
-        foreach(IItem item in CurrentLocation.Contents)
+        if(CurrentLocation.Contents.Count > 0)
         {
-            if (item.itemType == IItem.ItemType.Wolf)
+            Memory.Add(new Memory(CurrentLocation));
+            foreach (IItem item in CurrentLocation.Contents)
             {
-                BeaverStatus = Status.Dead;
+                Memory[Memory.Count - 1].AddItem(item);
             }
-            
-            Memory[Memory.Count - 1].AddItem(item);
         }
     }
 
@@ -200,6 +207,7 @@ public class BeaverData : IItem
         CurrentOrder!.TakeAction();
         if(CurrentOrder.ThisOrder == Order.Action.Move)
         {
+            Debug.Log($"Current Location: {CurrentLocation.CellCoordinates.Item1}, {CurrentLocation.CellCoordinates.Item2}");
             if(CurrentLocation == CurrentOrder.TargetDamCell)
             {
                 currentOrderIndex++;
