@@ -5,6 +5,10 @@ public class WolfManager : MonoBehaviour
 {
     //Fields
     [SerializeField]
+    [Tooltip ("Reference to the death manager")]
+    private GameObject _deathManager;
+
+    [SerializeField]
     [Tooltip("Reference to the audio system")]
     private AudioSource _audioSystem;
 
@@ -17,6 +21,11 @@ public class WolfManager : MonoBehaviour
     public int WolfCount { get => wolfCount; set => wolfCount = value; }
 
     public List<Wolf> Wolves { get { return wolves; } }
+
+    /// <summary>
+    /// Reference to the deathmanager script
+    /// </summary>
+    public Death DeathManager { get { return _deathManager.GetComponent<Death>(); } }
 
     private void Start()
     {
