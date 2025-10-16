@@ -107,13 +107,14 @@ public class BeaverData : IItem
                 Orders[i] = null!;
             }
         }
-        //Unloads the memory once
+        //Runs when the beaver gets home
         else if(atHome == false)
         {
             foreach(Memory mem in Memory)
             {
                 //THIS IS WHERE THE BEAVER TELLS YOU WHAT THEY REMEMBER!
             }
+            HQ.Instance.AddItem(Carrying);
         }
         
     }
