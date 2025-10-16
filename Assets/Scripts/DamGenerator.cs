@@ -319,7 +319,7 @@ public class DamGenerator : MonoBehaviour
         current.AddConnection(dam.Cells[current.CellArrayPosition.X + relativeOffset.X, current.CellArrayPosition.Y + relativeOffset.Y]);
         dam.Cells[current.CellArrayPosition.X + relativeOffset.X, current.CellArrayPosition.Y + relativeOffset.Y].AddConnection(current);
     }
-    
+
 
     private void DrawDam()
     {
@@ -340,8 +340,8 @@ public class DamGenerator : MonoBehaviour
                 child.AddComponent<SpriteMask>();
                 child.GetComponent<SpriteMask>().sprite = maskSprite;
                 child.transform.name = gCell.CellArrayPosition.ToString();
-                
-                if(gCell.CellArrayPosition == hqCoordinate)
+
+                if (gCell.CellArrayPosition == hqCoordinate)
                 {
                     child.GetComponent<SpriteRenderer>().color = UnityEngine.Color.red;
                 }
@@ -365,8 +365,11 @@ public class DamGenerator : MonoBehaviour
                     connectionLine.SetPosition(0, new Vector3(gCell.CellArrayPosition.X + xOffset, gCell.CellArrayPosition.Y + yOffset, 0));
                     connectionLine.SetPosition(1, new Vector3(cell.CellArrayPosition.X + xOffset, cell.CellArrayPosition.Y + yOffset, 0));
                     connectionLine.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
-                    
+
                 }
+            }
+        }
+    }
 
     /// <summary>
     /// Generates items on just over 1/4th of the cells
