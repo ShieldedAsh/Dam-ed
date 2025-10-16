@@ -8,9 +8,9 @@ public class MemoryDisplay : MonoBehaviour
     [Tooltip("what to display this text on")]
     public TextMeshProUGUI DisplayTextDialogue;
     private string totalMemories = "";
-    private string displayMemories = "";
+    private string displayMemories;
 
-
+    private int timesClicked = 0;
     /// <summary>
     /// adds the beaver's memories to the total memories, and parses it for display
     /// </summary>
@@ -28,11 +28,18 @@ public class MemoryDisplay : MonoBehaviour
     /// </summary>
     private void ParseMemories()
     {
+        displayMemories = "";
         string[] parsedMemories = totalMemories.Split('\n');
-        for(int i = 0; i < 10; i++)
+        for (int i = 0; i < (parsedMemories.Length < numberOfLinesDisplayed ? parsedMemories.Length : numberOfLinesDisplayed); i++)
         {
-            displayMemories += parsedMemories[parsedMemories.Length - i] + '\n';
+            displayMemories += parsedMemories[parsedMemories.Length - 1 - i] + '\n';
         }
         DisplayTextDialogue.text = displayMemories;
+    }
+
+    public void OnClick()
+    {
+        totalMemories += "You clicked a button " + timesClicked++ + " times!" +'\n';
+        ParseMemories();
     }
 }
