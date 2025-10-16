@@ -217,15 +217,31 @@ public class DamGenerator : MonoBehaviour
     float cTime = 0;
     private void Update()
     {
-        if (!dam.HQ.Connections[0].Connections.Contains(dam.HQ))
+        foreach (DamCell cell in dam.Cells)
         {
-            dam.HQ.Connections[0].AddConnection(dam.HQ);
+            bool containsBeaver = false;
+            List<BeaverData> references = new List<BeaverData>();
+            bool containsWolf = false;
+            foreach(IItem item in cell.Contents)
+            {
+                if (item is BeaverData)
+                {
+                    containsBeaver = true;
+                    references.Add((BeaverData)item);
+                }
+                if (item is Wolf)
+                {
+                    containsWolf = true;
+                }
+            }
+            if (containsBeaver && containsWolf)
+            {
+                for (int i = references.Count - 1; i >= 0; i--)
+                {
+                    references[i].BeaverStatus = BeaverData.Status.Dead;
+                }
+            }
         }
-        if (!dam.HQ.Connections[1].Connections.Contains(dam.HQ))
-        {
-            dam.HQ.Connections[1].AddConnection(dam.HQ);
-        }
-
 
         time += Time.deltaTime;
         cTime += Time.deltaTime;
@@ -360,6 +376,21 @@ public class DamGenerator : MonoBehaviour
             {
                 i--;
             }
+        }
+    }
+
+    public void AttemptToRepairConnections()
+    {
+        List<DamCell> doors = dam.HQ.Connections;
+
+        if (!doors[0].Connections.Contains(dam.HQ))
+        {
+            doors[0].AddConnection(dam.HQ);
+        }
+
+        if (!doors[1].Connections.Contains(dam.HQ))
+        {
+            doors[1].AddConnection(dam.HQ);
         }
     }
 }

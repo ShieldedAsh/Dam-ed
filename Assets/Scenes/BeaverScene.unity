@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8f777942eb1a634d87b706e04c6fffa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionDensityPercentage: 22
+  connectionDensityPercentage: 20
   DamSize: {x: 11, y: 11}
 --- !u!4 &83890257
 Transform:
@@ -194,6 +194,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8b548319c72f184aa3ce9dc3ee6aebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wolfCount: 5
+  generateWolves: 1
 --- !u!4 &214393008
 Transform:
   m_ObjectHideFlags: 0

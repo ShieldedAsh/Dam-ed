@@ -56,7 +56,7 @@ public class BeaverData : IItem
     /// <summary>
     /// What is the beaver's current status
     /// </summary>
-    public Status BeaverStatus { get; private set; }
+    public Status BeaverStatus { get; set; }
 
     /// <summary>
     /// The current location of the beaver
@@ -208,7 +208,7 @@ public class BeaverData : IItem
         CurrentOrder!.TakeAction();
         if(CurrentOrder.ThisOrder == Order.Action.Move)
         {
-            Debug.Log($"Current Location: {CurrentLocation.CellCoordinates.Item1}, {CurrentLocation.CellCoordinates.Item2}");
+            //Debug.Log($"Current Location: {CurrentLocation.CellCoordinates.Item1}, {CurrentLocation.CellCoordinates.Item2}");
             if(CurrentLocation == CurrentOrder.TargetDamCell)
             {
                 currentOrderIndex++;

@@ -87,7 +87,7 @@ public class Order
                 beaver.EvaluateRoom();
                 //Re-evaluates Path to find current best route
                 pathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell, false);
-                if (pathToTarget.Count != 0)
+                if (pathToTarget.Count > 0)
                 {
                     beaver.CurrentLocation.RemoveItem(beaver);
                     currentPathIndex = pathToTarget.Count - 1;
