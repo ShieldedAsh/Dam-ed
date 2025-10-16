@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using System.Drawing;
+using System.Data;
 
 public class DamGenerator : MonoBehaviour
 {
@@ -207,16 +208,21 @@ public class DamGenerator : MonoBehaviour
                 }
             }
         }
+        GenerateItems();
+
         hasGenerated = true;
     }
 
+    float cTime = 0;
     private void Update()
     {
         time += Time.deltaTime;
-        if (time / 10 > minutesPassed)
+        cTime += Time.deltaTime;
+        if (cTime >= 2)
         {
             Debug.Log("A minute has passed");
             minutesPassed++;
+            cTime -= 60;
             GenerateItems();
         }
     }
@@ -248,15 +254,19 @@ public class DamGenerator : MonoBehaviour
                     {
                         case IItem.ItemType.Food:
                             Gizmos.color = UnityEngine.Color.green;
+                            Gizmos.DrawCube(new Vector3(gCell.CellArrayPosition.X + xOffset - 0.1f, gCell.CellArrayPosition.Y + yOffset - 0.1f, 0), new Vector3(.1f, .1f, .1f));
                             break;
                         case IItem.ItemType.Scrap:
                             Gizmos.color = UnityEngine.Color.black;
+                            Gizmos.DrawCube(new Vector3(gCell.CellArrayPosition.X + xOffset + 0.1f, gCell.CellArrayPosition.Y + yOffset - 0.1f, 0), new Vector3(.1f, .1f, .1f));
                             break;
                         case IItem.ItemType.Wolf:
                             Gizmos.color = UnityEngine.Color.grey;
+                            Gizmos.DrawCube(new Vector3(gCell.CellArrayPosition.X + xOffset - 0.1f, gCell.CellArrayPosition.Y + yOffset + 0.1f, 0), new Vector3(.1f, .1f, .1f));
                             break;
                         case IItem.ItemType.Beaver:
                             Gizmos.color = UnityEngine.Color.magenta;
+                            Gizmos.DrawCube(new Vector3(gCell.CellArrayPosition.X + xOffset + 0.1f, gCell.CellArrayPosition.Y + yOffset + 0.1f, 0), new Vector3(.1f, .1f, .1f));
                             break;
                     }
                 }
@@ -285,7 +295,6 @@ public class DamGenerator : MonoBehaviour
     {
         int itemCount = (int)((damSize.X * damSize.Y - 1) * .25);
         System.Random RNGesus = new System.Random();
-        Debug.Log($"Generating {itemCount + 2} items because {damSize.X * damSize.Y} - 1 * .25 = {(damSize.X * damSize.Y - 1) * .25}");
         int debug = 0;
         for(int i = 0; i <= itemCount / 2 + 1; i++)
         {
@@ -294,7 +303,6 @@ public class DamGenerator : MonoBehaviour
             {
                 debug++;
                 currentCell.AddItem(new Food());
-                Debug.Log($"Generated food at {currentCell.CellCoordinates}. It is item {debug}");
             }
             else
             {
@@ -309,7 +317,6 @@ public class DamGenerator : MonoBehaviour
             {
                 debug++;
                 currentCell.AddItem(new Scrap());
-                Debug.Log($"Generated scrap at {currentCell.CellCoordinates}. It is item {debug}");
             }
             else
             {
