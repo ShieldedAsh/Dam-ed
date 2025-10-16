@@ -5,8 +5,10 @@ using UnityEngine;
 public class BeaverManager : MonoBehaviour
 {
     private DamGroup theDam;
+    private OrderGenerator orderGenerator;
 
     public DamGroup TheDam { get => theDam; }
+    public OrderGenerator OrderGenerator { get => orderGenerator; set => OrderGenerator = value; }
 
     public List<BeaverData> Beavers { get; private set; }
 
@@ -17,6 +19,7 @@ public class BeaverManager : MonoBehaviour
     public void Start()
     {
         theDam = FindAnyObjectByType<DamGenerator>().Dam;
+        orderGenerator = FindAnyObjectByType<OrderGenerator>();
     }
 
     private void Update()
@@ -27,7 +30,9 @@ public class BeaverManager : MonoBehaviour
             {
                 AddBeaver();
             }
+            Beavers[0].Orders[0] = new Order(Order.Action.Move, Beavers[0], this, theDam.GetRandomCell(new List<DamCell>() { theDam.HQ }));
         }
+        
         if (Beavers.Count > 0)
         {
             foreach (BeaverData beaver in Beavers)

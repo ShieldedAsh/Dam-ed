@@ -46,6 +46,8 @@ public class OrderGenerator : MonoBehaviour
     {
         if (IsValidCell(target))
         {
+            HQ.Instance.TakeScrap();
+            beaver.Carrying = new Scrap();
             return new Order(Order.Action.Barricade, beaver, beaverManager, beaverManager.TheDam.Cells[target[0] - 97, int.Parse(target.Substring(1, target.Length - 1)) - 1]);
         }
         return null;
@@ -61,6 +63,8 @@ public class OrderGenerator : MonoBehaviour
     {
         if (IsValidCell(target))
         {
+            HQ.Instance.TakeScrap();
+            beaver.Carrying = new Scrap();
             return new Order(Order.Action.Tunnel, beaver, beaverManager, beaverManager.TheDam.Cells[target[0] - 97, int.Parse(target.Substring(1, target.Length - 1)) - 1]);
         }
         return null;

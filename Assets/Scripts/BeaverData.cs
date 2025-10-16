@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 [System.Serializable]
 
@@ -94,11 +95,11 @@ public class BeaverData : IItem
             atHome = false;
             if (timeToMove <= 0)
             {
-                #if UNITY_EDITOR
-                    timeToMove = Random.Range(1f - Speed, 1f - Speed);
-                #else
-                    timeToMove = Random.Range(5f - Speed, 10f - Speed);
-                #endif
+                //#if UNITY_EDITOR
+                //    timeToMove = Random.Range(1f - Speed, 1f - Speed);
+                //#else
+                    timeToMove = Random.Range(2f - Speed, 3f - Speed);
+                //#endif
 
                 ExecuteOrder();
             }
@@ -107,7 +108,13 @@ public class BeaverData : IItem
         //Sends the beaver home after finishing all orders
         else if(CurrentOrder == null && BeaverStatus == Status.Healthy && CurrentLocation != beaverManager.TheDam.HQ)
         {
-            Orders[0] = new Order(Order.Action.Move, this, beaverManager, beaverManager.TheDam.HQ);
+            Debug.Log("Returning home");
+            if (Orders.Length == 0)
+            {
+                Orders = new Order[1];
+            }
+            
+            GiveOrder(beaverManager.OrderGenerator.TryCreateMoveOrder(this, $"{beaverManager.TheDam.HQ.CellCoordinates.Item1}{beaverManager.TheDam.HQ.CellCoordinates.Item2}")!);
             currentOrderIndex = 0;
             for(int i = 1; i < Orders.Length; i++)
             {

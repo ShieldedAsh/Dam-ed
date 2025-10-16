@@ -269,11 +269,14 @@ public class DamGenerator : MonoBehaviour
                             Gizmos.DrawCube(new Vector3(gCell.CellArrayPosition.X + xOffset - 0.1f, gCell.CellArrayPosition.Y + yOffset + 0.1f, 0), new Vector3(.1f, .1f, .1f));
                             if (obj is Wolf)
                             {
-                                DamCell current = gCell;
-                                for (int i = ((Wolf)obj).CurrentPath.Count - 1; i >= 0; i--)
+                                if (((Wolf)obj).CurrentPath != null)
                                 {
-                                    Gizmos.DrawLine(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), new Vector3(((Wolf)obj).CurrentPath[i].CellArrayPosition.X + xOffset, ((Wolf)obj).CurrentPath[i].CellArrayPosition.Y + yOffset, 0));
-                                    current = ((Wolf)obj).CurrentPath[i];
+                                    DamCell current = gCell;
+                                    for (int i = ((Wolf)obj).CurrentPath.Count - 1; i >= 0; i--)
+                                    {
+                                        Gizmos.DrawLine(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), new Vector3(((Wolf)obj).CurrentPath[i].CellArrayPosition.X + xOffset, ((Wolf)obj).CurrentPath[i].CellArrayPosition.Y + yOffset, 0));
+                                        current = ((Wolf)obj).CurrentPath[i];
+                                    }
                                 }
                             }
                             break;
@@ -282,7 +285,7 @@ public class DamGenerator : MonoBehaviour
                             Gizmos.DrawCube(new Vector3(gCell.CellArrayPosition.X + xOffset + 0.1f, gCell.CellArrayPosition.Y + yOffset + 0.1f, 0), new Vector3(.1f, .1f, .1f));
                             if (obj is BeaverData)
                             {
-                                if (((BeaverData)obj).CurrentOrder != null && ((BeaverData)obj).CurrentOrder.ActionType == Order.Action.Move)
+                                if (((BeaverData)obj).CurrentOrder != null && ((BeaverData)obj).CurrentOrder.ActionType == Order.Action.Move && ((BeaverData)obj).CurrentOrder.CurrentPath != null && ((BeaverData)obj).CurrentOrder.CurrentPath.Count > 0)
                                 {
                                     DamCell current = gCell;
                                     for (int i = ((BeaverData)obj).CurrentOrder.CurrentPath.Count - 1; i >= 0; i--)

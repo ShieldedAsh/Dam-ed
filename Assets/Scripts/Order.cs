@@ -89,6 +89,8 @@ public class Order
                 pathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell, false);
                 beaver.CurrentLocation.RemoveItem(beaver);
                 currentPathIndex = pathToTarget.Count - 1;
+                Debug.Log($"Distance Left: {pathToTarget.Count}, currentPathIndex: {currentPathIndex}");
+                Debug.Log($"Beaver Loc: {beaver.CurrentLocation}, Moving to: {pathToTarget[currentPathIndex - 1]}");
                 beaver.CurrentLocation = pathToTarget[currentPathIndex - 1];
                 beaver.CurrentLocation.AddItem(beaver);
                 currentPathIndex--;
