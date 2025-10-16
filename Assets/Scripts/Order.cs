@@ -4,8 +4,13 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Order
 {
-    private List<DamCell> PathToTarget;
+    private List<DamCell> pathToTarget;
     private int currentPathIndex;
+
+    /// <summary>
+    /// This is for viewing the path in DamGenerator
+    /// </summary>
+    public List<DamCell> CurrentPath { get => pathToTarget; }
 
     /// <summary>
     /// Things a beaver can do
@@ -39,6 +44,11 @@ public class Order
     [SerializeField] private Action action;
 
     /// <summary>
+    /// This is for viewing the path in DamGenerator
+    /// </summary>
+    public Action ActionType { get => action; }
+
+    /// <summary>
     /// Constructor for a single Order with no target
     /// </summary>
     /// <param name="action">The action you want this order to contain</param>
@@ -61,8 +71,8 @@ public class Order
         TargetDamCell = target;
         if (ThisOrder == Action.Move)
         {
-            PathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
-            currentPathIndex = PathToTarget.Count - 1;
+            pathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
+            currentPathIndex = pathToTarget.Count - 1;
         }
     }
 
@@ -76,9 +86,9 @@ public class Order
             case Action.Move:
                 beaver.EvaluateRoom();
                 //Re-evaluates Path to find current best route
-                PathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
-                currentPathIndex = PathToTarget.Count - 1;
-                beaver.CurrentLocation = PathToTarget[currentPathIndex - 1];
+                pathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
+                currentPathIndex = pathToTarget.Count - 1;
+                beaver.CurrentLocation = pathToTarget[currentPathIndex - 1];
                 currentPathIndex--;
                 break;
             case Action.Scavenge:
@@ -89,19 +99,59 @@ public class Order
                 }
                 break;
             case Action.Barricade:
-                if (beaver.Carrying.itemType == IItem.ItemType.Scrap)
+                if(beaverManager.TheDam.HQ != beaver.CurrentLocation)
+                {
+                    //CODE FOR REINFORCING HQ BARRICADE
+                }
+                else if (beaver.Carrying.itemType == IItem.ItemType.Scrap && IsNeighbor(beaver.CurrentLocation, TargetDamCell) && beaver.CurrentLocation.Connections.Contains(TargetDamCell))
                 {
                     beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].RemoveConnection(TargetDamCell);
                     beaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].RemoveConnection(beaver.CurrentLocation);
+                    beaver.Carrying = null;
                 }
                 break;
             case Action.Tunnel:
-                beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].AddConnection(TargetDamCell);
-                beaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].AddConnection(beaver.CurrentLocation);
+                if (beaver.Carrying.itemType == IItem.ItemType.Scrap && IsNeighbor(beaver.CurrentLocation, TargetDamCell) && !beaver.CurrentLocation.Connections.Contains(TargetDamCell)
+                    && beaverManager.TheDam.HQ != TargetDamCell && beaverManager.TheDam.HQ != beaver.CurrentLocation)
+                {
+                    beaverManager.TheDam.Cells[beaver.CurrentLocation.CellArrayPosition.X, beaver.CurrentLocation.CellArrayPosition.Y].AddConnection(TargetDamCell);
+                    beaverManager.TheDam.Cells[TargetDamCell.CellArrayPosition.X, TargetDamCell.CellArrayPosition.Y].AddConnection(beaver.CurrentLocation);
+                    beaver.Carrying = null;
+                }
                 break;
             case Action.Distract:
-                //finds all wolves within 5 spaces
-                //makes all of them start moving to this square
+                List<DamCell> distractCells = new List<DamCell>();
+                distractCells.Add(beaver.CurrentLocation);
+                for(int i = 0; i < 5; i++)
+                {
+                    List<DamCell> toAdd = new List<DamCell>();
+                    foreach(DamCell cell in distractCells)
+                    {
+                        foreach(DamCell connectCell in cell.Connections)
+                        {
+                            if(distractCells.Contains(connectCell) == false && toAdd.Contains(connectCell) == false)
+                            {
+                                toAdd.Add(connectCell);
+                            }
+                        }
+                    }
+                    foreach (DamCell cell in distractCells)
+                    {
+                        distractCells.Add(cell);
+                    }
+                }
+
+                foreach (Wolf wolf in Object.FindAnyObjectByType<WolfManager>().Wolves)
+                {
+                    foreach (DamCell cell in distractCells)
+                    {
+                        if (wolf.CurrentLocation == cell)
+                        {
+                            wolf.ChangeTarget(beaver.CurrentLocation);
+                            break;
+                        }
+                    }
+                }
                 break;
         }
     }
@@ -115,7 +165,7 @@ public class Order
         switch (ThisOrder)
         {
             case Action.Move:
-                return $"moving to ({PathToTarget[currentPathIndex].CellCoordinates.Item1}, {PathToTarget[currentPathIndex].CellCoordinates.Item2})";
+                return $"moving to ({pathToTarget[currentPathIndex].CellCoordinates.Item1}, {pathToTarget[currentPathIndex].CellCoordinates.Item2})";
 
             case Action.Scavenge:
                 return $"scavenging for resources";
@@ -128,5 +178,49 @@ public class Order
             default:
                 return "not doing anything";
         }
+    }
+    
+    /// <summary>
+    /// Checks to see if target is a neighbor to currentLocation
+    /// </summary>
+    /// <param name="currentLocation">The current location</param>
+    /// <param name="target">the cell to check</param>
+    /// <returns>True if a neighbor, false if not</returns>
+    public bool IsNeighbor(DamCell currentLocation, DamCell target)
+    {
+        // Y-1
+        if (currentLocation.CellArrayPosition.Y-1 >= 0)
+        {
+            if (currentLocation.CellArrayPosition.X == target.CellArrayPosition.X && currentLocation.CellArrayPosition.Y - 1 == target.CellArrayPosition.Y)
+            {
+                return true;
+            }
+        }
+        // X-1
+        if (currentLocation.CellArrayPosition.X-1 >= 0)
+        {
+            if (currentLocation.CellArrayPosition.X-1 == target.CellArrayPosition.X && currentLocation.CellArrayPosition.Y == target.CellArrayPosition.Y)
+            {
+                return true;
+            }
+        }
+        // Y+1
+        if (currentLocation.CellArrayPosition.Y+1 < beaverManager.TheDam.Cells.GetLength(1))
+        {
+            if (currentLocation.CellArrayPosition.X == target.CellArrayPosition.X && currentLocation.CellArrayPosition.Y + 1 == target.CellArrayPosition.Y)
+            {
+                return true;
+            }
+        }
+        // X+1
+        if (currentLocation.CellArrayPosition.X + 1 < beaverManager.TheDam.Cells.GetLength(0))
+        {
+            if (currentLocation.CellArrayPosition.X + 1 == target.CellArrayPosition.X && currentLocation.CellArrayPosition.Y == target.CellArrayPosition.Y)
+            {
+                return true;
+            }
+        }
+        return false;
+
     }
 }
