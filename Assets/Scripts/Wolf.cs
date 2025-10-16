@@ -6,9 +6,10 @@ public class Wolf : IItem
 {
     //TheDam
     private WolfManager wolfManager;
-    
+    private DamCell currentLocation;
+
     //Wolf's Current Location
-    public DamCell CurrentLocation { get; set; }
+    public DamCell CurrentLocation { get => currentLocation; set => currentLocation = value; }
     
     //Wolf Pathfinding
     private List<DamCell> pathToTarget;
@@ -32,14 +33,16 @@ public class Wolf : IItem
     public Wolf(WolfManager wolfManager, DamCell startPosition)
     {
         this.wolfManager = wolfManager;
-        timeToMove = Random.Range(5f, 10f);
+        timeToMove = Random.Range(2f, 3f);
+        currentLocation = startPosition;
+        currentLocation.AddItem(this);
     }
 
     public void UpdateWolf()
     {
         if (intermediateTarget == null) // is not trapped currently
         {
-            pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, mainTarget);
+            pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, mainTarget, true);
             // if wolf is trapped
             if (pathToTarget[0].Distance < 0)
             {
@@ -63,11 +66,11 @@ public class Wolf : IItem
                 }
 
                 //finds the cell closest to wolf within shortestDistance
-                List<DamCell> shortestPath = wolfManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[0].Item1);
+                List<DamCell> shortestPath = wolfManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[0].Item1, true);
                 intermediateTarget = shortestDistance[0].Item1;
                 for (int i = 1; i < shortestDistance.Count; i++)
                 {
-                    List<DamCell> checking = wolfManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[i].Item1);
+                    List<DamCell> checking = wolfManager.TheDam.GetShortestPath(CurrentLocation, shortestDistance[i].Item1, true);
                     if (checking.Count < shortestPath.Count)
                     {
                         shortestPath = checking;
@@ -79,9 +82,11 @@ public class Wolf : IItem
             {
                 if (timeToMove <= 0)
                 {
-                    timeToMove = Random.Range(5f, 10f);
+                    currentLocation.RemoveItem(this);
+                    timeToMove = Random.Range(2f, 3f);
                     currentPathIndex = pathToTarget.Count - 1;
                     CurrentLocation = pathToTarget[currentPathIndex - 1];
+                    currentLocation.AddItem(this);
                     currentPathIndex--;
                     if (CurrentLocation == mainTarget)
                     {
@@ -94,8 +99,9 @@ public class Wolf : IItem
         {
             if (timeToMove <= 0)
             {
-                timeToMove = Random.Range(5f, 10f);
-                pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, intermediateTarget);
+                currentLocation.RemoveItem(this);
+                timeToMove = Random.Range(2f, 3f);
+                pathToTarget = wolfManager.TheDam.GetShortestPath(CurrentLocation, intermediateTarget, true);
                 if (pathToTarget[0].Distance < 0)
                 {
                     intermediateTarget = null;
@@ -104,11 +110,16 @@ public class Wolf : IItem
                 {
                     currentPathIndex = pathToTarget.Count - 1;
                     CurrentLocation = pathToTarget[currentPathIndex - 1];
+                    currentLocation.AddItem(this);
                     currentPathIndex--;
                     //when it has reached the intermediate target, dig towards mainTarget
                     if (CurrentLocation == intermediateTarget)
                     {
                         Vector2 digDirection = (new Vector2(mainTarget.CellArrayPosition.X, mainTarget.CellArrayPosition.Y) - new Vector2(CurrentLocation.CellArrayPosition.X, CurrentLocation.CellArrayPosition.Y)).normalized;
+                        if (wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X + (int)digDirection.x, CurrentLocation.CellArrayPosition.Y + (int)digDirection.y] == wolfManager.TheDam.HQ)
+                        {
+                            intermediateTarget = intermediateTarget.Connections[Random.Range(0, intermediateTarget.Connections.Count)];
+                        }
                         wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X, CurrentLocation.CellArrayPosition.Y].AddConnection(wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X + (int)digDirection.x, CurrentLocation.CellArrayPosition.Y + (int)digDirection.y]);
                         wolfManager.TheDam.Cells[CurrentLocation.CellArrayPosition.X + (int)digDirection.x, CurrentLocation.CellArrayPosition.Y + (int)digDirection.y].AddConnection(CurrentLocation);
                         intermediateTarget = null;

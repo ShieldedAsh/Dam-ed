@@ -35,7 +35,7 @@ public class DamGroup
         cells = new DamCell[size.X, size.Y];
     }
 
-    public void GenerateShortestPath(DamCell start, DamCell end)
+    public void GenerateShortestPath(DamCell start, DamCell end, bool isWolf)
     {
         DamCell currentCell = start;
         int currentRow = start.CellArrayPosition.X;
@@ -56,8 +56,17 @@ public class DamGroup
         while (!end.Permanence)
         {
             List<DamCell> adjCells = cells[currentRow, currentCol].Connections;
+            for (int i = 0; i < adjCells.Count; i++)
+            {
+                if (isWolf && adjCells[i] == hq)
+                {
+                    adjCells.Remove(hq);
+                    break;
+                }
+            }
             for (int k = 0; k < adjCells.Count; k++)
             {
+                
                 int cost = int.MaxValue;
                 DamCell cell = adjCells[k];
                 if (!cell.Permanence)
@@ -95,9 +104,9 @@ public class DamGroup
     /// <param name="start">Where the path starts</param>
     /// <param name="end">Where the path ends</param>
     /// <returns>A list of DamCells containing the path</returns>
-    public List<DamCell> GetShortestPath(DamCell start, DamCell end)
+    public List<DamCell> GetShortestPath(DamCell start, DamCell end, bool isWolf)
     {
-        GenerateShortestPath(start, end);
+        GenerateShortestPath(start, end, isWolf);
         DamCell current = end;
         if (current.Distance > 0)
         {

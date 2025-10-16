@@ -71,7 +71,7 @@ public class Order
         TargetDamCell = target;
         if (ThisOrder == Action.Move)
         {
-            pathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
+            pathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell, false);
             currentPathIndex = pathToTarget.Count - 1;
         }
     }
@@ -86,9 +86,11 @@ public class Order
             case Action.Move:
                 beaver.EvaluateRoom();
                 //Re-evaluates Path to find current best route
-                pathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell);
+                pathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell, false);
+                beaver.CurrentLocation.RemoveItem(beaver);
                 currentPathIndex = pathToTarget.Count - 1;
                 beaver.CurrentLocation = pathToTarget[currentPathIndex - 1];
+                beaver.CurrentLocation.AddItem(beaver);
                 currentPathIndex--;
                 break;
             case Action.Scavenge:

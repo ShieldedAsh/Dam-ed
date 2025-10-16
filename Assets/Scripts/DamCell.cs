@@ -69,9 +69,14 @@ public class DamCell
     /// Removes an item from the contents of the room
     /// </summary>
     /// <param name="item">The item being removed</param>
-    public void RemoveItem(IItem item)
+    public bool RemoveItem(IItem item)
     {
-        Contents.Remove(item);
+        if (Contents.Contains(item))
+        {
+            Contents.Remove(item);
+            return true;
+        }
+        return false;
     }
 
     /// <summary>
