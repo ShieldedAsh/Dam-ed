@@ -11,17 +11,13 @@ using System.Collections.Generic;
 public class SaveAndValidatebeavers : MonoBehaviour
 {
     [Tooltip("the name of the file to save to")]
-    [SerializeField] private string fileName = "beavers.DEAD";
+    [SerializeField] private static string fileName = "beavers.DEAD";
     public static List<string> beaverNames;
 
     /// <summary>
     /// the actual path for saving the file
     /// </summary>
-    private string actualFilePath { get { return Application.persistentDataPath + "/" + fileName; } }
-    private void Start()
-    {
-        LoadBeavers();
-    }
+    private static string actualFilePath { get { return Application.persistentDataPath + "/" + fileName; } }
     /// <summary>
     /// validates that a beaver name has not already been chosen
     /// </summary>
@@ -52,7 +48,7 @@ public class SaveAndValidatebeavers : MonoBehaviour
     /// loads the beavers from the filepath
     /// </summary>
     /// <returns>true if read the file succesfully, otherwise false</returns>
-    private bool LoadBeavers()
+    private static bool LoadBeavers()
     {
         Stream sr = null;
         BinaryReader br = null;
@@ -135,7 +131,7 @@ public class SaveAndValidatebeavers : MonoBehaviour
     /// </summary>
     /// <param name="beavers">beavers to save</param>
     /// <returns>true if read the file succesfully, otherwise false</returns>
-    public bool SaveMoreBeavers(List<string> beavers)
+    public static bool SaveMoreBeavers(List<string> beavers)
     {
         Stream sw = null;
         BinaryWriter bw = null;
