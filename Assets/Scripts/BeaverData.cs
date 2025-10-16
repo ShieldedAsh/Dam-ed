@@ -153,10 +153,10 @@ public class BeaverData : IItem
     /// <param name="beaverManager">The BeaverManager keeping track of this beaver</param>
     public BeaverData(BeaverManager beaverManager)
     {
-        Debug.Log("BM: " + beaverManager);
-        Debug.Log("dam: " + beaverManager.TheDam);
-        Debug.Log("hq: " + beaverManager.TheDam.HQ);
-        BeaverName = "BGDD-R(2)";
+        //Debug.Log("BM: " + beaverManager);
+        //Debug.Log("dam: " + beaverManager.TheDam);
+        //Debug.Log("hq: " + beaverManager.TheDam.HQ);
+        BeaverName = Random.Range(0, 20).ToString();
         Intelligence = 5;
         Speed = 1;
         Memory = new List<Memory>();
