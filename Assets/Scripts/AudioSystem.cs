@@ -280,10 +280,10 @@ public class AudioSystem : MonoBehaviour
     {
         AudioSource aS = Instantiate(_tempAS, Vector3.zero, Quaternion.identity);
         int index = 0;
-        
+
         //If the number is not specified, play a random sound of that type.
         //If the number is specified, play that specific sound.
-        switch(sound)
+        switch (sound)
         {
             case ActiveSoundName.erasing:
                 index = Random.Range(0, _eraser.Count);
@@ -307,9 +307,110 @@ public class AudioSystem : MonoBehaviour
                 aS.clip = _footsteps[index];
                 break;
             case ActiveSoundName.footsteps1:
-                aS.clip = _eraser[0];
+                aS.clip = _footsteps[0];
                 break;
-            
+            case ActiveSoundName.footsteps2:
+                aS.clip = _footsteps[1];
+                break;
+            case ActiveSoundName.footsteps3:
+                aS.clip = _footsteps[2];
+                break;
+            case ActiveSoundName.footsteps4:
+                aS.clip = _footsteps[3];
+                break;
+
+            case ActiveSoundName.growling:
+                index = Random.Range(0, _growl.Count);
+                aS.clip = _growl[index];
+                break;
+            case ActiveSoundName.growling1:
+                aS.clip = _growl[0];
+                break;
+            case ActiveSoundName.growling2:
+                aS.clip = _growl[1];
+                break;
+            case ActiveSoundName.growling3:
+                aS.clip = _growl[2];
+                break;
+
+            case ActiveSoundName.highlighter:
+                index = Random.Range(0, _highlighter.Count);
+                aS.clip = _highlighter[index];
+                break;
+            case ActiveSoundName.highlighter1:
+                aS.clip = _highlighter[0];
+                break;
+            case ActiveSoundName.highlighter2:
+                aS.clip = _highlighter[1];
+                break;
+            case ActiveSoundName.highlighter3:
+                aS.clip = _highlighter[2];
+                break;
+            case ActiveSoundName.highlighter4:
+                aS.clip = _highlighter[3];
+                break;
+
+            case ActiveSoundName.paper:
+                index = Random.Range(0, _paper.Count);
+                aS.clip = _paper[index];
+                break;
+            case ActiveSoundName.paper1:
+                aS.clip = _paper[0];
+                break;
+            case ActiveSoundName.paper2:
+                aS.clip = _paper[1];
+                break;
+            case ActiveSoundName.paper3:
+                aS.clip = _paper[2];
+                break;
+            case ActiveSoundName.paper4:
+                aS.clip = _paper[3];
+                break;
+
+            case ActiveSoundName.pencil:
+                index = Random.Range(0, _pencil.Count);
+                aS.clip = _pencil[index];
+                break;
+            case ActiveSoundName.pencil1:
+                aS.clip = _pencil[0];
+                break;
+            case ActiveSoundName.pencil2:
+                aS.clip = _pencil[1];
+                break;
+            case ActiveSoundName.pencil3:
+                aS.clip = _pencil[2];
+                break;
+            case ActiveSoundName.pencil4:
+                aS.clip = _pencil[3];
+                break;
+
+            case ActiveSoundName.repairing:
+                index = Random.Range(0, _repair.Count);
+                aS.clip = _repair[index];
+                break;
+            case ActiveSoundName.repairing1:
+                aS.clip = _repair[0];
+                break;
+            case ActiveSoundName.repairing2:
+                aS.clip = _repair[1];
+                break;
+
+            case ActiveSoundName.sticker:
+                index = Random.Range(0, _sticker.Count);
+                aS.clip = _sticker[index];
+                break;
+            case ActiveSoundName.sticker1:
+                aS.clip = _sticker[0];
+                break;
+            case ActiveSoundName.sticker2:
+                aS.clip = _sticker[1];
+                break;
+            case ActiveSoundName.sticker3:
+                aS.clip = _sticker[2];
+                break;
+            case ActiveSoundName.sticker4:
+                aS.clip = _sticker[3];
+                break;
         }
 
         aS.Play();
