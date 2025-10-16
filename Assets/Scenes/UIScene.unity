@@ -6161,8 +6161,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b4c29a5bc9b8efb4197521d3b931cf84, type: 2}
+  m_sharedMaterial: {fileID: 3525950599047441327, guid: b4c29a5bc9b8efb4197521d3b931cf84, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7903,7 +7903,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1775341676
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8000,7 +8000,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: -4549988592820558500, guid: acd3509faa2303840aa3118e30b923ad, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
