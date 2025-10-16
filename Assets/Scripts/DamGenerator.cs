@@ -268,15 +268,29 @@ public class DamGenerator : MonoBehaviour
                             Gizmos.DrawCube(new Vector3(gCell.CellArrayPosition.X + xOffset - 0.1f, gCell.CellArrayPosition.Y + yOffset + 0.1f, 0), new Vector3(.1f, .1f, .1f));
                             if (obj is Wolf)
                             {
+                                DamCell current = gCell;
                                 foreach(DamCell cell in ((Wolf)obj).CurrentPath)
                                 {
-
+                                    Gizmos.DrawLine(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), new Vector3(cell.CellArrayPosition.X + xOffset, cell.CellArrayPosition.Y + yOffset, 0));
+                                    current = cell;
                                 }
                             }
                             break;
                         case IItem.ItemType.Beaver:
                             Gizmos.color = UnityEngine.Color.magenta;
                             Gizmos.DrawCube(new Vector3(gCell.CellArrayPosition.X + xOffset + 0.1f, gCell.CellArrayPosition.Y + yOffset + 0.1f, 0), new Vector3(.1f, .1f, .1f));
+                            if (obj is BeaverData)
+                            {
+                                if (((BeaverData)obj).CurrentOrder != null && ((BeaverData)obj).CurrentOrder.ActionType == Order.Action.Move)
+                                {
+                                    DamCell current = gCell;
+                                    foreach (DamCell cell in ((BeaverData)obj).CurrentOrder.CurrentPath)
+                                    {
+                                        Gizmos.DrawLine(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), new Vector3(cell.CellArrayPosition.X + xOffset, cell.CellArrayPosition.Y + yOffset, 0));
+                                        current = cell;
+                                    }
+                                }
+                            }
                             break;
                     }
                 }

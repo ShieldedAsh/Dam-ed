@@ -44,6 +44,11 @@ public class Order
     [SerializeField] private Action action;
 
     /// <summary>
+    /// This is for viewing the path in DamGenerator
+    /// </summary>
+    public Action ActionType { get => action; }
+
+    /// <summary>
     /// Constructor for a single Order with no target
     /// </summary>
     /// <param name="action">The action you want this order to contain</param>
