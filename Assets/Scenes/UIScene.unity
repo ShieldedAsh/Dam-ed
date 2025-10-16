@@ -2772,6 +2772,7 @@ GameObject:
   - component: {fileID: 665720452}
   - component: {fileID: 665720456}
   - component: {fileID: 665720457}
+  - component: {fileID: 665720458}
   m_Layer: 5
   m_Name: Orders & Dialogue
   m_TagString: Untagged
@@ -2831,13 +2832,13 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 1
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -2895,6 +2896,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08e3133be323410418997423731f3424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &665720458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665720451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee297dc7037e27b40983a3b2d24375ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberOfLinesDisplayed: 10
+  DisplayTextDialogue: {fileID: 731133950}
 --- !u!1 &672039025
 GameObject:
   m_ObjectHideFlags: 0
