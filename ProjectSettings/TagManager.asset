@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags: []
   layers:
   - Default
@@ -41,3 +41,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Highlighter
+    uniqueID: 991664629
+    locked: 0
+  - name: Map
+    uniqueID: 1603281545
+    locked: 0
+  - name: Pencil
+    uniqueID: 1814256307
+    locked: 0
+  - name: Stickers
+    uniqueID: 2266709827
+    locked: 0
+  m_RenderingLayers:
+  - Default
