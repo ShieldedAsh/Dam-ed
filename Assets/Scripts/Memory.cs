@@ -70,7 +70,7 @@ public class Memory
                     output += $"a stack of {((Food)mem).Count} pieces of food, ";
                     break;
                 case IItem.ItemType.Scrap:
-                    output += $"a stack of {((Scrap)mem).Count} pieces of scrap, ";
+                    output += $"a piece of scrap, ";
                     break;
             }
         }

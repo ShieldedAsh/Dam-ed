@@ -28,10 +28,21 @@ public class DamGenerator : MonoBehaviour
 
     public DamGroup Dam { get => dam; }
 
+    /// <summary>
+    /// how much time has passed since the dam was generated
+    /// </summary>
+    private float time;
+    /// <summary>
+    /// how many minutes have passed since the dam was generated
+    /// </summary>
+    private int minutesPassed;
+
     //Methods
     private void Awake()
     {   
         stack = new Stack<DamCell>();
+        time = 0;
+        minutesPassed = 0;
 
         //Converts damSize from Vector2 --> Point
         damSize = new Point((int)DamSize.x, (int)DamSize.y);
@@ -201,7 +212,13 @@ public class DamGenerator : MonoBehaviour
 
     private void Update()
     {
-
+        time += Time.deltaTime;
+        if (time / 10 > minutesPassed)
+        {
+            Debug.Log("A minute has passed");
+            minutesPassed++;
+            GenerateItems();
+        }
     }
 
     //Visualizes the dam, drawn position is based off parent transform
@@ -259,5 +276,45 @@ public class DamGenerator : MonoBehaviour
     {
         current.AddConnection(dam.Cells[current.CellArrayPosition.X + relativeOffset.X, current.CellArrayPosition.Y + relativeOffset.Y]);
         dam.Cells[current.CellArrayPosition.X + relativeOffset.X, current.CellArrayPosition.Y + relativeOffset.Y].AddConnection(current);
+    }
+
+    /// <summary>
+    /// Generates items on just over 1/4th of the cells
+    /// </summary>
+    private void GenerateItems()
+    {
+        int itemCount = (int)((damSize.X * damSize.Y - 1) * .25);
+        System.Random RNGesus = new System.Random();
+        Debug.Log($"Generating {itemCount + 2} items because {damSize.X * damSize.Y} - 1 * .25 = {(damSize.X * damSize.Y - 1) * .25}");
+        int debug = 0;
+        for(int i = 0; i <= itemCount / 2 + 1; i++)
+        {
+            DamCell currentCell = dam.Cells[RNGesus.Next(damSize.X), RNGesus.Next(damSize.Y)];
+            if(currentCell != dam.Cells[hqCoordinate.X, hqCoordinate.Y] && currentCell.Contents.Count == 0)
+            {
+                debug++;
+                currentCell.AddItem(new Food());
+                Debug.Log($"Generated food at {currentCell.CellCoordinates}. It is item {debug}");
+            }
+            else
+            {
+                i--;
+            }
+        }
+
+        for (int i = 0; i <= itemCount / 2 + 1; i++)
+        {
+            DamCell currentCell = dam.Cells[RNGesus.Next(damSize.X), RNGesus.Next(damSize.Y)];
+            if (currentCell != dam.Cells[hqCoordinate.X, hqCoordinate.Y] && currentCell.Contents.Count == 0)
+            {
+                debug++;
+                currentCell.AddItem(new Scrap());
+                Debug.Log($"Generated scrap at {currentCell.CellCoordinates}. It is item {debug}");
+            }
+            else
+            {
+                i--;
+            }
+        }
     }
 }
