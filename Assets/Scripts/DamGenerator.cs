@@ -32,7 +32,7 @@ public class DamGenerator : MonoBehaviour
     /// </summary>
     public int ConnectionDensityPercentage { get => connectionDensityPercentage; set => connectionDensityPercentage = value; }
 
-    public DamGroup Dam;
+    public DamGroup Dam { get => dam; set => dam = value; }
 
     //Drawing Properties
     public UnityEngine.Color connectionColor;
@@ -213,7 +213,7 @@ public class DamGenerator : MonoBehaviour
         }
 
         DrawDam();
-        
+        hasGenerated = true;
     }
 
     private void Update()

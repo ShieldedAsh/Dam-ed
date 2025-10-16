@@ -138,6 +138,9 @@ public class BeaverData : IItem
     /// </summary>
     public BeaverData(BeaverManager beaverManager)
     {
+        Debug.Log("BM: " + beaverManager);
+        Debug.Log("dam: " + beaverManager.TheDam);
+        Debug.Log("hq: " + beaverManager.TheDam.HQ);
         BeaverName = "BGDD-R(2)";
         Intelligence = 5;
         Speed = 1;
