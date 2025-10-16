@@ -141,19 +141,17 @@ public class Order
                     }
                 }
 
-                /*
-                 * foreach(Wolf wolf in WolfManager.WolfList)
-                 * {
-                 *     foreach (DamCell cell in distractCells)
-                 *     {
-                 *          if(wolf.CurrentLocation == cell)
-                 *          {
-                 *              wolf.TargetCell = beaver.CurrentLocation;
-                 *              break;
-                 *          }
-                 *     }
-                 * }
-                 */
+                foreach (Wolf wolf in Object.FindAnyObjectByType<WolfManager>().Wolves)
+                {
+                    foreach (DamCell cell in distractCells)
+                    {
+                        if (wolf.CurrentLocation == cell)
+                        {
+                            wolf.ChangeTarget(beaver.CurrentLocation);
+                            break;
+                        }
+                    }
+                }
                 break;
         }
     }

@@ -14,10 +14,6 @@ public class DamGenerator : MonoBehaviour
     [SerializeField] private int connectionDensityPercentage;
     public static bool hasGenerated = false;
 
-    //Extra vars for drawing
-    private BeaverManager beaverManager;
-    private WolfManager wolfManager;
-
     //Properties
     /// <summary>
     /// The dimensions of the dam

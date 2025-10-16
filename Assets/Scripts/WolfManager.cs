@@ -11,6 +11,8 @@ public class WolfManager : MonoBehaviour
 
     public int WolfCount { get => wolfCount; set => wolfCount = value; }
 
+    public List<Wolf> Wolves { get { return wolves; } }
+
     private void Start()
     {
         theDam = FindAnyObjectByType<DamGenerator>().Dam;
