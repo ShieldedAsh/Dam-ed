@@ -5,6 +5,7 @@ using UnityEngine.InputSystem.Switch;
 
 public class StickerScript : MonoBehaviour
 {
+    //Fields
     /// <summary>
     /// Reference to the audio system
     /// </summary>

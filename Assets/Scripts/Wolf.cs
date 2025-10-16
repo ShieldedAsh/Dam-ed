@@ -6,6 +6,13 @@ using static UnityEditor.Progress;
 
 public class Wolf : IItem
 {
+    /// <summary>
+    /// Reference to the audio system
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Reference to the audio system")]
+    private AudioSource _audioSystem;
+
     //TheDam
     private WolfManager wolfManager;
     private DamCell currentLocation;
@@ -60,6 +67,9 @@ public class Wolf : IItem
                             break;
                         }
                     }
+
+                    //Plays a random growling sound
+                    wolfManager.Growl(false);
                 }
                 else if (CurrentLocation == hq.HQRightCell) //Checks if the right cell is occupied
                 {
@@ -71,6 +81,9 @@ public class Wolf : IItem
                             break;
                         }
                     }
+
+                    //Plays a random growling sound
+                    wolfManager.Growl(true);
                 }
                 if (timeToMove < 0 && isDistracted == false) //IsDistracted just here to make sure a wolf doesn't sideswipe a door 
                 {

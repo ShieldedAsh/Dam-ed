@@ -183,6 +183,9 @@ public class AudioSystem : MonoBehaviour
     [Tooltip ("A list of each temporary Audio Source that's been created.")]
     private List<AudioSource> _tempAudioSources;
 
+    [SerializeField]
+    private int die;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -213,7 +216,7 @@ public class AudioSystem : MonoBehaviour
     public void PlayAutoSound()
     {
         AudioSource aS = gameObject.GetComponent<AudioSource>();
-
+        aS.panStereo = 0;
         //Checks if enough time has passed and a sound isn't already being played.
         if (_audioTime >= _nextAudio && !aS.isPlaying)
         {
@@ -223,7 +226,7 @@ public class AudioSystem : MonoBehaviour
             //2-Plays a random regular track
             //3-Plays an ambient sound
             //4-Plays the mass beaver death track.
-            int die = Random.Range(1, 5);
+            die = Random.Range(1, 5);
             int index = 0;
 
             switch (die)
@@ -241,6 +244,7 @@ public class AudioSystem : MonoBehaviour
                 case 3:
                     index = Random.Range(0, _ambientSounds.Count);
                     aS.clip = _ambientSounds[index];
+                    aS.panStereo = Random.Range(-1f, 1f);
                     break;
 
                 case 4:
