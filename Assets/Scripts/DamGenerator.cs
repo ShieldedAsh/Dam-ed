@@ -134,6 +134,7 @@ public class DamGenerator : MonoBehaviour
                 current = dam.Cells[current.CellArrayPosition.X + nextPoint.X, current.CellArrayPosition.Y + nextPoint.Y];
                 totalConnections++;
             }
+
         }
 
 

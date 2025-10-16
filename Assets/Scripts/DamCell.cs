@@ -62,6 +62,21 @@ public class DamCell
     /// <param name="item">The item being added</param>
     public void AddItem(IItem item)
     {
+        foreach(IItem existingItem in Contents)
+        {
+            if(existingItem.GetType() == item.GetType())
+            {
+                switch (existingItem)
+                {
+                    case Food:
+                        ((Food)existingItem).AddFood(item);
+                        return;
+                    case Scrap:
+                        ((Scrap)existingItem).AddScrap(item);
+                        return;
+                }
+            }
+        }
         Contents.Add(item);
     }
 
@@ -121,5 +136,10 @@ public class DamCell
             return true;
         }
         return false;
+    }
+
+    public override string ToString()
+    {
+        return $"Cell ({cellCoordinates.Item1}, {cellCoordinates.Item2})";
     }
 }
