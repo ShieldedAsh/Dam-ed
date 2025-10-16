@@ -157,6 +157,11 @@ public class BeaverData : IItem
         Memory.Add(new Memory(CurrentLocation));
         foreach(IItem item in CurrentLocation.Contents)
         {
+            if (item.itemType == IItem.ItemType.Wolf)
+            {
+                BeaverStatus = Status.Dead;
+            }
+            
             Memory[Memory.Count - 1].AddItem(item);
         }
     }

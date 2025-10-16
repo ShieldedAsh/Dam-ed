@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine;
 
 public class DamGroup
 {
@@ -117,8 +117,41 @@ public class DamGroup
         return path;
     }
 
-    public void setHQ(DamCell hq)
+    public void SetHQ(DamCell hq)
     {
         this.hq = hq;
+    }
+
+    /// <summary>
+    /// Picks a random cell in cells
+    /// </summary>
+    /// <returns>the DamCell chosen</returns>
+    public DamCell GetRandomCell()
+    {
+        return cells[Random.Range(0, cells.GetLength(0)), Random.Range(0, cells.GetLength(1))];
+    }
+
+    /// <summary>
+    /// Picks a random cell in cells
+    /// </summary>
+    /// <param name="exclude">A list of cells to not pick</param>
+    /// <returns>The DamCell chosen</returns>
+    public DamCell GetRandomCell(List<DamCell> exclude)
+    {
+        bool hasGenerated = false;
+        DamCell generated = null;
+        while (!hasGenerated)
+        {
+            generated = GetRandomCell();
+            hasGenerated = true;
+            foreach (DamCell cell in exclude)
+            {
+                if (generated == cell)
+                {
+                    hasGenerated = false;
+                }
+            }
+        }
+        return generated;
     }
 }
