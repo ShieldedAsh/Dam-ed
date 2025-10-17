@@ -435,7 +435,7 @@ public class AudioSystem : MonoBehaviour
         }
 
         aS.Play();
-        //DeleteTempAudioSources();
+        DeleteTempAudioSources();
     }
 
     /// <summary>
@@ -445,7 +445,7 @@ public class AudioSystem : MonoBehaviour
     {
         bool kill = false;
 
-        for(int i = _tempAudioSources.Count; i > 0; i--)
+        for(int i = _tempAudioSources.Count - 1; i > 0; i--)
         {
             if (!_tempAudioSources[i].isPlaying)
             {
