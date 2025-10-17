@@ -136,6 +136,7 @@ public class DialogueOptions : MonoBehaviour
     /// <param name="memory">the memory to convert</param>
     public static string RecallMemory(Memory memory)
     {
+        Debug.Log($"Recalling Memory: {memory}");
         string parsedMemory = "";
         foreach(IItem item in memory.Knowledge)
         {

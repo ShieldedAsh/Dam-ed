@@ -181,19 +181,25 @@ public class Order
         switch (ThisOrder)
         {
             case Action.Move:
-                return $"moving to ({pathToTarget[0].CellCoordinates.Item1}, {pathToTarget[0].CellCoordinates.Item2})";
-
+                if (pathToTarget.Count > 0)
+                {
+                    return $"Move to ({pathToTarget[0].CellCoordinates.Item1}, {pathToTarget[0].CellCoordinates.Item2})";
+                }
+                else
+                {
+                    return $"Empty move action";
+                }
             case Action.Scavenge:
-                return $"scavenging for resources";
+                return $"Scavenge";
             case Action.Barricade:
-                return $"barricading between ({beaver.CurrentLocation.CellCoordinates.Item1}, {beaver.CurrentLocation.CellCoordinates.Item2}) and ({TargetDamCell.CellCoordinates.Item1}, {TargetDamCell.CellCoordinates.Item1})";
+                return $"Block way to ({TargetDamCell.CellCoordinates.Item1}, {TargetDamCell.CellCoordinates.Item2})";
             case Action.Tunnel:
-                return $"tunneling between ({beaver.CurrentLocation.CellCoordinates.Item1}, {beaver.CurrentLocation.CellCoordinates.Item2}) and ({TargetDamCell.CellCoordinates.Item1}, {TargetDamCell.CellCoordinates.Item1})";
+                return $"Tunnel to ({TargetDamCell.CellCoordinates.Item1}, {TargetDamCell.CellCoordinates.Item2})";
             case Action.Distract:
-                return "making a racket";
+                return "Distract";
             default:
                 return "not doing anything";
-        }
+            }
     }
     
     /// <summary>

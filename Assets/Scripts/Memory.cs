@@ -38,11 +38,12 @@ public class Memory
     /// <returns>A string of the memory</returns>
     public override string ToString()
     {
+        string output = $"At ({Cell.CellCoordinates.Item1}{Cell.CellCoordinates.Item2}), ";
         if(Knowledge.Count == 0)
         {
-            return "I saw nothing";
+            return output + "I saw nothing";
         }
-        string output = "I saw ";
+        output += "I saw ";
         foreach (IItem mem in Knowledge)
         {
             switch (mem.itemType)

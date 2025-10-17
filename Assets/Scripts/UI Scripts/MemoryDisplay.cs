@@ -17,10 +17,17 @@ public class MemoryDisplay : MonoBehaviour
     /// <param name="beaver"></param>
     public void ReturnBeaver(BeaverData beaver)
     {
-        totalMemories += beaver.BeaverName + "said: \n";
-        totalMemories += beaver.DropOffMemories();
+        totalMemories += beaver.BeaverName + " said: \n";
+        foreach(Memory mem in beaver.Memory)
+        {
+            totalMemories += mem + "\n";
+        }
 
-        ParseMemories();
+        DisplayTextDialogue.text = totalMemories;
+
+        //totalMemories += beaver.DropOffMemories(); 
+
+        //ParseMemories();
     }
 
     /// <summary>

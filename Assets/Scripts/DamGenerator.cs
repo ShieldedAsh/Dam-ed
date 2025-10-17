@@ -4,6 +4,8 @@ using System;
 using System.Drawing;
 using UnityEngine.InputSystem.Switch;
 using System.Data;
+using UnityEngine.Rendering.Universal;
+using TMPro;
 
 public class DamGenerator : MonoBehaviour
 {
@@ -14,6 +16,9 @@ public class DamGenerator : MonoBehaviour
     private Point hqCoordinate;
     [SerializeField] private int connectionDensityPercentage;
     public static bool hasGenerated = false;
+
+    [SerializeField]
+    TextMeshProUGUI timeText;
 
     //Properties
     /// <summary>
@@ -52,6 +57,7 @@ public class DamGenerator : MonoBehaviour
         stack = new Stack<DamCell>();
         time = 0;
         minutesPassed = 0;
+        timeText.text = "0";
 
         //Converts damSize from Vector2 --> Point
         damSize = new Point((int)DamSize.x, (int)DamSize.y);
@@ -101,6 +107,7 @@ public class DamGenerator : MonoBehaviour
         ConnectCells(dam.Cells[hqCoordinate.X, hqCoordinate.Y], new Point(-1, 0));
         ConnectCells(dam.Cells[hqCoordinate.X, hqCoordinate.Y], new Point(1, 0));
         HQ.Instance.SetHQCell(dam.Cells[hqCoordinate.X, hqCoordinate.Y]);
+        
 
         //Make Initial Connections
         int totalConnections = 3;
@@ -226,6 +233,7 @@ public class DamGenerator : MonoBehaviour
     }
 
     float cTime = 0;
+    float timeParts = 0;
     private void Update()
     {
         foreach (DamCell cell in dam.Cells)
@@ -256,13 +264,24 @@ public class DamGenerator : MonoBehaviour
 
         time += Time.deltaTime;
         cTime += Time.deltaTime;
-        if (cTime >= 60)
+        
+        if (cTime >= 10)
         {
-            Debug.Log("A minute has passed");
-            minutesPassed++;
-            cTime -= 60;
-            GenerateItems();
+            timeParts++;
+            cTime -= 10;
+            HQ.Instance.EatFood();
+            if (timeParts >= 6)
+            {
+                timeParts -= 6;
+                Debug.Log("A minute has passed");
+                minutesPassed++;
+                timeText.text = minutesPassed.ToString();
+                GenerateItems();    
+            }
+            
         }
+
+        HQ.Instance.HQCell.Contents.Clear();
     }
 
     //Visualizes the dam, drawn position is based off parent transform

@@ -37,6 +37,7 @@ public class BeaverData : IItem
     /// </summary>
     public Order? CurrentOrder { get { return Orders[currentOrderIndex]; } }
     private int currentOrderIndex;
+    public int CurrentOrderIndex { get => currentOrderIndex; }
 
     /// <summary>
     /// What the beaver is actively carrying;
@@ -92,7 +93,8 @@ public class BeaverData : IItem
     /// </summary>
     public void UpdateBeaver()
     {
-        if(CurrentOrder != null)
+        
+        if(CurrentOrder != null && BeaverStatus == Status.Healthy)
         {
             atHome = false;
             if (timeToMove <= 0)
@@ -121,17 +123,14 @@ public class BeaverData : IItem
         else if(atHome == false && CurrentLocation == beaverManager.TheDam.HQ)
         
         {
-            string totalMemories = "";
+            //string totalMemories = "";
             atHome = true;
-            foreach(Memory mem in Memory)
-            {
-                memoryDisplay.ReturnBeaver(this);
-                atHome = true;
-            }
-            if(Carrying != null)
+            memoryDisplay.ReturnBeaver(this);
+            if (Carrying != null)
             {
                 HQ.Instance.AddItem(Carrying);
             }
+            Memory = new List<Memory>();
         }
     }
 
@@ -141,9 +140,9 @@ public class BeaverData : IItem
     /// <returns>all the memories the beaver had</returns>
     public string DropOffMemories()
     {
+        Debug.Log("Dropping Memories");
         string memory = "";
-        Memory = new List<Memory>();
-        foreach (Memory mem in Memory)
+        foreach(Memory mem in Memory)
         {
             memory += DialogueOptions.RecallMemory(mem);
         }
@@ -184,6 +183,8 @@ public class BeaverData : IItem
         BeaverStatus = Status.Healthy;
         this.beaverManager = beaverManager;
         CurrentLocation = beaverManager.TheDam.HQ;
+        memoryDisplay = beaverManager.memory;
+
         atHome = true;
     }
 
@@ -197,7 +198,11 @@ public class BeaverData : IItem
             Memory.Add(new Memory(CurrentLocation));
             foreach (IItem item in CurrentLocation.Contents)
             {
-                Memory[Memory.Count - 1].AddItem(item);
+                if(item.itemType != IItem.ItemType.Beaver || ((BeaverData)item).BeaverName != BeaverName)
+                {
+                    Memory[Memory.Count - 1].AddItem(item);
+                }
+                
             }
         }
     }
@@ -233,11 +238,19 @@ public class BeaverData : IItem
             if(CurrentLocation == CurrentOrder.TargetDamCell)
             {
                 currentOrderIndex++;
+                if (currentOrderIndex >= Intelligence)
+                {
+                    currentOrderIndex = Intelligence - 1;
+                }
             }
         }
         else
         {
             currentOrderIndex++;
+            if (currentOrderIndex >= Intelligence)
+            {
+                currentOrderIndex = Intelligence - 1;
+            }
         }
     }
 }

@@ -16,9 +16,6 @@ public class HQ
         return instance;
     }
 
-    public BeaverManager Beavers { get { return beavers; } set { beavers = value; } }
-    private BeaverManager beavers;
-
     public DamCell HQCell { get; private set; }
     public DamCell HQLeftCell { get; private set; }
     public int LeftDoorHealth { get; set; }
@@ -37,6 +34,7 @@ public class HQ
         LeftDoorHealth = 10;
         HQRightCell = null;
         RightDoorHealth = 10;
+        totalFood = 200;
     }
 
     /// <summary>
@@ -86,6 +84,16 @@ public class HQ
         totalScrap -= 1;
     }
 
+    public void EatFood()
+    {
+        totalFood -= 6;
+
+        if(totalFood < 0)
+        {
+            Death.PlayerDeath();
+        }
+    }
+    
     //TODO: Add code for beavers eating food
     //TODO: Tie totalScrap and totalFood to their respective variables
 }

@@ -31,8 +31,8 @@ public class Death : MonoBehaviour
     /// Function that's called when the player dies.
     /// Changes the scene to the death scene.
     /// </summary>
-    public void PlayerDeath()
+    public static void PlayerDeath()
     {
-        SceneManager.LoadScene("Death");
+        SceneManager.LoadScene(2);
     }
 }

@@ -4,6 +4,19 @@ using UnityEngine;
 [System.Serializable]
 public class BeaverManager : MonoBehaviour
 {
+    private static BeaverManager instance;
+    public static BeaverManager Instance { get { return GetInstance(); } }
+    
+    private static BeaverManager GetInstance()
+    {
+        if(instance == null)
+        {
+            instance = new BeaverManager();
+        }
+
+        return instance;
+    }
+
     private DamGenerator damGenerator;
     private DamGroup theDam;
     private OrderGenerator orderGenerator;
@@ -16,6 +29,9 @@ public class BeaverManager : MonoBehaviour
 
     [SerializeField]
     BeaverNamer namer;
+
+    
+    public MemoryDisplay memory;
 
     public void Awake()
     {
@@ -33,11 +49,14 @@ public class BeaverManager : MonoBehaviour
         damGenerator.AttemptToRepairConnections();
         if (Beavers != null && Beavers.Count == 0 && DamGenerator.hasGenerated)
         {
+            AddBeaver();
+            /*
             for (int i = 0; i < 9; i++)
             {
                 //Debug.Log("Made Beav");
                 AddBeaver();
             }
+            */
             namer.nameBeavers(Beavers);
         }
         
@@ -47,9 +66,17 @@ public class BeaverManager : MonoBehaviour
             {
                 if (beaver.Orders[0] != null && beaver.Orders[0].CurrentPath.Count == 1)
                 {
-                    Debug.Log("Error at: " + beaver.CurrentLocation);
+                    UnityEngine.Debug.Log("Error at: " + beaver.CurrentLocation);
                 }
-
+                /*
+                if (beaver.BeaverStatus == BeaverData.Status.Dead)
+                {
+                    Debug.Log(beaver.BeaverName + " status is: " + beaver.BeaverStatus + " at: " + beaver.CurrentLocation );
+                }
+                else
+                {
+                    Debug.Log(beaver.BeaverName + " status is: " + beaver.BeaverStatus);
+                }*/
                 beaver.UpdateBeaver();
             }
         }
@@ -57,7 +84,15 @@ public class BeaverManager : MonoBehaviour
 
     public void AddBeaver()
     {
-        Beavers.Add(new BeaverData(this));
+        Beavers.Add(new BeaverData(this, "Dave", 5, 5));
+        Beavers.Add(new BeaverData(this, "Charlie", 6, 4));
+        Beavers.Add(new BeaverData(this, "Austin", 8, 2));
+        Beavers.Add(new BeaverData(this, "Josh", 2, 8));
+        Beavers.Add(new BeaverData(this, "Mary", 1, 9));
+        Beavers.Add(new BeaverData(this, "Kate", 9, 1));
+        Beavers.Add(new BeaverData(this, "Autumn", 4, 6));
+        Beavers.Add(new BeaverData(this, "Tim", 7, 3));
+        Beavers.Add(new BeaverData(this, "Zoe", 3, 7));
     }
 
     public BeaverData getBeaverFromName(string name)
