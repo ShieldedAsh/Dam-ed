@@ -87,11 +87,14 @@ public class Order
                 beaver.EvaluateRoom();
                 //Re-evaluates Path to find current best route
                 pathToTarget = beaverManager.TheDam.GetShortestPath(beaver.CurrentLocation, TargetDamCell, false);
-                beaver.CurrentLocation.RemoveItem(beaver);
-                currentPathIndex = pathToTarget.Count - 1;
-                beaver.CurrentLocation = pathToTarget[currentPathIndex - 1];
-                beaver.CurrentLocation.AddItem(beaver);
-                currentPathIndex--;
+                if (pathToTarget.Count > 0)
+                {
+                    beaver.CurrentLocation.RemoveItem(beaver);
+                    currentPathIndex = pathToTarget.Count - 1;
+                    beaver.CurrentLocation = pathToTarget[currentPathIndex - 1];
+                    beaver.CurrentLocation.AddItem(beaver);
+                    currentPathIndex--;
+                }
                 break;
             case Action.Scavenge:
                 if(beaver.CurrentLocation.Contents.Count != 0) //makes sure there are items on this cell
@@ -178,7 +181,7 @@ public class Order
         switch (ThisOrder)
         {
             case Action.Move:
-                return $"moving to ({pathToTarget[currentPathIndex].CellCoordinates.Item1}, {pathToTarget[currentPathIndex].CellCoordinates.Item2})";
+                return $"moving to ({pathToTarget[0].CellCoordinates.Item1}, {pathToTarget[0].CellCoordinates.Item2})";
 
             case Action.Scavenge:
                 return $"scavenging for resources";

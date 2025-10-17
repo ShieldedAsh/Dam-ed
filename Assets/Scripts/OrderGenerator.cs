@@ -48,6 +48,8 @@ public class OrderGenerator : MonoBehaviour
         target = target.ToLower();
         if (IsValidCell(target))
         {
+            HQ.Instance.TakeScrap();
+            beaver.Carrying = new Scrap();
             return new Order(Order.Action.Barricade, beaver, beaverManager, beaverManager.TheDam.Cells[target[0] - 97, int.Parse(target.Substring(1, target.Length - 1)) - 1]);
         }
         return null;
@@ -64,6 +66,8 @@ public class OrderGenerator : MonoBehaviour
         target = target.ToLower();
         if (IsValidCell(target))
         {
+            HQ.Instance.TakeScrap();
+            beaver.Carrying = new Scrap();
             return new Order(Order.Action.Tunnel, beaver, beaverManager, beaverManager.TheDam.Cells[target[0] - 97, int.Parse(target.Substring(1, target.Length - 1)) - 1]);
         }
         return null;
@@ -86,62 +90,38 @@ public class OrderGenerator : MonoBehaviour
     /// <returns></returns>
     public bool IsValidCell(string input)
     {
-        Debug.Log("called");
+        int column;
         if (beaverManager.TheDam.Cells.GetLength(1) < 10)
         {
-            Debug.Log("small grid");
             if (input.Length != 2)
             {
-                Debug.Log("Not 2");
                 return false;
             }
-            if ((int)input[0] < 97 || (int)input[0] >= 97 + beaverManager.TheDam.Cells.GetLength(0))
-            {
-                Debug.Log("character out of range");
-                return false;
-            }
-            if (input[1] < 1 ) 
-            {
-                Debug.Log("less than 1");
-                return false;
-            }
-            Debug.Log(input[1]);
-            Debug.Log(beaverManager.TheDam.Cells.GetLength(1));
-            if (int.Parse(input.Substring(1, input.Length - 1)) >= beaverManager.TheDam.Cells.GetLength(1))
-            {
-                Debug.Log("greater than length");
-                return false;
-            }
-            return true;
         }
         else 
         {
-            Debug.Log("Large grid");
             if (input.Length < 2)
             {
                 return false;
             }
-            if ((int)input[0] < 97 || (int)input[0] >= 97 + beaverManager.TheDam.Cells.GetLength(0))
-            {
-                Debug.Log("character out of range");
-                return false;
-            }
-
-            int column;
-            if (!int.TryParse(input.Substring(1, input.Length - 1), out column))
-            {
-                Debug.Log("Could not parse");
-                return false;
-            }
-            else
-            {
-                if (column < 1 || column >=  beaverManager.TheDam.Cells.GetLength(1))
-                {
-                    Debug.Log("out of range");
-                    return false;
-                }
-            }
-            return true;
         }
+
+        if ((int)input[0] < 97 || (int)input[0] >= 97 + beaverManager.TheDam.Cells.GetLength(0))
+        {
+            return false;
+        }
+
+        if (!int.TryParse(input.Substring(1, input.Length - 1), out column))
+        {
+            return false;
+        }
+        else
+        {
+            if (column < 1 || column >= beaverManager.TheDam.Cells.GetLength(1))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

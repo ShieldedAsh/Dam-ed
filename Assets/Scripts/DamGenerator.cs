@@ -228,6 +228,32 @@ public class DamGenerator : MonoBehaviour
     float cTime = 0;
     private void Update()
     {
+        foreach (DamCell cell in dam.Cells)
+        {
+            bool containsBeaver = false;
+            List<BeaverData> references = new List<BeaverData>();
+            bool containsWolf = false;
+            foreach(IItem item in cell.Contents)
+            {
+                if (item is BeaverData)
+                {
+                    containsBeaver = true;
+                    references.Add((BeaverData)item);
+                }
+                if (item is Wolf)
+                {
+                    containsWolf = true;
+                }
+            }
+            if (containsBeaver && containsWolf)
+            {
+                for (int i = references.Count - 1; i >= 0; i--)
+                {
+                    references[i].BeaverStatus = BeaverData.Status.Dead;
+                }
+            }
+        }
+
         time += Time.deltaTime;
         cTime += Time.deltaTime;
         if (cTime >= 60)
@@ -280,11 +306,14 @@ public class DamGenerator : MonoBehaviour
                             Gizmos.DrawCube(new Vector3(gCell.CellArrayPosition.X + xOffset - 0.1f, gCell.CellArrayPosition.Y + yOffset + 0.1f, 0), new Vector3(.1f, .1f, .1f));
                             if (obj is Wolf)
                             {
-                                DamCell current = gCell;
-                                for (int i = ((Wolf)obj).CurrentPath.Count - 1; i >= 0; i--)
+                                if (((Wolf)obj).CurrentPath != null)
                                 {
-                                    Gizmos.DrawLine(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), new Vector3(((Wolf)obj).CurrentPath[i].CellArrayPosition.X + xOffset, ((Wolf)obj).CurrentPath[i].CellArrayPosition.Y + yOffset, 0));
-                                    current = ((Wolf)obj).CurrentPath[i];
+                                    DamCell current = gCell;
+                                    for (int i = ((Wolf)obj).CurrentPath.Count - 1; i >= 0; i--)
+                                    {
+                                        Gizmos.DrawLine(new Vector3(current.CellArrayPosition.X + xOffset, current.CellArrayPosition.Y + yOffset, 0), new Vector3(((Wolf)obj).CurrentPath[i].CellArrayPosition.X + xOffset, ((Wolf)obj).CurrentPath[i].CellArrayPosition.Y + yOffset, 0));
+                                        current = ((Wolf)obj).CurrentPath[i];
+                                    }
                                 }
                             }
                             break;
@@ -293,7 +322,7 @@ public class DamGenerator : MonoBehaviour
                             Gizmos.DrawCube(new Vector3(gCell.CellArrayPosition.X + xOffset + 0.1f, gCell.CellArrayPosition.Y + yOffset + 0.1f, 0), new Vector3(.1f, .1f, .1f));
                             if (obj is BeaverData)
                             {
-                                if (((BeaverData)obj).CurrentOrder != null && ((BeaverData)obj).CurrentOrder.ActionType == Order.Action.Move)
+                                if (((BeaverData)obj).CurrentOrder != null && ((BeaverData)obj).CurrentOrder.ActionType == Order.Action.Move && ((BeaverData)obj).CurrentOrder.CurrentPath != null && ((BeaverData)obj).CurrentOrder.CurrentPath.Count > 0)
                                 {
                                     DamCell current = gCell;
                                     for (int i = ((BeaverData)obj).CurrentOrder.CurrentPath.Count - 1; i >= 0; i--)
@@ -409,6 +438,21 @@ public class DamGenerator : MonoBehaviour
             {
                 i--;
             }
+        }
+    }
+
+    public void AttemptToRepairConnections()
+    {
+        List<DamCell> doors = dam.HQ.Connections;
+
+        if (!doors[0].Connections.Contains(dam.HQ))
+        {
+            doors[0].AddConnection(dam.HQ);
+        }
+
+        if (!doors[1].Connections.Contains(dam.HQ))
+        {
+            doors[1].AddConnection(dam.HQ);
         }
     }
 }

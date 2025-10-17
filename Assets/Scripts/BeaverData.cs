@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 [System.Serializable]
 
@@ -55,7 +56,7 @@ public class BeaverData : IItem
     /// <summary>
     /// What is the beaver's current status
     /// </summary>
-    public Status BeaverStatus { get; private set; }
+    public Status BeaverStatus { get; set; }
 
     /// <summary>
     /// The current location of the beaver
@@ -96,12 +97,7 @@ public class BeaverData : IItem
             atHome = false;
             if (timeToMove <= 0)
             {
-                #if UNITY_EDITOR
-                    timeToMove = Random.Range(1f - Speed, 1f - Speed);
-                #else
-                    timeToMove = Random.Range(5f - Speed, 10f - Speed);
-                #endif
-
+                timeToMove = Random.Range(6f - Speed, 11f - Speed);
                 ExecuteOrder();
             }
             timeToMove -= Time.deltaTime;
@@ -109,12 +105,17 @@ public class BeaverData : IItem
         //Sends the beaver home after finishing all orders
         else if(CurrentOrder == null && BeaverStatus == Status.Healthy && CurrentLocation != beaverManager.TheDam.HQ)
         {
-            Orders[0] = new Order(Order.Action.Move, this, beaverManager, beaverManager.TheDam.HQ);
-            currentOrderIndex = 0;
-            for(int i = 1; i < Orders.Length; i++)
+            if (Orders.Length == 0)
+            {
+                Orders = new Order[1];
+            }
+            
+            for(int i = 0; i < Orders.Length; i++)
             {
                 Orders[i] = null!;
             }
+            GiveOrder(beaverManager.OrderGenerator.TryCreateMoveOrder(this, $"{beaverManager.TheDam.HQ.CellCoordinates.Item1}{beaverManager.TheDam.HQ.CellCoordinates.Item2}")!);
+            currentOrderIndex = 0;
         }
         //Unloads the memory once
         else if(atHome == false && CurrentLocation == beaverManager.TheDam.HQ)
@@ -228,7 +229,7 @@ public class BeaverData : IItem
         CurrentOrder!.TakeAction();
         if(CurrentOrder.ThisOrder == Order.Action.Move)
         {
-            Debug.Log($"Current Location: {CurrentLocation.CellCoordinates.Item1}, {CurrentLocation.CellCoordinates.Item2}");
+            //Debug.Log($"Current Location: {CurrentLocation.CellCoordinates.Item1}, {CurrentLocation.CellCoordinates.Item2}");
             if(CurrentLocation == CurrentOrder.TargetDamCell)
             {
                 currentOrderIndex++;
