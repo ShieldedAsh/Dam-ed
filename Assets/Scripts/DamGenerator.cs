@@ -226,6 +226,7 @@ public class DamGenerator : MonoBehaviour
     }
 
     float cTime = 0;
+    float timeParts = 0;
     private void Update()
     {
         foreach (DamCell cell in dam.Cells)
@@ -256,12 +257,20 @@ public class DamGenerator : MonoBehaviour
 
         time += Time.deltaTime;
         cTime += Time.deltaTime;
-        if (cTime >= 60)
+        
+        if (cTime >= 10)
         {
-            Debug.Log("A minute has passed");
-            minutesPassed++;
-            cTime -= 60;
-            GenerateItems();
+            timeParts++;
+            cTime -= 10;
+            HQ.Instance.EatFood();
+            if (timeParts >= 6)
+            {
+                timeParts -= 6;
+                Debug.Log("A minute has passed");
+                minutesPassed++;
+                GenerateItems();    
+            }
+            
         }
     }
 

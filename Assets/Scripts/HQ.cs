@@ -86,6 +86,19 @@ public class HQ
         totalScrap -= 1;
     }
 
+    public void EatFood()
+    {
+        int count = 0;
+        foreach (BeaverData beaver in Beavers.Beavers)
+        {
+            if (beaver.CurrentLocation == HQCell)
+            {
+                count++;
+            }
+        }
+        totalFood -= 1 + (int)Mathf.Round(count / 2.0f);
+    }
+    
     //TODO: Add code for beavers eating food
     //TODO: Tie totalScrap and totalFood to their respective variables
 }
