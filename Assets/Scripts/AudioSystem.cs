@@ -285,8 +285,22 @@ public class AudioSystem : MonoBehaviour
     public void PlayActiveAudio(ActiveSoundName sound)
     {
         AudioSource aS = Instantiate(_tempAS, Vector3.zero, Quaternion.identity);
-        _tempAudioSources.Add(aS);
-        int index = 0;
+
+        if(_tempAudioSources.Count <= 5)
+        {
+            _tempAudioSources.Add(aS);
+        }
+        else if (!_tempAudioSources[4].isPlaying)
+        {
+            _tempAudioSources.Clear();
+            _tempAudioSources.Add(aS);
+        }
+        else
+        {
+            Destroy(aS);
+        }
+
+            int index = 0;
 
         //If the number is not specified, play a random sound of that type.
         //If the number is specified, play that specific sound.
@@ -429,13 +443,23 @@ public class AudioSystem : MonoBehaviour
     /// </summary>
     public void DeleteTempAudioSources()
     {
+        bool kill = false;
+
         for(int i = _tempAudioSources.Count; i > 0; i--)
         {
             if (!_tempAudioSources[i].isPlaying)
             {
-                Destroy(_tempAudioSources[i]);
-                _tempAudioSources.RemoveAt(i);
+                kill = true;
             }
+            else
+            {
+                kill = false;
+            }
+        }
+
+        if(kill)
+        {
+            _tempAudioSources.Clear();
         }
     }
 }

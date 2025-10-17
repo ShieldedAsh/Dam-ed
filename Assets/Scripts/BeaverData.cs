@@ -37,6 +37,7 @@ public class BeaverData : IItem
     /// </summary>
     public Order? CurrentOrder { get { return Orders[currentOrderIndex]; } }
     private int currentOrderIndex;
+    public int CurrentOrderIndex { get => currentOrderIndex; }
 
     /// <summary>
     /// What the beaver is actively carrying;
@@ -92,7 +93,8 @@ public class BeaverData : IItem
     /// </summary>
     public void UpdateBeaver()
     {
-        if(CurrentOrder != null)
+        
+        if(CurrentOrder != null && BeaverStatus == Status.Healthy)
         {
             atHome = false;
             if (timeToMove <= 0)
@@ -108,6 +110,7 @@ public class BeaverData : IItem
             if (Orders.Length == 0)
             {
                 Orders = new Order[1];
+                //Orders[0] = beaverManager.OrderGenerator.TryCreateMoveOrder(this, $"{beaverManager.TheDam.HQ.CellCoordinates.Item1}{beaverManager.TheDam.HQ.CellCoordinates.Item2}")!;
             }
             
             for(int i = 0; i < Orders.Length; i++)
@@ -236,11 +239,19 @@ public class BeaverData : IItem
             if(CurrentLocation == CurrentOrder.TargetDamCell)
             {
                 currentOrderIndex++;
+                if (currentOrderIndex >= Intelligence)
+                {
+                    currentOrderIndex = Intelligence - 1;
+                }
             }
         }
         else
         {
             currentOrderIndex++;
+            if (currentOrderIndex >= Intelligence)
+            {
+                currentOrderIndex = Intelligence - 1;
+            }
         }
     }
 }

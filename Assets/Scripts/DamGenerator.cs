@@ -280,6 +280,8 @@ public class DamGenerator : MonoBehaviour
             }
             
         }
+
+        HQ.Instance.HQCell.Contents.Clear();
     }
 
     //Visualizes the dam, drawn position is based off parent transform

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 [System.Serializable]
@@ -51,6 +50,10 @@ public class BeaverManager : MonoBehaviour
         if (Beavers != null && Beavers.Count == 0 && DamGenerator.hasGenerated)
         {
             AddBeaver();
+            foreach(BeaverData beaver in Beavers)
+            {
+                beaver.GiveOrder(new Order(Order.Action.Move, beaver, this, theDam.GetRandomCell(new List<DamCell>() { theDam.HQ})));
+            }
             /*
             for (int i = 0; i < 9; i++)
             {
@@ -69,8 +72,16 @@ public class BeaverManager : MonoBehaviour
                 {
                     UnityEngine.Debug.Log("Error at: " + beaver.CurrentLocation);
                 }
-
-                beaver.UpdateBeaver();
+                /*
+                if (beaver.BeaverStatus == BeaverData.Status.Dead)
+                {
+                    Debug.Log(beaver.BeaverName + " status is: " + beaver.BeaverStatus + " at: " + beaver.CurrentLocation );
+                }
+                else
+                {
+                    Debug.Log(beaver.BeaverName + " status is: " + beaver.BeaverStatus);
+                }*/
+                    beaver.UpdateBeaver();
             }
         }
     }

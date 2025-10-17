@@ -181,8 +181,14 @@ public class Order
         switch (ThisOrder)
         {
             case Action.Move:
-                return $"Move to ({pathToTarget[0].CellCoordinates.Item1}, {pathToTarget[0].CellCoordinates.Item2})";
-
+                if (pathToTarget.Count > 0)
+                {
+                    return $"Move to ({pathToTarget[0].CellCoordinates.Item1}, {pathToTarget[0].CellCoordinates.Item2})";
+                }
+                else
+                {
+                    return $"Empty move action";
+                }
             case Action.Scavenge:
                 return $"Scavenge";
             case Action.Barricade:
@@ -193,7 +199,7 @@ public class Order
                 return "Distract";
             default:
                 return "not doing anything";
-        }
+            }
     }
     
     /// <summary>

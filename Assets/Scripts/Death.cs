@@ -33,6 +33,6 @@ public class Death : MonoBehaviour
     /// </summary>
     public static void PlayerDeath()
     {
-        SceneManager.LoadScene("Death");
+        SceneManager.LoadScene(2);
     }
 }
