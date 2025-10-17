@@ -4,9 +4,12 @@ using UnityEngine;
 [System.Serializable]
 public class BeaverManager : MonoBehaviour
 {
+    private DamGenerator damGenerator;
     private DamGroup theDam;
+    private OrderGenerator orderGenerator;
 
     public DamGroup TheDam { get => theDam; }
+    public OrderGenerator OrderGenerator { get => orderGenerator; set => OrderGenerator = value; }
 
     public List<BeaverData> Beavers { get; private set; }
 
@@ -20,14 +23,14 @@ public class BeaverManager : MonoBehaviour
     }
     public void Start()
     {
-        theDam = FindAnyObjectByType<DamGenerator>().Dam;
+        damGenerator = FindAnyObjectByType<DamGenerator>();
+        theDam = damGenerator.Dam;
+        orderGenerator = FindAnyObjectByType<OrderGenerator>();
     }
 
     private void Update()
     {
-        //Debug.Log("Dam: " + DamGenerator.hasGenerated);
-        //Debug.Log("Beavers: " + Beavers);
-
+        damGenerator.AttemptToRepairConnections();
         if (Beavers != null && Beavers.Count == 0 && DamGenerator.hasGenerated)
         {
             for (int i = 0; i < 9; i++)
@@ -37,10 +40,16 @@ public class BeaverManager : MonoBehaviour
             }
             namer.nameBeavers(Beavers);
         }
+        
         if (Beavers.Count > 0)
         {
             foreach (BeaverData beaver in Beavers)
             {
+                if (beaver.Orders[0] != null && beaver.Orders[0].CurrentPath.Count == 1)
+                {
+                    Debug.Log("Error at: " + beaver.CurrentLocation);
+                }
+
                 beaver.UpdateBeaver();
             }
         }

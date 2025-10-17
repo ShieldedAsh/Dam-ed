@@ -9,8 +9,9 @@ public class WolfManager : MonoBehaviour
     private AudioSource _audioSystem;
 
     private List<Wolf> wolves;
-    private int wolfCount;
+    [SerializeField] private int wolfCount;
     private DamGroup theDam;
+    [SerializeField] private bool generateWolves;
 
     public DamGroup TheDam { get => theDam; }
 
@@ -21,9 +22,13 @@ public class WolfManager : MonoBehaviour
     private void Start()
     {
         theDam = FindAnyObjectByType<DamGenerator>().Dam;
-        if (wolfCount <= 0)
+        if (wolfCount <= 0 && generateWolves)
         {
             wolfCount = 2;
+        }
+        if (!generateWolves)
+        {
+            wolfCount = 0;
         }
         wolves = new List<Wolf>();
         //should increase how many cells are excluded
