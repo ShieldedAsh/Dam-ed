@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 286867415}
   - component: {fileID: 286867414}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: HowToText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -449,7 +449,21 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "Give beavers orders to send them out to complete objectives\r\n\tMove
+    to: requires a coordinate, tells the beaver to move there\r\n\tScavenge: tells
+    the beaver to pick up an item from the floor (food and scrap)\r\nBarricade to:
+    Gets rid of a connection between the Beaver\u2019s current cell and the target
+    cell. Requires 1 scrap\r\nIf you want to reinforce a door to the HQ, give a beaver
+    an order to barricade to the cell that door leads to while the beaver is still
+    in the HQ\r\nTunnel to: Creates a connection between the coordinate you give
+    and the beaver\u2019s location when they execute the order. Takes 1 scrap and
+    requires that both cells are orthogonally adjacent (also, you can\u2019t tunnel
+    into/out of the HQ)\r\n\tDistract: Draws all Wolves within 5 squares to the beaver\u2019s
+    location\r\n\r\nEvery 10 seconds, you consume 1 food for every beaver in the
+    HQ (so up to the nine beavers you have plus yourself)\r\n\r\nHQ: The HQ is where
+    you are. The two connections to it both have a maximum of 10 health, which the
+    wolves will attempt to break through when they come near the HQ and can only
+    be pulled away by a beaver doing the Distract order\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b4c29a5bc9b8efb4197521d3b931cf84, type: 2}
   m_sharedMaterial: {fileID: 3525950599047441327, guid: b4c29a5bc9b8efb4197521d3b931cf84, type: 2}
@@ -476,11 +490,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 22.8
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 0
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -514,7 +528,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -476.305, y: -265.71643, z: -475.20215, w: -263.51114}
+  m_margin: {x: -356.7088, y: -197.54663, z: -353.21387, w: -212.0848}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

@@ -275,6 +275,7 @@ public class Wolf : IItem
             else if (CurrentLocation == hq.HQRightCell && hq.RightDoorHealth == 0)
             {
                 //GAME ENDS AS YOU ARE EATEN
+                Debug.Log("DOOR EATEN");
                 Death.PlayerDeath();
             }
         }
