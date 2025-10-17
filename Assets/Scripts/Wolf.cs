@@ -65,6 +65,37 @@ public class Wolf : IItem
                 }
                 else
                 {
+                    foreach (IItem item in hq.HQLeftCell.Contents)
+                    {
+                        if (item.itemType == IItem.ItemType.Wolf)
+                        {
+                            Distract(mainTarget);
+                            break;
+                        }
+                    }
+
+                    //Plays a random growling sound
+                    wolfManager.Growl(true);
+                }
+                if (timeToMove < 0 && isDistracted == false) //IsDistracted just here to make sure a wolf doesn't sideswipe a door 
+                {
+                    if (CurrentLocation == hq.HQLeftCell && hq.LeftDoorHealth > 0)
+                    {
+                        hq.LeftDoorHealth -= 1;
+                    }
+                    else if (CurrentLocation == hq.HQLeftCell && hq.LeftDoorHealth == 0)
+                    {
+                        //GAME ENDS AS YOU ARE EATEN
+                        wolfManager.DeathManager.PlayerDeath();
+                    }
+                    else if (CurrentLocation == hq.HQRightCell && hq.RightDoorHealth > 0)
+                    {
+                        hq.RightDoorHealth -= 1;
+                    }
+                    else if (CurrentLocation == hq.HQRightCell && hq.RightDoorHealth == 0)
+                    {
+                        //GAME ENDS AS YOU ARE EATEN
+                        wolfManager.DeathManager.PlayerDeath();
                     if (timeToMove <= 0)
                     {
                         Debug.Log("Moving wolf to intermediate");
