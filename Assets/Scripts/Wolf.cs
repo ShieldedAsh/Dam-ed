@@ -65,43 +65,11 @@ public class Wolf : IItem
                 }
                 else
                 {
-                    foreach (IItem item in hq.HQLeftCell.Contents)
-                    {
-                        if (item.itemType == IItem.ItemType.Wolf)
-                        {
-                            Distract(mainTarget);
-                            break;
-                        }
-                    }
-
-                    //Plays a random growling sound
-                    wolfManager.Growl(true);
-                }
-                if (timeToMove < 0 && isDistracted == false) //IsDistracted just here to make sure a wolf doesn't sideswipe a door 
-                {
-                    if (CurrentLocation == hq.HQLeftCell && hq.LeftDoorHealth > 0)
-                    {
-                        hq.LeftDoorHealth -= 1;
-                    }
-                    else if (CurrentLocation == hq.HQLeftCell && hq.LeftDoorHealth == 0)
-                    {
-                        //GAME ENDS AS YOU ARE EATEN
-                        wolfManager.DeathManager.PlayerDeath();
-                    }
-                    else if (CurrentLocation == hq.HQRightCell && hq.RightDoorHealth > 0)
-                    {
-                        hq.RightDoorHealth -= 1;
-                    }
-                    else if (CurrentLocation == hq.HQRightCell && hq.RightDoorHealth == 0)
-                    {
-                        //GAME ENDS AS YOU ARE EATEN
-                        wolfManager.DeathManager.PlayerDeath();
                     if (timeToMove <= 0)
                     {
                         Debug.Log("Moving wolf to intermediate");
                         MoveWolf(false);
                     }
-                    
                 }
             }
             else
@@ -262,29 +230,30 @@ public class Wolf : IItem
     public void DoorLogic()
     {
         HQ hq = HQ.Instance;
-        /*if (CurrentLocation == hq.HQLeftCell) //Checks if the right cell is occupied
+    wolfManager.Growl(true);
+    /*if (CurrentLocation == hq.HQLeftCell) //Checks if the right cell is occupied
+    {
+        foreach (IItem item in hq.HQRightCell.Contents)
         {
-            foreach (IItem item in hq.HQRightCell.Contents)
+            if (item.itemType == IItem.ItemType.Wolf)
             {
-                if (item.itemType == IItem.ItemType.Wolf)
-                {
-                    Distract(wolfManager.TheDam.GetRandomCell(new List<DamCell>() { wolfManager.TheDam.HQ }));
-                    break;
-                }
+                Distract(wolfManager.TheDam.GetRandomCell(new List<DamCell>() { wolfManager.TheDam.HQ }));
+                break;
             }
         }
-        else if (CurrentLocation == hq.HQRightCell) //Checks if the right cell is occupied
+    }
+    else if (CurrentLocation == hq.HQRightCell) //Checks if the right cell is occupied
+    {
+        foreach (IItem item in hq.HQLeftCell.Contents)
         {
-            foreach (IItem item in hq.HQLeftCell.Contents)
+            if (item.itemType == IItem.ItemType.Wolf)
             {
-                if (item.itemType == IItem.ItemType.Wolf)
-                {
-                    Distract(wolfManager.TheDam.GetRandomCell(new List<DamCell>() { wolfManager.TheDam.HQ }));
-                    break;
-                }
+                Distract(wolfManager.TheDam.GetRandomCell(new List<DamCell>() { wolfManager.TheDam.HQ }));
+                break;
             }
-        }*/
-        if (timeToMove < 0 && isDistracted == false) //IsDistracted just here to make sure a wolf doesn't sideswipe a door 
+        }
+    }*/
+    if (timeToMove < 0 && isDistracted == false) //IsDistracted just here to make sure a wolf doesn't sideswipe a door 
         {
             if (CurrentLocation == hq.HQLeftCell && hq.LeftDoorHealth > 0)
             {
@@ -295,6 +264,7 @@ public class Wolf : IItem
             else if (CurrentLocation == hq.HQLeftCell && hq.LeftDoorHealth == 0)
             {
                 //GAME ENDS AS YOU ARE EATEN
+                wolfManager.DeathManager.PlayerDeath();
             }
             else if (CurrentLocation == hq.HQRightCell && hq.RightDoorHealth > 0)
             {
@@ -305,6 +275,7 @@ public class Wolf : IItem
             else if (CurrentLocation == hq.HQRightCell && hq.RightDoorHealth == 0)
             {
                 //GAME ENDS AS YOU ARE EATEN
+                wolfManager.DeathManager.PlayerDeath();
             }
         }
     }
