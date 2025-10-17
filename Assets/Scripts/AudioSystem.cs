@@ -297,7 +297,7 @@ public class AudioSystem : MonoBehaviour
         }
         else
         {
-            Destroy(aS);
+            Destroy(aS.gameObject);
         }
 
             int index = 0;

@@ -20,10 +20,11 @@ public class MemoryDisplay : MonoBehaviour
         totalMemories += beaver.BeaverName + " said: \n";
         foreach(Memory mem in beaver.Memory)
         {
-            totalMemories += mem + "\n";
+            //totalMemories += mem + "\n";
+            totalMemories += beaver.DropOffMemories();
         }
-
-        DisplayTextDialogue.text = totalMemories;
+        ParseMemories();
+        DisplayTextDialogue.text = displayMemories;
 
         //totalMemories += beaver.DropOffMemories(); 
 

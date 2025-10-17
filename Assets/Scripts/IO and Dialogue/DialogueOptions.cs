@@ -145,6 +145,7 @@ public class DialogueOptions : MonoBehaviour
                 if (item.ToString().Equals(textData.dataName))
                 {
                     string fixedText = textData.GetPhrase;
+                    fixedText = fixedText.Replace(@"\&", memory.Cell.ToString());
                     switch (item)
                     {
                         case BeaverData:
