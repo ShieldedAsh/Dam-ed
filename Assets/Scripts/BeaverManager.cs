@@ -50,10 +50,6 @@ public class BeaverManager : MonoBehaviour
         if (Beavers != null && Beavers.Count == 0 && DamGenerator.hasGenerated)
         {
             AddBeaver();
-            foreach(BeaverData beaver in Beavers)
-            {
-                beaver.GiveOrder(new Order(Order.Action.Move, beaver, this, theDam.GetRandomCell(new List<DamCell>() { theDam.HQ})));
-            }
             /*
             for (int i = 0; i < 9; i++)
             {
@@ -81,7 +77,7 @@ public class BeaverManager : MonoBehaviour
                 {
                     Debug.Log(beaver.BeaverName + " status is: " + beaver.BeaverStatus);
                 }*/
-                    beaver.UpdateBeaver();
+                beaver.UpdateBeaver();
             }
         }
     }

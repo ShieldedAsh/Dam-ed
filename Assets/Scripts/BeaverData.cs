@@ -110,7 +110,6 @@ public class BeaverData : IItem
             if (Orders.Length == 0)
             {
                 Orders = new Order[1];
-                //Orders[0] = beaverManager.OrderGenerator.TryCreateMoveOrder(this, $"{beaverManager.TheDam.HQ.CellCoordinates.Item1}{beaverManager.TheDam.HQ.CellCoordinates.Item2}")!;
             }
             
             for(int i = 0; i < Orders.Length; i++)
