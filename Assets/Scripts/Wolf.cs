@@ -264,7 +264,7 @@ public class Wolf : IItem
             else if (CurrentLocation == hq.HQLeftCell && hq.LeftDoorHealth == 0)
             {
                 //GAME ENDS AS YOU ARE EATEN
-                wolfManager.DeathManager.PlayerDeath();
+                Death.PlayerDeath();
             }
             else if (CurrentLocation == hq.HQRightCell && hq.RightDoorHealth > 0)
             {
@@ -275,7 +275,7 @@ public class Wolf : IItem
             else if (CurrentLocation == hq.HQRightCell && hq.RightDoorHealth == 0)
             {
                 //GAME ENDS AS YOU ARE EATEN
-                wolfManager.DeathManager.PlayerDeath();
+                Death.PlayerDeath();
             }
         }
     }

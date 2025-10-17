@@ -4,6 +4,19 @@ using UnityEngine;
 [System.Serializable]
 public class BeaverManager : MonoBehaviour
 {
+    private static BeaverManager instance;
+    public static BeaverManager Instance { get { return GetInstance(); } }
+    
+    private static BeaverManager GetInstance()
+    {
+        if(instance == null)
+        {
+            instance = new BeaverManager();
+        }
+
+        return instance;
+    }
+
     private DamGenerator damGenerator;
     private DamGroup theDam;
     private OrderGenerator orderGenerator;

@@ -16,9 +16,6 @@ public class HQ
         return instance;
     }
 
-    public BeaverManager Beavers { get { return beavers; } set { beavers = value; } }
-    private BeaverManager beavers;
-
     public DamCell HQCell { get; private set; }
     public DamCell HQLeftCell { get; private set; }
     public int LeftDoorHealth { get; set; }
@@ -37,6 +34,7 @@ public class HQ
         LeftDoorHealth = 10;
         HQRightCell = null;
         RightDoorHealth = 10;
+        totalFood = 200;
     }
 
     /// <summary>
@@ -88,15 +86,12 @@ public class HQ
 
     public void EatFood()
     {
-        int count = 0;
-        foreach (BeaverData beaver in Beavers.Beavers)
+        totalFood -= 6;
+
+        if(totalFood < 0)
         {
-            if (beaver.CurrentLocation == HQCell)
-            {
-                count++;
-            }
+            Death.PlayerDeath();
         }
-        totalFood -= 1 + (int)Mathf.Round(count / 2.0f);
     }
     
     //TODO: Add code for beavers eating food

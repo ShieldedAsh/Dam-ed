@@ -105,7 +105,7 @@ public class OrderMaker : MonoBehaviour
         if(testOrder != null && orders.Count < activeBeaver.Intelligence)
         {
             orders.Add(testOrder);
-            ordersList.text = ordersList.text + "\n" + selectedOrder.ToString();
+            ordersList.text = ordersList.text + "\n" + testOrder.ToString();
         }
         
 
