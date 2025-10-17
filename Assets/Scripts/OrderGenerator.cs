@@ -19,6 +19,7 @@ public class OrderGenerator : MonoBehaviour
     /// <returns>The created order, if the location was invalid it returns null</returns>
     public Order? TryCreateMoveOrder(BeaverData beaver, string target)
     {
+        target = target.ToLower();
         if (IsValidCell(target))
         {
             return new Order(Order.Action.Move, beaver, beaverManager, beaverManager.TheDam.Cells[target[0] - 97, int.Parse(target.Substring(1, target.Length - 1)) - 1]);
@@ -44,6 +45,7 @@ public class OrderGenerator : MonoBehaviour
     /// <returns>The created order, if the location was invalid it returns null</returns>
     public Order? TryCreateBarricadeOrder(BeaverData beaver, string target)
     {
+        target = target.ToLower();
         if (IsValidCell(target))
         {
             HQ.Instance.TakeScrap();
@@ -61,6 +63,7 @@ public class OrderGenerator : MonoBehaviour
     /// <returns>The created order, if the location was invalid it returns null</returns>
     public Order? TryCreateTunnelOrder(BeaverData beaver, string target)
     {
+        target = target.ToLower();
         if (IsValidCell(target))
         {
             HQ.Instance.TakeScrap();

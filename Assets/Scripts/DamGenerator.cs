@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using System.Drawing;
+using UnityEngine.InputSystem.Switch;
 using System.Data;
 
 public class DamGenerator : MonoBehaviour
@@ -26,8 +27,16 @@ public class DamGenerator : MonoBehaviour
     /// </summary>
     public int ConnectionDensityPercentage { get => connectionDensityPercentage; set => connectionDensityPercentage = value; }
 
-    public DamGroup Dam { get => dam; }
+    public DamGroup Dam { get => dam; set => dam = value; }
 
+    //Drawing Properties
+    public UnityEngine.Color connectionColor;
+    public Sprite cellSprite;
+    private GameObject child;
+    private GameObject connection;
+    private LineRenderer connectionLine;
+    public float connectionWidth;
+    public Sprite maskSprite;
     /// <summary>
     /// how much time has passed since the dam was generated
     /// </summary>
@@ -209,6 +218,8 @@ public class DamGenerator : MonoBehaviour
                 }
             }
         }
+
+        DrawDam();
         GenerateItems();
 
         hasGenerated = true;
@@ -342,6 +353,57 @@ public class DamGenerator : MonoBehaviour
         dam.Cells[current.CellArrayPosition.X + relativeOffset.X, current.CellArrayPosition.Y + relativeOffset.Y].AddConnection(current);
     }
 
+
+    private void DrawDam()
+    {
+        if (dam != null)
+        {
+
+            float xOffset = transform.position.x - hqCoordinate.X;
+            float yOffset = transform.position.y - hqCoordinate.Y;
+            foreach (DamCell gCell in dam.Cells)
+            {
+                child = new GameObject();
+                child.transform.SetParent(transform);
+                child.transform.position = new Vector3(gCell.CellArrayPosition.X + xOffset, gCell.CellArrayPosition.Y + yOffset, 0);
+                child.AddComponent<SpriteRenderer>();
+                child.GetComponent<SpriteRenderer>().sprite = cellSprite;
+                child.GetComponent<SpriteRenderer>().sortingLayerName = "Map";
+                child.GetComponent<SpriteRenderer>().color = UnityEngine.Color.black;
+                child.AddComponent<SpriteMask>();
+                child.GetComponent<SpriteMask>().sprite = maskSprite;
+                child.transform.name = gCell.CellArrayPosition.ToString();
+
+                if (gCell.CellArrayPosition == hqCoordinate)
+                {
+                    child.GetComponent<SpriteRenderer>().color = UnityEngine.Color.red;
+                }
+
+
+                foreach (DamCell cell in gCell.Connections)
+                {
+                    connection = new GameObject();
+                    connection.transform.SetParent(child.transform);
+                    connectionLine = connection.AddComponent<LineRenderer>();
+                    connectionLine.material = new Material(Shader.Find("Sprites/Default"));
+                    connectionLine.startWidth = connectionWidth;
+                    connectionLine.endWidth = connectionWidth;
+                    connectionLine.startColor = connectionColor;
+                    connectionLine.endColor = connectionColor;
+                    connectionLine.sortingLayerName = "Map";
+                    connectionLine.sortingOrder = -1;
+                    connectionLine.positionCount = 2;
+
+
+                    connectionLine.SetPosition(0, new Vector3(gCell.CellArrayPosition.X + xOffset, gCell.CellArrayPosition.Y + yOffset, 0));
+                    connectionLine.SetPosition(1, new Vector3(cell.CellArrayPosition.X + xOffset, cell.CellArrayPosition.Y + yOffset, 0));
+                    connectionLine.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
+
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// Generates items on just over 1/4th of the cells
     /// </summary>
@@ -394,3 +456,4 @@ public class DamGenerator : MonoBehaviour
         }
     }
 }
+

@@ -6,6 +6,13 @@ using static UnityEditor.Progress;
 
 public class Wolf : IItem
 {
+    /// <summary>
+    /// Reference to the audio system
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Reference to the audio system")]
+    private AudioSource _audioSystem;
+
     //TheDam
     private WolfManager wolfManager;
     private DamCell currentLocation;
@@ -130,7 +137,7 @@ public class Wolf : IItem
     public IItem.ItemType itemType { get { return IItem.ItemType.Wolf; } }
     
     /// <summary>
-    /// 
+    /// When a wolf cannot move to mainTarget, this gets the closest cell to mainTarget that it can get to and then moves there to dig
     /// </summary>
     public void GetIntermediate()
     {
@@ -168,9 +175,9 @@ public class Wolf : IItem
     }
 
     /// <summary>
-    /// 
+    /// Moves the wolf
     /// </summary>
-    /// <param name="toMain"></param>
+    /// <param name="toMain">True if moving to mainTarget, false if moving to intermediateTarget</param>
     public void MoveWolf(bool toMain)
     {
         if (toMain)
@@ -219,7 +226,7 @@ public class Wolf : IItem
     }
 
     /// <summary>
-    /// 
+    /// The logic for when a wolf moves by a door
     /// </summary>
     public void DoorLogic()
     {

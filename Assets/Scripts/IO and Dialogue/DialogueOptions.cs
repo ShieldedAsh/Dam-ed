@@ -158,7 +158,7 @@ public class DialogueOptions : MonoBehaviour
                             break;
 
                     }
-                    parsedMemory += fixedText + " and ";
+                    parsedMemory += fixedText + "\n";
                 }
             }
         }

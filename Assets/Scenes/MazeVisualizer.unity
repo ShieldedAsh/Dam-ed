@@ -288,6 +288,9 @@ MonoBehaviour:
   connectionDensityPercentage: 15
   updateEachFrame: 0
   DamSize: {x: 15, y: 15}
+  connectionColor: {r: 0, g: 0, b: 0, a: 1}
+  cellSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  connectionWidth: 0.1
 --- !u!4 &1476172653
 Transform:
   m_ObjectHideFlags: 0

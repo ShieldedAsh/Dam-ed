@@ -10,7 +10,7 @@ public class BeaverData : IItem
     /// <summary>
     /// The name of the Beaver
     /// </summary>
-    public string BeaverName { get; private set; }
+    public string BeaverName { get; set; }
 
     /// <summary>
     /// The intelligence of the Beaver
@@ -85,6 +85,8 @@ public class BeaverData : IItem
 
     public bool testing = true;
 
+
+    private MemoryDisplay memoryDisplay;
     /// <summary>
     /// Updates this beaver's current status. Do this for each beaver every update
     /// </summary>
@@ -123,7 +125,7 @@ public class BeaverData : IItem
             atHome = true;
             foreach(Memory mem in Memory)
             {
-                totalMemories += DialogueOptions.RecallMemory(mem);
+                memoryDisplay.ReturnBeaver(this);
                 atHome = true;
             }
             if(Carrying != null)
@@ -133,6 +135,20 @@ public class BeaverData : IItem
         }
     }
 
+    /// <summary>
+    /// clears a beavers memories
+    /// </summary>
+    /// <returns>all the memories the beaver had</returns>
+    public string DropOffMemories()
+    {
+        string memory = "";
+        Memory = new List<Memory>();
+        foreach (Memory mem in Memory)
+        {
+            memory += DialogueOptions.RecallMemory(mem);
+        }
+        return memory;
+    }
     /// <summary>
     /// Creates a beavers with a given name as well as intelligence and speed stats
     /// </summary>
@@ -146,6 +162,8 @@ public class BeaverData : IItem
         Intelligence = intelligence;
         Speed = speed;
         Orders = new Order[Intelligence];
+
+        memoryDisplay = Object.FindFirstObjectByType<MemoryDisplay>();
     }
 
     /// <summary>
@@ -154,7 +172,10 @@ public class BeaverData : IItem
     /// <param name="beaverManager">The BeaverManager keeping track of this beaver</param>
     public BeaverData(BeaverManager beaverManager)
     {
-        BeaverName = "BGDD-R(2)";
+        //Debug.Log("BM: " + beaverManager);
+        //Debug.Log("dam: " + beaverManager.TheDam);
+        //Debug.Log("hq: " + beaverManager.TheDam.HQ);
+        BeaverName = Random.Range(0, 20).ToString();
         Intelligence = 5;
         Speed = 1;
         Memory = new List<Memory>();
@@ -182,7 +203,7 @@ public class BeaverData : IItem
     }
 
     /// <summary>
-    /// Trys to add an order to the Beaver's list
+    /// Tries to add an order to the Beaver's list
     /// </summary>
     /// <param name="order">The order</param>
     /// <returns>Whether or not the order was added</returns>

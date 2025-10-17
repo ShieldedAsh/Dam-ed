@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class HQ
@@ -23,6 +24,8 @@ public class HQ
     public int LeftDoorHealth { get; set; }
     public DamCell HQRightCell { get; private set; }
     public int RightDoorHealth { get; set; }
+
+    
 
     /// <summary>
     /// Constructor for the HQ
@@ -56,8 +59,8 @@ public class HQ
         }
     }
 
-    private int totalScrap;
-    private int totalFood;
+    public int totalScrap;
+    public int totalFood;
 
     /// <summary>
     /// Adds an item to your inventory
@@ -83,5 +86,6 @@ public class HQ
         totalScrap -= 1;
     }
 
-    //Need code to reduce food every so often as Beavers eat it
+    //TODO: Add code for beavers eating food
+    //TODO: Tie totalScrap and totalFood to their respective variables
 }
