@@ -18,7 +18,10 @@ public class ToMainMenu : MonoBehaviour
         
     }
 
-    public void OnMouseDown()
+    /// <summary>
+    /// Loads the Main_Menu scene when the main menu button is clicked.
+    /// </summary>
+    public void MainMenu()
     {
         SceneManager.LoadScene("Main_Menu");
     }
